@@ -1,0 +1,455 @@
+From a28ec7f9a6bd8777e13e64d3043729d984c93a1c Mon Sep 17 00:00:00 2001
+From: Maciej Kolanski <maciej.kolanski@consult.red>
+Date: Fri, 22 Apr 2022 13:53:29 +0200
+Subject: [PATCH] MVT changes
+
+* Load MVT tests instead of the upstream tests
+* Modify getTestResults format to one compatibile with Robot
+* Add execution logs to test results
+* Add checkFrames flag
+* Add clearTimeout method
+* Set testVersion to MVT
+* Add engine (player) selectors
+* Remove some unsupported links
+* Add links to YouTube test suite and Media Coverage
+---
+ harness/compactTestView.js | 33 +++++---------
+ harness/constants.js       |  3 +-
+ harness/main.js            | 13 +++++-
+ harness/test.js            | 93 ++++++++++++++++----------------------
+ harness/testView.js        | 32 +++++++------
+ harness/timeout.js         |  9 ++++
+ 6 files changed, 91 insertions(+), 92 deletions(-)
+
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index 77f7b68..9bcad03 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -1,6 +1,7 @@
+ /**
+  * @license
+  * Copyright 2018 Google Inc. All rights reserved.
++ * Copyright 2022 Liberty Global B.V.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+@@ -34,39 +35,29 @@ var compactTestView = (function() {
+       if (harnessConfig.controlMediaFormatSelection) {
+         this.addSwitch('WebM/VP9: ', 'enablewebm');
+       }
++      this.addSwitch('Check frames: ', 'checkframes');
+ 
+       this.addCommand('Run All', 'run-selected', 'Run all tests in order.',
+         function(e) {
+           if (self.onrunselected)
+             self.onrunselected.call(self, e);
+         });
+-      // Begin non GitHub files
+-      this.addCommand('Login', 'login', 'login to get user token.', function(e) {
+-        util.login(() => {
+-          if (document.getElementById('login-pop-up')) {
+-            document.getElementById('login-pop-up').style.display = 'none';
+-            util.uploadTestResult(() => { window.LOG(this, ['Login:', 'Successful']); });
+-          }
+-        });
+-      });
+-      this.addCommand('Submit', 'submit', 'submit test results.', function(e) {
+-        util.uploadTestResult(() => { window.LOG(this, ['TestResult:', 'Sent']); });
+-      });
+-      //End non GitHub files
+-
+-
+-      this.addLink('Links', 'links.html');
+-      this.addLink('Instructions', 'instructions.html');
+-      this.addLink('Changelog', 'changelog.html');
+-      this.addLink('Download-Source', 'download.tar.gz');
+-      this.addLink('Download-Media-files', 'YTS-media-files.tar.gz');
++
++
+       if (harnessConfig.novp9) {
+         this.addLink('No VP9', 'main.html');
+       }
++      this.addLink('YouTube Tests', 'https://ytlr-cert.appspot.com/2021/main.html');
+       this.addLink('Content Licenses', 'licenses.html');
+-      this.addLink('YouTube', 'https://youtube.com/tv');
++      this.addLink('Media Coverage', 'coverage.html');
+ 
+       this.addTestSuites(testSuiteVersions[this.testSuiteVer].testSuites);
++
++      for (var engineId in EngineVersions) {
++        var engine = EngineVersions[engineId];
++        var versions = Object.keys(engine.versions);
++        this.addSelector(engine.name + " version :", versions, engineId, engine.defaultVersion);
++      }
+     };
+ 
+     this.addTest = function(desc) {
+diff --git a/harness/constants.js b/harness/constants.js
+index ef553c5..1964af0 100644
+--- a/harness/constants.js
++++ b/harness/constants.js
+@@ -1,6 +1,7 @@
+ /**
+  * @license
+  * Copyright 2018 Google Inc. All rights reserved.
++ * Copyright 2022 Liberty Global B.V.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+@@ -17,4 +18,4 @@
+ 
+ 'use strict';
+ 
+-var testVersion = '2020';
++var testVersion = 'MVT';
+diff --git a/harness/main.js b/harness/main.js
+index c722460..21c0512 100644
+--- a/harness/main.js
++++ b/harness/main.js
+@@ -1,6 +1,7 @@
+ /**
+  * @license
+  * Copyright 2018 Google Inc. All rights reserved.
++ * Copyright 2022 Liberty Global B.V.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+@@ -28,6 +29,10 @@ var loadTests = function(testType) {
+       testType.substring(testType.indexOf('-') + 1, testType.lastIndexOf('-'));
+     return window['PlaybackperfTest'](subgroup)
+   } else {
++
++    if ('tests' in window.testSuiteDescriptions[testType]) {
++      return window.testSuiteDescriptions[testType].tests();
++    }
+     testName = util.MakeCapitalName(testName) + 'Test';
+     return window[testName]();
+   }
+@@ -51,6 +56,7 @@ var parseParams = function(testSuiteConfig) {
+       parseParam('stoponfailure', false));
+   config.enablewebm = util.stringToBoolean(
+       parseParam('enablewebm', testSuiteConfig.enablewebm));
++  config.checkframes = util.stringToBoolean(parseParam('checkframes', false));
+   config.muted = util.stringToBoolean(parseParam('muted', false));
+   config.novp9 = util.stringToBoolean(parseParam('novp9', false));
+   config.tests = parseParam('tests');
+@@ -143,7 +149,10 @@ var createLogger = function() {
+       text += arguments[i].toString() + ' ';
+ 
+     console.log(text);
+-    output.innerHTML = text + '\n' + output.innerHTML;
++    const separator = output.innerHTML.length === 0 ? '' : '\n';
++    output.innerHTML = output.innerHTML + separator + text;
++    output.scrollTop = output.scrollHeight
++    return text;
+   };
+ };
+ 
+@@ -196,7 +205,7 @@ window.startMseTest = function(testSuiteVer) {
+   window.harnessConfig = parseParams(testSuiteVersion.config);
+   window.harnessConfig.testSuite = testSuiteVer;
+ 
+-  addTimestampHash();
++//  addTimestampHash();
+ 
+   if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
+     alert('Cannot find test type ' + harnessConfig.testType);
+diff --git a/harness/test.js b/harness/test.js
+index b781e31..b20d03d 100644
+--- a/harness/test.js
++++ b/harness/test.js
+@@ -1,6 +1,7 @@
+ /**
+  * @license
+  * Copyright 2018 Google Inc. All rights reserved.
++ * Copyright 2022 Liberty Global B.V.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+@@ -109,15 +110,18 @@ window.createTest = function (name, category = '', mandatory = true, id = '',
+   var t = function() {};
+   t.prototype = Object.create(TestBase);
+   t.prototype.name = name;
++  t.prototype.logs = "";
+   t.prototype.title = title;
+   t.prototype.passingCriteria = passingCriteria;
+   t.prototype.instruction = instruction;
+   t.prototype.id = id;
+   t.prototype.desc = name;
+   t.prototype.running = false;
++  t.prototype.playing = false;
+   t.prototype.passes = 0;
+   t.prototype.failures = 0;
+   t.prototype.timeouts = 0;
++  t.prototype.executionTime = 0;
+   t.prototype.outcome = TestOutcome.UNKNOWN;
+   t.prototype.category = category;
+   t.prototype.mandatory = mandatory;
+@@ -167,8 +171,11 @@ var TestExecutor = function(testSuite, testsMask, testSuiteVer) {
+ 
+ TestExecutor.prototype.log = function() {
+   var args = Array.prototype.slice.call(arguments, 0);
+-  args.splice(0, 0, 'TestExecutor: ');
+-  LOG.apply(this, args);
++  args.splice(0, 0, '[' + new Date().toISOString() + '] TestExecutor: ');
++  const text = LOG.apply(this, args);
++  if (this.testList[this.currentTestIdx] && this.testList[this.currentTestIdx].prototype.running) {
++    this.testList[this.currentTestIdx].prototype.logs += text + '\n';
++  }
+ };
+ 
+ TestExecutor.prototype.assert = function(cond, msg) {
+@@ -289,17 +296,9 @@ TestExecutor.prototype.initialize = function() {
+   document.getElementById('info').innerHTML = this.info;
+   this.log('Media Source and Encrypted Media Conformance Tests ' +
+            '(version REVISION)');
+-
+-  this.longestTimeRatio = -1;
+-  this.longestTest = null;
+ };
+ 
+ TestExecutor.prototype.onfinished = function() {
+-  if (this.longestTest && this.longestTimeRatio > 0) {
+-    this.log('Longest test is ' + this.longestTest + ', it takes ' +
+-             this.longestTimeRatio + ' of its timeout.');
+-  }
+-
+   var keepRunning = (!harnessConfig.stoponfailure ||
+       this.lastResult === 'pass') && harnessConfig.loop &&
+       (this.testView.anySelected() || this.numOfTestToRun === 1);
+@@ -319,14 +318,6 @@ TestExecutor.prototype.onfinished = function() {
+       }
+     }
+   }
+-
+-  this.log('[PLEASE VERIFY]Device Status: {HDR: ' + harnessConfig.support_hdr +
+-      '}, {WebSpeech: ' + harnessConfig.support_webspeech + '}.');
+-
+-  if (document.URL.indexOf('appspot.com') >= 0 ||
+-      document.URL.indexOf('googleapis.com') >= 0) {
+-    this.sendTestReport(getTestResults());
+-  }
+ };
+ 
+ TestExecutor.prototype.sendTestReport = function(results) {
+@@ -369,13 +360,13 @@ TestExecutor.prototype.startNextTest = function() {
+   this.currentTest = new this.testList[this.currentTestIdx];
+   this.blockTestResults = false;
+ 
++  this.testList[this.currentTestIdx].prototype.running = true;
++
+   this.log('Test ' + (this.currentTest.index + 1) + ':' +
+            this.currentTest.desc + ' STARTED with timeout ' +
+            this.currentTest.timeout);
+   this.timeouts.setTimeout(this.timeout.bind(this), this.currentTest.timeout);
+ 
+-  this.testList[this.currentTestIdx].prototype.running = true;
+-
+   this.updateStatus();
+ 
+   this.startTime = Date.now();
+@@ -524,18 +515,10 @@ TestExecutor.prototype.timeout = function() {
+ };
+ 
+ TestExecutor.prototype.teardownCurrentTest = function(isTimeout, errorMsg) {
+-  if (!isTimeout) {
+-    var time = Date.now() - this.startTime;
+-    var ratio = time / this.currentTest.timeout;
+-    if (ratio >= this.longestTimeRatio) {
+-      this.longestTimeRatio = ratio;
+-      this.longestTest = this.currentTest.desc;
+-      this.log('New longest test ' + this.currentTest.desc +
+-               ' with timeout ' + this.currentTest.timeout + ' takes ' + time);
+-    }
+-  }
++  this.testList[this.currentTestIdx].prototype.executionTime = Date.now() - this.startTime;
+ 
+   this.testList[this.currentTestIdx].prototype.running = false;
++  this.testList[this.currentTestIdx].prototype.playing = false;
+   this.updateStatus();
+ 
+   this.timeouts.clearAll();
+@@ -557,41 +540,41 @@ TestExecutor.prototype.teardownCurrentTest = function(isTimeout, errorMsg) {
+ window.TestBase = TestBase;
+ window.TestExecutor = TestExecutor;
+ 
++function getTestStatus(test) {
++  if (test.prototype.outcome == TestOutcome.PASSED)
++    return "passed";
++  else if (test.prototype.outcome == TestOutcome.FAILED)
++    return "failed";
++  else
++    return "skipped";
++}
++
+ window.getTestResults = function(testStartId, testEndId) {
+   testStartId = testStartId || 0;
+   testEndId = testEndId || window.globalRunner.testList.length;
+ 
+   var results = {
+-    pass: {},
+-    fail: {}
++    "name": harnessConfig.testType,
++    "setup_log": "",
++    "suites": [],
++    "teardown_log": "",
++    "tests": [],
++    "type": "suite_result",
++    "ver": "1.0"
+   };
+ 
+-  for (var r in results) {
+-    results[r][harnessConfig.testSuite] = {};
+-    results[r][harnessConfig.testSuite][harnessConfig.testType] = {};
+-  }
+-
+-  var passResults =
+-      results.pass[harnessConfig.testSuite][harnessConfig.testType];
+-  var failResults =
+-      results.fail[harnessConfig.testSuite][harnessConfig.testType];
+-
+   for (var i = testStartId; i < testEndId; ++i) {
+     if (window.globalRunner.testList[i]) {
+       var test = window.globalRunner.testList[i];
+-      var category = test.prototype.category;
+-      var name = test.prototype.name;
+-      if (test.prototype.failures > 0) {
+-        if (!failResults[category]) {
+-          failResults[category] = [];
+-        }
+-        failResults[category].push(name);
+-      } else if (test.prototype.passes > 0) {
+-        if (!passResults[category]) {
+-          passResults[category] = [];
+-        }
+-        passResults[category].push(name);
+-      }
++      results["tests"].push({
++        "log": test.prototype.logs,
++        "name": test.prototype.name,
++        "status": getTestStatus(test),
++        "suites_chain": "MVT_SUITE." + harnessConfig.testType,
++        "time_ms": test.prototype.executionTime,
++        "type": "test_result",
++        "ver": "1.0"
++      });
+     }
+   }
+   return results;
+diff --git a/harness/testView.js b/harness/testView.js
+index c040757..bf5192a 100644
+--- a/harness/testView.js
++++ b/harness/testView.js
+@@ -1,6 +1,7 @@
+ /**
+  * @license
+  * Copyright 2018 Google Inc. All rights reserved.
++ * Copyright 2022 Liberty Global B.V.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+@@ -27,10 +28,11 @@ var createAnchor = function(text, id) {
+   return anchor;
+ };
+ 
+-var createOption = function(text, value) {
++var createOption = function(text, value, isSelected = false) {
+   var option = document.createElement('option');
+   option.text = text;
+   option.value = value;
++  isSelected && (option.selected = 'selected');
+   return option;
+ };
+ 
+@@ -44,18 +46,14 @@ function TestView(testSuiteVer) {
+   var testSuites = [];
+   var links = [];
+ 
+-  this.addSelector = function(text, optionTexts, values, callback) {
++  this.addSelector = function(text, optionTexts, id = null, defaultValue = 0) {
+     optionTexts = optionTexts instanceof Array ? optionTexts : [optionTexts];
+-    values = values instanceof Array ? values : [values];
+-
+-    if (optionTexts.length !== values.length)
+-      throw "text length and value length don't match!";
+ 
+     selectors.push({
+       'text': text,
+       'optionTexts': optionTexts,
+-      'values': values,
+-      'cb': callback
++      'id': id,
++      'defaultValue': defaultValue
+     })
+   };
+ 
+@@ -103,7 +101,7 @@ function TestView(testSuiteVer) {
+ 
+   this.generate = function() {
+     var heading = '[' + this.testSuiteVer + '] ' +
+-        testSuiteDescriptions[harnessConfig.testType].heading + ' (v REVISION)';
++        testSuiteDescriptions[harnessConfig.testType].heading;
+     try {
+       document.title = testSuiteDescriptions[harnessConfig.testType].title;
+     } catch (e) {
+@@ -112,6 +110,9 @@ function TestView(testSuiteVer) {
+     document.body.appendChild(createElement('span', 'title', null, heading));
+     document.body.appendChild(createElement('span', 'info', 'h4'));
+     document.body.appendChild(createElement('span', 'usage', 'h4'));
++    var config = createElement('span', 'configure', 'h4')
++    config.innerHTML = "Configuration:" + window.ConfigString;
++    document.body.appendChild(config);
+     document.body.appendChild(createElement('div', 'testview'));
+ 
+     var div = document.getElementById(this.divId);
+@@ -150,12 +151,17 @@ function TestView(testSuiteVer) {
+     }
+     for (var i = 0; i < selectors.length; ++i) {
+       switchDiv.appendChild(document.createTextNode(selectors[i].text));
+-      var select = document.createElement('select');
++      var select = document.createElement('span');
++      select.id = selectors[i].id;
+       for (var j = 0; j < selectors[i].optionTexts.length; ++j) {
+-        select.appendChild(createOption(selectors[i].optionTexts[j],
+-            selectors[i].values[j]));
++        select.appendChild(createAnchor(selectors[i].optionTexts[j],selectors[i].optionTexts[j]));
++        select.lastChild.setAttribute('data-href', location.origin + "?test_type=" + harnessConfig.testType + "&engine_" + selectors[i].id + "=" + selectors[i].optionTexts[j]);
++        select.lastChild.onclick = window.navigate;
++        if (selectors[i].optionTexts[j] != selectors[i].defaultValue)
++            select.lastChild.classList.add('focusable');
++        else
++            select.lastChild.classList.add('bold');
+       }
+-      select.onchange = selectors[i].cb;
+       switchDiv.appendChild(select);
+     }
+ 
+diff --git a/harness/timeout.js b/harness/timeout.js
+index 7c373c1..b4167ca 100644
+--- a/harness/timeout.js
++++ b/harness/timeout.js
+@@ -1,6 +1,7 @@
+ /**
+  * @license
+  * Copyright 2018 Google Inc. All rights reserved.
++ * Copyright 2022 Liberty Global B.V.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+@@ -48,8 +49,16 @@ var TimeoutManager = function(logger) {
+     var uid = window.setTimeout(
+         function() { timeoutHandler(timer.id); }, timeout);
+     timer.uid = uid;
++    return timer.id;
+   };
+ 
++  this.clearTimeout = function(id) {
++    if (typeof(timers[id]) != 'undefined') {
++      window.clearTimeout(timers[id].uid);
++      delete timers[id];
++    }
++  }
++
+   this.setInterval = function(func, timeout) {
+     var interval = getUniqueItem(intervals);
+     interval.func = func;

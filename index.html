@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+Copyright 2018 Google Inc. All rights reserved.
+Copyright 2022 Liberty Global BV
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+  <head>
+    <title>Media Validation Tool</title>
+    <link rel="stylesheet" href="js_mse_eme/style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <div id="testArea" style="display: none"></div>
+    <script type="text/javascript" async defer>
+      // Do NOT Change order of script sources!
+      var scriptSources = [
+        // Required by Shaka Player to support MPEG-2 TS
+        "https://cdnjs.cloudflare.com/ajax/libs/mux.js/5.10.0/mux.min.js",
+        "https://cdn.jsdelivr.net/npm/hls.js@latest",
+        "js_mse_eme/harness/util.js",
+        "js_mse_eme/harness/constants.js",
+        "js_mse_eme/harness/key.js",
+        "js_mse_eme/harness/focusManager.js",
+        "js_mse_eme/harness/logger.js",
+        "js_mse_eme/harness/xhr.js",
+        "js_mse_eme/harness/timeout.js",
+        "js_mse_eme/harness/testView.js",
+        "js_mse_eme/harness/compactTestList.js",
+        "js_mse_eme/harness/compactTestView.js",
+        "js_mse_eme/harness/test.js",
+        "js_mse_eme/lib/mse/msutil.js",
+        "js_mse_eme/lib/mse/mediaSourcePortability.js",
+        "test-materials/js/countdown-de.js",
+        "test-materials/js/countdown-en.js",
+        "test-materials/js/countdown-fr.js",
+        "test-materials/js/countdown-es.js",
+        "mediaStreams.js",
+        "src/mvtTest.js",
+        "src/common.js",
+        "src/engineChange.js",
+        "src/filterTest.js",
+        "src/baseConfig.js",
+        "src/hardwareConfigDefault.js",
+        "src/hardwareConfigAll.js",
+        "src/engines.js",
+        "src/codecSupport.js",
+        "src/commonTests.js",
+        "src/dashTest.js",
+        "src/hlsTest.js",
+        "src/hssTest.js",
+        "src/progressiveTest.js",
+        "src/codecSupportTests.js",
+        "js_mse_eme/harness/main.js",
+      ];
+      /*
+       * Load each script sequentially but marked as async so cobalt is able to pause/suspend
+       * the loading of YTS scripts and return later to finish executing
+       */
+      (function loadNextScript() {
+        if (scriptSources.length) {
+          var script = document.createElement("script");
+          script.src = scriptSources[0];
+          script.async = true;
+          script.defer = true;
+          script.onload = function () {
+            scriptSources.shift();
+            loadNextScript();
+          };
+          script.onerror = function () {
+            console.error("Failed to load ", scriptSources[0]);
+            scriptSources.shift();
+            loadNextScript();
+          };
+          document.head.appendChild(script);
+        } else {
+          startMseTest(testVersion);
+        }
+      })();
+    </script>
+    <div id="login-pop-up" style="display: none">
+      <div id="client-id-div">
+        <p class="step">1) On your phone or computer, go to youtube.com/activate</p>
+        <br />
+        <p class="step" id="client-id">2) Enter this code</p>
+        <br />
+        <p class="step">3) Sign in with your Google account</p>
+      </div>
+    </div>
+  </body>
+</html>

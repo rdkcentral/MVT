@@ -1,0 +1,162 @@
+/*
+ * If not stated otherwise in this file or this component's LICENSE file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2022 Liberty Global B.V.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+"use strict";
+
+var parseParam = function (param, defaultValue) {
+  var regex = new RegExp("(\\?|\\&)" + param + "=([-:,\\w]+)", "g");
+  var value = regex.exec(document.URL);
+  return value ? value[2] : defaultValue;
+};
+
+// Frameworky like tests
+var createMvtTest = function (tests, testId, category, categorySort, name, mandatory = true) {
+  if (isTestOptional(name)) {
+    mandatory = false;
+    console.log("Test " + name + " is not mandatory");
+  }
+  var t = createTest(name, category, mandatory, testId, category + " Tests");
+  t.prototype.index = tests.length;
+  if (!(categorySort in tests)) {
+    tests[categorySort] = [];
+  }
+  if (isTestHidden(name)) {
+    console.log("Test " + name + " has been hidden");
+  } else {
+    tests[categorySort].push(t);
+  }
+  return t;
+};
+
+var finalizeTests = function (tests) {
+  var tests_ = [];
+  Object.keys(tests)
+    .sort()
+    .forEach((category) => {
+      tests_ = tests_.concat(tests[category]);
+    });
+
+  for (let index = 0; index < tests_.length; ++index) {
+    tests_[index].prototype.index = index;
+  }
+  return tests_;
+};
+
+var createBaselineTest = function (tests, engine, media, sortorder, name, func, timeout) {
+  var testId = media.testBase + "." + sortorder;
+  var testname = media.name + " " + name;
+  var categorySort = sortorder + engine.order + name;
+  var test = createMvtTest(tests, testId, engine.name + " " + name, categorySort, testname);
+  test.prototype.timeout = timeout;
+  test.prototype.title = "Test playback of content " + media.name + " using " + engine.name + " " + name;
+  test.prototype.onload = function (runner, video) {
+    if (!test.prototype.playing) {
+      test.prototype.playing = true;
+      video.playbackRate = 1;
+      video.play();
+      func.bind(this)(video, runner);
+    }
+  };
+  test.prototype.content = media;
+  engine.setup(test, media);
+};
+
+var makeBaselineTests = function (medialist) {
+  var tests = {};
+  medialist.forEach((media) => {
+    getEnginesForMedia(media, function (engine) {
+      createTestsForMedia(media, tests, engine);
+    });
+  });
+  return finalizeTestSuite(tests);
+};
+
+var finalizeTestSuite = function (tests) {
+  return function () {
+    var info = "Default Timeout: " + TestBase.timeout + "ms";
+
+    var fields = ["passes", "failures", "timeouts"];
+
+    return { tests: finalizeTests(tests), info: info, fields: fields, viewType: "default" };
+  };
+};
+
+function createTestsForMedia(media, tests, engine) {
+  createBaselineTest(tests, engine, media, 1, "Playback", testPlayback, TestBase.timeout);
+  // TODO: ONEM-26308 Fix Pause tests
+  // createBaselineTest(tests, engine, media, 2, "Pause", testPause, TestBase.timeout);
+  if (media.duration == undefined || media.duration > 120) {
+    // TODO: ONEM-26268 Fix Rate tests
+    // if (media.video) {
+    // createBaselineTest(tests, engine, media, 3, "Rate", testPlayRate, TestBase.timeout * 3);
+    // }
+    createBaselineTest(tests, engine, media, 4, "Position", testSetPosition, TestBase.timeout * 2);
+  }
+  if (media.audio && media.audio.languages) {
+    createBaselineTest(tests, engine, media, 5, "AudioTracks", testChangeAudioTracks, TestBase.timeout);
+  }
+  if (media.subtitles && engine.config.subtitles && engine.config.subtitles.includes(media.subtitles.format)) {
+    createBaselineTest(tests, engine, media, 6, "Subtitles", testSubtitles, TestBase.timeout);
+  }
+}
+
+var makeTests = function (medialist, category) {
+  var niceNames = {
+    dash: "DASH",
+    hls: "HLS",
+    progressive: "Progressive",
+    hss: "HSS",
+    playready: "PlayReady",
+    custom: "Custom",
+  };
+
+  if (medialist.length != 0) {
+    var tests = {};
+    medialist.forEach((media) => {
+      getEnginesForMedia(media, function (engine) {
+        if (!(engine.name in tests)) {
+          tests[engine.name] = {};
+        }
+        createTestsForMedia(media, tests[engine.name], engine);
+      });
+    });
+
+    for (var engine in tests) {
+      var testlist = tests[engine];
+      if (testlist.length != 0) {
+        var category_engine = category.slice();
+        category_engine.push(engine);
+
+        var category_key = category_engine.join("-") + "-test";
+        var nice_category = category_engine.map((name) => (niceNames[name] ? niceNames[name] : name));
+        var category_name = nice_category.join(" ");
+        var testsuite = finalizeTestSuite(testlist);
+
+        var test_desc = {
+          name: category_name + " Tests",
+          title: category_name + " Tests",
+          heading: category_name + " Tests",
+          tests: testsuite,
+        };
+        window.testSuiteDescriptions[category_key] = test_desc;
+        window.testSuiteVersions[testVersion].testSuites.push(category_key);
+      }
+    }
+  }
+};

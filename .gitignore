@@ -1,0 +1,3 @@
+test-materials/
+# Ignore symlink to externally stored test materials
+test-materials

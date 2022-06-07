@@ -1,0 +1,21 @@
+@startuml Media Validation Tool
+
+left to right direction
+
+package MVTServer {
+    HTTP -d- [MVT source]
+    HTTP -d- [test-materials]
+}
+package CI {
+    component MVTJob
+}
+package DeviceUnderTest {
+    () SSH
+    WebDriver - [WebBrowser]
+}
+
+[MVTJob] <--> [WebDriver] : get(runTestUrl)\ngetTestResults()
+[MVTJob] <..> [SSH] : optional DUT setup
+[WebBrowser] -l-> [HTTP]
+
+@enduml

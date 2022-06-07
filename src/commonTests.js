@@ -1,0 +1,327 @@
+/*
+ * If not stated otherwise in this file or this component's LICENSE file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2022 Liberty Global B.V.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+"use strict";
+
+function waitForEvent(video, runner, event, predicate = null, maxWaitTimeMs = 10000, times = 1) {
+  return new Promise((resolve, reject) => {
+    let receivedEvents = 0;
+
+    var timeoutId = runner.timeouts.setTimeout(() => {
+      video.removeEventListener(event, eventHandler);
+      runner.assert(false, "Timeout (" + maxWaitTimeMs + ") waiting for " + event);
+      reject();
+    }, maxWaitTimeMs);
+
+    function eventHandler() {
+      if (!predicate || predicate(video)) {
+        receivedEvents += 1;
+        if (receivedEvents >= times) {
+          runner.log("Received " + receivedEvents + (predicate ? " (filtered)" : "") + ": " + event);
+          video.removeEventListener(event, eventHandler);
+          runner.timeouts.clearTimeout(timeoutId);
+          resolve();
+        }
+      }
+    }
+    runner.log("Waiting for event: " + event + ", timeout: " + maxWaitTimeMs);
+    video.addEventListener(event, eventHandler);
+  });
+}
+
+function waitForPosition(video, runner, position, maxWaitTimeMs = 10000) {
+  runner.log("Waiting for time: " + position);
+  return waitForEvent(
+    video,
+    runner,
+    "timeupdate",
+    (video) => !video.seeking && video.currentTime >= position,
+    maxWaitTimeMs
+  );
+}
+
+function seek(video, runner, position, postSeekPlayTime = 2, maxSeekTimeMs = 20000) {
+  video.currentTime = position;
+  return waitForPosition(video, runner, position + postSeekPlayTime, maxSeekTimeMs);
+}
+
+function checkVideoFramesIncreasing(video, runner, hasVideoTrack) {
+  return new Promise((resolve, _) => {
+    if (!harnessConfig.checkframes || !hasVideoTrack) {
+      resolve();
+    } else {
+      const beforeFrames = video.getVideoPlaybackQuality().totalVideoFrames;
+      runner.timeouts.setTimeout(() => {
+        runner.checkGr(video.getVideoPlaybackQuality().totalVideoFrames, beforeFrames, "frames should be increasing");
+        resolve();
+      }, 500);
+    }
+  });
+}
+
+var testPlayback = function (video, runner) {
+  const initialPosition = video.currentTime + 1;
+  const hasVideoTrack = this.content.video;
+  const playbackTime = 10;
+
+  const makePlaybackTestStep = function (position) {
+    return () =>
+      new Promise((resolve, _) => {
+        return waitForPosition(video, runner, position)
+          .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack))
+          .then(resolve);
+      });
+  };
+
+  var promise = Promise.resolve();
+  for (let i = 0; i < playbackTime; ++i) {
+    promise = promise.then(makePlaybackTestStep(initialPosition + i));
+  }
+  promise.then(() => runner.succeed());
+};
+
+var testPlayRate = function (video, runner) {
+  const rates = [0.5, 2, 0.75, 1.5, 0];
+  const initialPosition = video.currentTime + 1;
+  const hasVideoTrack = this.content.video;
+
+  // Each playbackRate will be verified on the span of |playbackTimePerRate|ms, with media position assertions frequency
+  // of |checkInterval|/|playbackTimePerRate|.
+  const playbackTimePerRate = 3000;
+  const checkInterval = 500;
+  const numberOfChecks = Math.floor(playbackTimePerRate / checkInterval);
+
+  // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
+  // These events should be emitted within timeout of |setRateToPlayTimeout|.
+  // The aim of this mechanism is to let the player buffer some data before playback speed verification.
+  const warmUpTimeUpdates = 10;
+  const setRateToPlayTimeout = 10000;
+
+  const makePlayRateTest = function (playbackRate) {
+    return () =>
+      new Promise((resolve, _) => {
+        let inaccuracyThreshold = playbackRate * 0.25;
+        let checks = 0;
+        let playTimeLast = 0;
+        let realTimeLast = 0;
+
+        runner.log("Setting playbackRate to ", playbackRate, ", acceptable position inaccuracy: ", inaccuracyThreshold);
+        video.playbackRate = playbackRate;
+
+        function verifyPlaybackProgress() {
+          if (checks >= numberOfChecks) {
+            resolve();
+          } else {
+            if (realTimeLast) {
+              checks++;
+              let playTimeCurrent = video.currentTime;
+              let timePassed = (Date.now() - realTimeLast) / 1000;
+              let expectedPosition = playTimeLast + timePassed * playbackRate;
+              runner.checkApproxEq(playTimeCurrent, expectedPosition, "video.currentTime", inaccuracyThreshold);
+            }
+            playTimeLast = video.currentTime;
+            realTimeLast = Date.now();
+            runner.timeouts.setTimeout(verifyPlaybackProgress, checkInterval);
+          }
+        }
+
+        if (playbackRate)
+          waitForEvent(video, runner, "timeupdate", null, setRateToPlayTimeout, warmUpTimeUpdates)
+            .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack))
+            .then(verifyPlaybackProgress);
+        else runner.timeouts.setTimeout(verifyPlaybackProgress, checkInterval);
+      });
+  };
+
+  var promise = waitForPosition(video, runner, initialPosition).then(() => {
+    runner.checkGE(video.currentTime, initialPosition, "video should start playback");
+  });
+  rates.forEach((rate) => {
+    promise = promise.then(makePlayRateTest(rate));
+  });
+  promise.then(() => runner.succeed());
+};
+
+var testPause = function (video, runner) {
+  const hasVideoTrack = this.content.video;
+  var pauseTimes = [1.5, 5];
+  if (this.content.dynamic) {
+    pauseTimes = [video.currentTime + 3, video.currentTime + 9];
+  }
+
+  const makePauseTest = function (pauseTime) {
+    return () =>
+      waitForPosition(video, runner, pauseTime)
+        .then(() => {
+          const promise = waitForEvent(video, runner, "pause");
+          runner.log("Pausing video");
+          video.pause();
+          return promise;
+        })
+        .then(() => {
+          runner.checkGE(video.currentTime, pauseTime, "currentTime should be greater or equal to pause point");
+          runner.checkGr(pauseTime + 2, video.currentTime, "currentTime should be less than pause point + 2s");
+          const promise = waitForEvent(video, runner, "playing");
+          video.play();
+          return promise;
+        })
+        .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack));
+  };
+
+  var promise = Promise.resolve();
+  pauseTimes.forEach((pauseTime) => (promise = promise.then(makePauseTest(pauseTime))));
+  promise.then(() => runner.succeed());
+};
+
+var testSetPosition = function (video, runner) {
+  const initialPosition = 2;
+  const hasVideoTrack = this.content.video;
+  var positions = [0, 20, 45];
+  if (this.content.dynamic) {
+    positions = [video.currentTime - 10, video.currentTime + 10, video.currentTime];
+  }
+
+  const makeSeekTest = function (position) {
+    return () => {
+      return new Promise((resolve, _) => {
+        runner.log("Changing position to " + position);
+        seek(video, runner, position).then(() => {
+          runner.checkGE(video.currentTime, position, "currentTime should be greater or equal to seek point");
+          runner.checkGr(position + 10, video.currentTime, "currentTime should be less than seek point + 10s");
+          checkVideoFramesIncreasing(video, runner, hasVideoTrack).then(resolve);
+        });
+      });
+    };
+  };
+
+  var promise = waitForPosition(video, runner, initialPosition).then(() => {
+    runner.checkGE(video.currentTime, initialPosition, "video should start playback");
+    return checkVideoFramesIncreasing(video, runner, hasVideoTrack);
+  });
+  positions.forEach((position) => {
+    promise = promise.then(makeSeekTest(position));
+  });
+  promise.then(() => runner.succeed());
+};
+
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+var testChangeAudioTracks = function (video, runner) {
+  const initialPosition = 1;
+  const trackPlaybackTime = 7;
+  const positionInaccuracyThreshold = 2;
+
+  var languages = this.content.audio.languages.slice().reverse();
+  // Set the first language twice at start and end
+  languages.unshift(languages[languages.length - 1]);
+
+  const makeChangeAudioTrackTest = (lang) => {
+    return () => {
+      return new Promise((resolve, _) => {
+        runner.log("Changing language to " + lang);
+        let availableLanguages = this.changeLanguage(video, runner, lang);
+        runner.assert(
+          arraysEqual(availableLanguages.sort(), this.content.audio.languages.slice().sort()),
+          "languages to match declared"
+        );
+        let trackChangePosition = video.currentTime;
+        let trackChangeTime = Date.now();
+        runner.timeouts.setTimeout(() => {
+          let preciseTrackPlaybackTime = (Date.now() - trackChangeTime) / 1000;
+          let expectedPosition = trackChangePosition + preciseTrackPlaybackTime;
+          runner.checkApproxEq(video.currentTime, expectedPosition, "video.currentTime", positionInaccuracyThreshold);
+          resolve();
+        }, trackPlaybackTime * 1000);
+      });
+    };
+  };
+
+  var promise = waitForPosition(video, runner, initialPosition);
+  languages.forEach((lang) => {
+    promise = promise.then(makeChangeAudioTrackTest(lang));
+  });
+  promise.then(() => runner.succeed());
+};
+
+var testSubtitles = function (video, runner) {
+  const initialPosition = this.content.subtitles.startOffset || 1;
+
+  if (this.content.subtitles.tracks) {
+    this.content.subtitles.tracks.forEach((trackData) => {
+      console.log("Creating track node for: " + trackData.src);
+      let track = document.createElement("track");
+      track.kind = "captions";
+      track.label = trackData.lang;
+      track.srclang = trackData.lang;
+      track.src = trackData.src;
+      video.appendChild(track);
+    });
+  }
+
+  this.content.subtitles.languages.sort();
+  let languages = this.content.subtitles.languages.slice();
+  if (this.content.subtitles.testLanguages) {
+    languages = this.content.subtitles.testLanguages;
+  }
+  languages.reverse();
+  // Set the first language twice at start and end
+  languages.unshift(languages[languages.length - 1]);
+
+  const makeChangeSubtitlesTest = (language) => {
+    return () => {
+      return new Promise((resolve, _) => {
+        runner.log("Changing subtitles to " + language);
+        let foundCaption = false;
+        let availableLangs = this.changeSubtitles(video, this.content, runner, language, (subtitle) => {
+          if (!foundCaption && this.content.subtitles.expectedText[language].indexOf(subtitle) != -1) {
+            foundCaption = true;
+            runner.log("Found expected " + language + " caption: " + subtitle);
+            waitForPosition(video, runner, video.currentTime + 1).then(resolve);
+          }
+        });
+
+        availableLangs = availableLangs.map((lang) => lang.toLowerCase());
+        availableLangs.sort();
+        runner.assert(
+          arraysEqual(availableLangs, this.content.subtitles.languages),
+          "languages " + availableLangs + " do not match declared " + this.content.subtitles.languages
+        );
+      });
+    };
+  };
+
+  var promise = waitForPosition(video, runner, 1).then(() => {
+    if (video.currentTime < initialPosition) {
+      seek(video, runner, initialPosition);
+    }
+  });
+  languages.forEach((language) => {
+    promise = promise.then(makeChangeSubtitlesTest(language));
+  });
+  promise.then(() => runner.succeed());
+};
