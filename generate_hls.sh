@@ -77,7 +77,7 @@ if [ ! -f $hls_path/fmp4_multiaudio/main.m3u8 ]; then
   mkdir -p $hls_path/fmp4_multiaudio
   ffmpeg -i $progressive_path/bbb_h264_aac.mp4 -i $progressive_path/tos_h264_aac.mp4 \
     -map 0:v:0 -map 0:a:0 -map 1:a:0 \
-    -b:v:0 1000k -c:v:1 copy -filter:v:1 "scale=640:-1" \
+    -b:v:0 1000k -c:v:1 copy -filter:v:1 "scale=640:-1" -g 96 -keyint_min 24 \
     -b:a:0 192k -c:a:0 copy -metadata:s:a:0 language=en \
     -b:a:1 192k -c:a:1 copy -metadata:s:a:1 language=pl \
     -f hls -hls_time 4 -hls_playlist_type vod -hls_flags independent_segments \
