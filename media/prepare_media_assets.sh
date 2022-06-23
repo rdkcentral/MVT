@@ -19,7 +19,10 @@
 
 set -e
 
-export progressive_path=test-materials/progressive
+export root_dir="$(dirname $(dirname "$(readlink -f "$0")"))"
+export test_materials_path=$root_dir/test-materials
+export media_path=$root_dir/media
+export progressive_path=$test_materials_path/progressive
 
 echo Checking ffmpeg availability
 if [ ! -x "$(command -v ffmpeg)" ]; then
@@ -52,17 +55,17 @@ download_progressive_stream "https://mirrors.dotsrc.org/blender/blender-demo/mov
 download_progressive_stream "http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/ToS-4k-1920.mov" "tos"
 
 # Prepare subtitles
-mkdir -p test-materials/subtitles
-mkdir -p test-materials/js
-python3 subs_generator.py 120 en test-materials/subtitles
-python3 subs_generator.py 120 de test-materials/subtitles
-python3 subs_generator.py 120 fr test-materials/subtitles
-python3 subs_generator.py 120 es test-materials/subtitles
-mv test-materials/subtitles/*.js test-materials/js
+mkdir -p $test_materials_path/subtitles
+mkdir -p $test_materials_path/js
+python3 $media_path/subs_generator.py 120 en $test_materials_path/subtitles
+python3 $media_path/subs_generator.py 120 de $test_materials_path/subtitles
+python3 $media_path/subs_generator.py 120 fr $test_materials_path/subtitles
+python3 $media_path/subs_generator.py 120 es $test_materials_path/subtitles
+mv $test_materials_path/subtitles/*.js $test_materials_path/js
 
-./generate_progressive.sh
-./generate_dash.sh
-./generate_hls.sh
-./generate_cmaf.sh
+$media_path/generate_progressive.sh
+$media_path/generate_dash.sh
+$media_path/generate_hls.sh
+$media_path/generate_cmaf.sh
 
 echo "All test materials downloaded!"

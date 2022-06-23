@@ -19,7 +19,7 @@
 
 set -e
 
-hls_path=test-materials/hls
+hls_path=$test_materials_path/hls
 
 function make_fmp4_audio_hls {
   local input=$1
@@ -91,7 +91,7 @@ fi
 if [ ! -f $hls_path/fmp4_h264_aac_vtt/main.m3u8 ]; then
   mkdir -p $hls_path/fmp4_h264_aac_vtt
   ffmpeg -i $progressive_path/tos_h264_aac.mp4 \
-    -i test-materials/subtitles/countdown-en.vtt \
+    -i $test_materials_path/subtitles/countdown-en.vtt \
     -map 0:v:0 -map 0:a:0 -map 1:s:0 \
     -b:v:0 1000k -c:v:1 copy -filter:v:1 "scale=640:-1" \
     -b:a:0 192k -c:a:0 copy -metadata:s:a:0 language=en \

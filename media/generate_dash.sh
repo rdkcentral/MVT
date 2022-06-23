@@ -19,7 +19,7 @@
 
 set -e
 
-dash_path=test-materials/dash
+dash_path=$test_materials_path/dash
 
 function make_fmp4_dash {
   local input=$1
@@ -103,7 +103,7 @@ fi
 if [ ! -f $dash_path/multiperiod/manifest.mpd ]; then
   make_fmp4_dash $progressive_path/bbb_h264_aac.mp4 libx264 aac $dash_path/multiperiod "-t 20"
   mv $dash_path/multiperiod/manifest.mpd $dash_path/multiperiod/single_period.mpd
-  python3 mpd_processor.py multiperiod $dash_path/multiperiod/single_period.mpd 20 6 $dash_path/multiperiod/manifest.mpd
+  python3 $media_path/mpd_processor.py multiperiod $dash_path/multiperiod/single_period.mpd 20 6 $dash_path/multiperiod/manifest.mpd
 fi
 
 if [ ! -f $dash_path/fmp4_multiaudio/manifest.mpd ]; then
@@ -121,11 +121,12 @@ fi
 # WEBM with VTT subtitles
 if [ ! -f $dash_path/webm_vp9_opus/manifest_vtt.mpd ]; then
   make_webm_dash $progressive_path/tos_h264_aac.mp4 $dash_path/webm_vp9_opus
-  python3 mpd_processor.py add_subtitles $dash_path/webm_vp9_opus/manifest.mpd vtt $dash_path/webm_vp9_opus/manifest_vtt.mpd
+  python3 $media_path/mpd_processor.py add_subtitles $dash_path/webm_vp9_opus/manifest.mpd vtt $dash_path/webm_vp9_opus/manifest_vtt.mpd
 fi
 
 # fMP4 with TTML subtitles
 if [ ! -f $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd ]; then
   make_fmp4_dash $progressive_path/tos_h264_aac.mp4 libx264 aac $dash_path/fmp4_h264_aac_ttml
-  python3 mpd_processor.py add_subtitles $dash_path/fmp4_h264_aac_ttml/manifest.mpd ttml $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd
+  python3 $media_path/mpd_processor.py add_subtitles $dash_path/fmp4_h264_aac_ttml/manifest.mpd ttml \
+    $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd
 fi
