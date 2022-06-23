@@ -19,7 +19,7 @@
 
 set -e
 
-cmaf_path=test-materials/cmaf
+cmaf_path=$test_materials_path/cmaf
 
 function make_cmaf {
     local input=$1
@@ -49,5 +49,5 @@ make_cmaf $progressive_path/tos_h264_aac.mp4 hevc eac3 $cmaf_path/hevc_eac3
 # h264+mp3 with VTT subtitles for DASH
 if [ ! -f $cmaf_path/h264_mp3/manifest_vtt.mpd ]; then
     make_cmaf $progressive_path/tos_h264_aac.mp4 libx264 mp3 $cmaf_path/h264_mp3
-    python3 mpd_processor.py add_subtitles $cmaf_path/h264_mp3/manifest.mpd vtt $cmaf_path/h264_mp3/manifest_vtt.mpd
+    python3 $media_path/mpd_processor.py add_subtitles $cmaf_path/h264_mp3/manifest.mpd vtt $cmaf_path/h264_mp3/manifest_vtt.mpd
 fi
