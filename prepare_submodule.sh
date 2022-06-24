@@ -21,4 +21,4 @@ set -e
 
 git submodule update --init --depth 1
 cd js_mse_eme
-git am ../patches/0001_js_mse_eme_mvt.patch
+git apply ../patches/0001_js_mse_eme_mvt.patch
