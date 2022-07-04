@@ -57,23 +57,17 @@ function loadStoredEngine() {
     var engine = EngineVersions[engineId];
     var queryVariable = getQueryVariable("engine_" + engineId);
 
-    // if engine version is missing, add the default value from dict 'EngineVersions' to the url:
-    if (!queryVariable) {
-      window.localStorage["engine_" + engineId] = engine.defaultVersion;
-      window.location.href += "&engine_" + engineId + "=" + engine.defaultVersion;
-      // if engine version is provided and it is the same in Local Storage do nothing:
-    } else if (queryVariable && window.localStorage["engine_" + engineId] === queryVariable) {
-      engine.defaultVersion = queryVariable;
-    } else {
-      // if engine version is provided but it does not exist in 'EngineVersions' dict, replace it in url to the default value:
+    if (queryVariable) {
+      // if engine version is provided but it does not exist in 'EngineVersions', replace it to the default value:
       if (engine.versions[queryVariable] === undefined) {
-        window.localStorage["engine_" + engineId] = engine.defaultVersion;
-        window.location.href = window.location.search.replace(
-          "engine_" + engineId + "=" + queryVariable,
-          "engine_" + engineId + "=" + engine.defaultVersion
+        console.warn(
+          `${engineId} player version '${queryVariable}' is not available, it has been set to default: '${engine.defaultVersion}'`
         );
+        window.history.pushState("", "", window.location.search.replace(`&engine_${engineId}=${queryVariable}`, ""));
+        // remove version parameter from the url if the provided version is the default one:
+      } else if (queryVariable === engine.defaultVersion) {
+        window.history.pushState("", "", window.location.search.replace(`&engine_${engineId}=${queryVariable}`, ""));
       } else {
-        window.localStorage["engine_" + engineId] = queryVariable;
         engine.defaultVersion = queryVariable;
       }
     }
