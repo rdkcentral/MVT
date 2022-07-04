@@ -79,7 +79,7 @@ index 77f7b68..9bcad03 100644
 +      for (var engineId in EngineVersions) {
 +        var engine = EngineVersions[engineId];
 +        var versions = Object.keys(engine.versions);
-+        this.addSelector(engine.name + " version :", versions, engineId, engine.defaultVersion);
++        this.addSelector(engine.name + " version: ", versions, engineId, engine.defaultVersion);
 +      }
      };
  
