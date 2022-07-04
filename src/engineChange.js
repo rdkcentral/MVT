@@ -61,14 +61,17 @@ function loadStoredEngine() {
     if (!queryVariable) {
       window.localStorage["engine_" + engineId] = engine.defaultVersion;
       window.location.href += "&engine_" + engineId + "=" + engine.defaultVersion;
-    // if engine version is provided and it is the same in Local Storage do nothing:
+      // if engine version is provided and it is the same in Local Storage do nothing:
     } else if (queryVariable && window.localStorage["engine_" + engineId] === queryVariable) {
       engine.defaultVersion = queryVariable;
     } else {
       // if engine version is provided but it does not exist in 'EngineVersions' dict, replace it in url to the default value:
       if (engine.versions[queryVariable] === undefined) {
         window.localStorage["engine_" + engineId] = engine.defaultVersion;
-        window.location.href = window.location.search.replace("engine_" + engineId + "=" + queryVariable, "engine_" + engineId + "=" + engine.defaultVersion);
+        window.location.href = window.location.search.replace(
+          "engine_" + engineId + "=" + queryVariable,
+          "engine_" + engineId + "=" + engine.defaultVersion
+        );
       } else {
         window.localStorage["engine_" + engineId] = queryVariable;
         engine.defaultVersion = queryVariable;
