@@ -20,7 +20,7 @@
 "use strict";
 
 var EngineVersions = {
-  shaka_player: {
+  shaka: {
     versions: {
       "2.5.20": ["https://ajax.googleapis.com/ajax/libs/shaka-player/2.5.20/shaka-player.compiled.js"],
       "3.0.1": ["https://ajax.googleapis.com/ajax/libs/shaka-player/3.0.1/shaka-player.compiled.js"],
@@ -29,7 +29,7 @@ var EngineVersions = {
     name: "Shaka Player",
     defaultVersion: "3.2.1",
   },
-  dashjs_player: {
+  dashjs: {
     versions: {
       "2.9.3": ["https://cdn.dashjs.org/v2.9.3/dash.all.min.js", "https://cdn.dashjs.org/v2.9.3/dash.mss.min.js"],
       "3.1.1": ["https://cdn.dashjs.org/v3.1.1/dash.all.min.js", "https://cdn.dashjs.org/v3.1.1/dash.mss.min.js"],
@@ -57,15 +57,21 @@ function loadStoredEngine() {
     var engine = EngineVersions[engineId];
     var queryVariable = getQueryVariable("engine_" + engineId);
 
-    if (queryVariable && engine.versions[queryVariable] !== undefined) {
-      window.localStorage["engine_" + engineId] = queryVariable;
-      window.location.href = window.location.search.replace("engine_" + engineId + "=" + queryVariable, "");
-    } else if (window.localStorage["engine_" + engineId] === undefined) {
+    // if engine version is missing, add the default value from dict 'EngineVersions' to the url:
+    if (!queryVariable) {
       window.localStorage["engine_" + engineId] = engine.defaultVersion;
+      window.location.href += "&engine_" + engineId + "=" + engine.defaultVersion;
+    // if engine version is provided and it is the same in Local Storage do nothing:
+    } else if (queryVariable && window.localStorage["engine_" + engineId] === queryVariable) {
+      engine.defaultVersion = queryVariable;
     } else {
-      var version = window.localStorage["engine_" + engineId];
-      if (engine.versions[version] !== undefined) {
-        engine.defaultVersion = window.localStorage["engine_" + engineId];
+      // if engine version is provided but it does not exist in 'EngineVersions' dict, replace it in url to the default value:
+      if (engine.versions[queryVariable] === undefined) {
+        window.localStorage["engine_" + engineId] = engine.defaultVersion;
+        window.location.href = window.location.search.replace("engine_" + engineId + "=" + queryVariable, "engine_" + engineId + "=" + engine.defaultVersion);
+      } else {
+        window.localStorage["engine_" + engineId] = queryVariable;
+        engine.defaultVersion = queryVariable;
       }
     }
     console.log("Engine : " + engine.name + " : " + engine.defaultVersion);
