@@ -17,8 +17,7 @@
  * limitations under the License.
  */
 
-var AllHardwareConfigs = {};
-var DefaultHardware = "default";
+var DefaultProfile = "default";
 
 var DefaultEngines = {
   html5: {
