@@ -25,8 +25,8 @@ var canDecode = function (format) {
   var codec = codecSplit[0];
   switch (codec) {
     case "avc1":
-      if (codec in HardwareConfig.codecs) {
-        var codec_ = HardwareConfig.codecs[codec];
+      if (codec in SelectedProfile.codecs) {
+        var codec_ = SelectedProfile.codecs[codec];
         var supported = codec_.codec.split(".");
         var supportedLevel = parseInt(supported[1], 16);
         var codecLevel = parseInt(codecSplit[1], 16);
@@ -35,8 +35,8 @@ var canDecode = function (format) {
       break;
     case "hvc1":
       codec = "hevc";
-      if (codec in HardwareConfig.codecs) {
-        var codec_ = HardwareConfig.codecs[codec];
+      if (codec in SelectedProfile.codecs) {
+        var codec_ = SelectedProfile.codecs[codec];
         var supported = codec_.codec.split(".");
 
         // this is oversimplified
@@ -47,8 +47,8 @@ var canDecode = function (format) {
       break;
     case "vp09":
       codec = "vp9";
-      if (codec in HardwareConfig.codecs) {
-        var codec_ = HardwareConfig.codecs[codec];
+      if (codec in SelectedProfile.codecs) {
+        var codec_ = SelectedProfile.codecs[codec];
         var supported = codec_.codec.split(".");
 
         var supportedProfile = parseInt(supported[1]);
@@ -63,8 +63,8 @@ var canDecode = function (format) {
       }
       break;
     case "av01":
-      if (codec in HardwareConfig.codecs) {
-        var codec_ = HardwareConfig.codecs[codec];
+      if (codec in SelectedProfile.codecs) {
+        var codec_ = SelectedProfile.codecs[codec];
         var supported = codec_.codec.split(".");
 
         var supportedProfile = parseInt(supported[2]);
@@ -78,18 +78,18 @@ var canDecode = function (format) {
       break;
     case "mp4v":
       codec = "mpeg4part2";
-      if (codec in HardwareConfig.codecs) {
+      if (codec in SelectedProfile.codecs) {
         // @note: needs Level verification
-        var codec_ = HardwareConfig.codecs[codec];
+        var codec_ = SelectedProfile.codecs[codec];
         return codec_;
       }
       break;
     case "mp4a":
       // All audio codecs get bundled under one label.
       // Iterate over them
-      var keys = Object.keys(HardwareConfig.codecs);
-      for (const codecName in HardwareConfig.codecs) {
-        var codec_ = HardwareConfig.codecs[codecName];
+      var keys = Object.keys(SelectedProfile.codecs);
+      for (const codecName in SelectedProfile.codecs) {
+        var codec_ = SelectedProfile.codecs[codecName];
         if (codec_.codec.split(".")[0] == "mp4a") {
           if (codec_.codec == format.codec) {
             return codec_;
@@ -110,8 +110,8 @@ var canDecode = function (format) {
       }
       break;
     default:
-      if (codec in HardwareConfig.codecs) {
-        var codec_ = HardwareConfig.codecs[codec];
+      if (codec in SelectedProfile.codecs) {
+        var codec_ = SelectedProfile.codecs[codec];
         return codec_;
       }
   }
@@ -171,9 +171,9 @@ var FormatSupported = function (engineConfig, config, media) {
 };
 
 var GetEngines = function (container, variant) {
-  var config = HardwareConfig.containers[container][variant];
-  var containerConfig = HardwareConfig.containers[container];
-  var engines = HardwareConfig.engine;
+  var config = SelectedProfile.containers[container][variant];
+  var containerConfig = SelectedProfile.containers[container];
+  var engines = SelectedProfile.engine;
 
   if ("engine" in containerConfig) {
     var currentEngines = engines;
@@ -196,11 +196,13 @@ var GetEngines = function (container, variant) {
 
 var getEngineForMedia = function (media, engineName, callback) {
   // Get the config
-  if (!(media.container in HardwareConfig.containers && media.variant in HardwareConfig.containers[media.container])) {
+  if (
+    !(media.container in SelectedProfile.containers && media.variant in SelectedProfile.containers[media.container])
+  ) {
     console.log("Media " + media.container + " and variant " + media.variant + " unsupported");
     return;
   }
-  var config = HardwareConfig.containers[media.container][media.variant];
+  var config = SelectedProfile.containers[media.container][media.variant];
   var engines = GetEngines(media.container, media.variant);
 
   if (engineName in engines) {
@@ -219,55 +221,55 @@ var getEnginesForMedia = function (media, callback) {
   });
 };
 
-var selectedConfig = parseParam("hardware", null) || window.localStorage["hardware"] || DefaultHardware;
-if (!(selectedConfig in AllHardwareConfigs)) {
+var selectedConfig = parseParam("profile", null) || window.localStorage["profile"] || DefaultProfile;
+if (!(selectedConfig in Profiles)) {
   console.error(
-    "Unsupported hardware: " +
+    "Unsupported profile: " +
       selectedConfig +
       ". Available options: " +
-      Object.keys(AllHardwareConfigs) +
+      Object.keys(Profiles) +
       ". Selecting 'default' configuration."
   );
-  selectedConfig = DefaultHardware;
+  selectedConfig = DefaultProfile;
 }
 
-window.localStorage["hardware"] = selectedConfig;
+window.localStorage["profile"] = selectedConfig;
 window.ConfigString = selectedConfig;
-var HardwareConfig = AllHardwareConfigs[selectedConfig];
+var SelectedProfile = Profiles[selectedConfig];
 
 try {
   if ("device" in window.localStorage) {
-    HardwareConfig = JSON.parse(window.localStorage["device"]);
+    SelectedProfile = JSON.parse(window.localStorage["device"]);
   }
 } catch (e) {
   console.error(e);
 }
 
 // Copy defaults
-if (!("engine" in HardwareConfig)) {
-  HardwareConfig.engine = DefaultEngines;
+if (!("engine" in SelectedProfile)) {
+  SelectedProfile.engine = DefaultEngines;
 }
-if (!("containers" in HardwareConfig)) {
-  HardwareConfig.containers = DefaultContainers;
-  if (window.localStorage["hardware"] != undefined && window.localStorage["hardware"] != "All") {
-    delete HardwareConfig.containers.hls.engine.html5;
+if (!("containers" in SelectedProfile)) {
+  SelectedProfile.containers = DefaultContainers;
+  if (window.localStorage["profile"] != undefined && window.localStorage["profile"] != "All") {
+    delete SelectedProfile.containers.hls.engine.html5;
   }
 }
 
 // Remove codecs from formats that aren't supported on the platform
 
-for (var container in HardwareConfig.containers) {
-  for (var variantName in HardwareConfig.containers[container]) {
-    var variant = HardwareConfig.containers[container][variantName];
+for (var container in SelectedProfile.containers) {
+  for (var variantName in SelectedProfile.containers[container]) {
+    var variant = SelectedProfile.containers[container][variantName];
     ["video", "audio"].forEach((field) => {
       if (field in variant) {
         var codecs = variant[field];
-        variant[field] = variant[field].filter((codec) => codec in HardwareConfig.codecs);
+        variant[field] = variant[field].filter((codec) => codec in SelectedProfile.codecs);
       }
     });
   }
 }
 // Fill in name field for codecs, so we can return data structures
-for (var codec in HardwareConfig.codecs) {
-  HardwareConfig.codecs[codec].name = codec;
+for (var codec in SelectedProfile.codecs) {
+  SelectedProfile.codecs[codec].name = codec;
 }

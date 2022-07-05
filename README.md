@@ -123,7 +123,7 @@ Source files are auto formatted by [prettier](https://prettier.io/), which shoul
 Tests are grouped into test suites, which differ in streaming type (DASH, HLS, HSS, progressive) and player (Shaka Player, dash.js, hls.js, native).
 
 The test list is generated dynamically based on available streams (`mediaStreams.js`), test templates
-(`src/commonTests.js`) and selected hardware configuration (e.g. `src/hardwareConfigDefault.js`).
+(`src/commonTests.js`) and selected profile configuration (e.g. `src/profiles.js`).
 Each test is actually an instantiation of a test template e.g. `DASH-FMP4-AVC1-AAC Playback` and
 `DASH-DYNAMIC Playback` share the same test code (`src/commonTests.js::testPlayback`),
 but use different media stream.
@@ -145,7 +145,7 @@ All interactive elements are navigable via arrow keys and can be selected throug
 
 Test execution can be controlled through URL parameters, e.g. to run `DASH Shaka` tests 1,2,3 on Shaka Player version 2.5.20 use:
 
-    http://MVT_INSTANCE_ADDRESS?test_type=dash-shaka-test&tests=1-3&engine_shaka_player=2.5.20
+    http://MVT_INSTANCE_ADDRESS?test_type=dash-shaka-test&tests=1-3&engine_shaka=2.5.20
 
 Most of the URL parameters can be combined. Here's a full list of supported queries:
 
@@ -170,8 +170,8 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 - `loop=false|true`
 - `stoponfailure=false|true`
 - `disable_log=false|true`
-- `engine_shaka_player=2.5.20|3.0.1|3.2.1` - select Shaka Player version. Please note it will only affect Shaka test suites.
-- `engine_dashjs_player=2.9.3|3.0.1|latest` - select dash.js version. Please note it will only affect dash.js test suites.
+- `engine_shaka=2.5.20|3.0.1|3.2.1` - select Shaka Player version. Please note it will only affect Shaka test suites.
+- `engine_dashjs=2.9.3|3.0.1|latest` - select dash.js version. Please note it will only affect dash.js test suites.
 
 ### JavaScript API
 

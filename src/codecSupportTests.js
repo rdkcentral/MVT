@@ -52,8 +52,8 @@ var CodecsupportTest = function () {
 
   var i = 0;
   var mimeTestedList = [];
-  for (const container_ in HardwareConfig.containers) {
-    var container = HardwareConfig.containers[container_];
+  for (const container_ in SelectedProfile.containers) {
+    var container = SelectedProfile.containers[container_];
 
     for (const variant_ in container) {
       if (variant_ == "engine") {
@@ -76,7 +76,7 @@ var CodecsupportTest = function () {
 
       var codecs = variant.video.concat(variant.audio);
       codecs.forEach((codecName) => {
-        var codec = HardwareConfig.codecs[codecName];
+        var codec = SelectedProfile.codecs[codecName];
         if (codec.can_check === false) {
           return;
         }

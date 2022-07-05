@@ -51,7 +51,7 @@ var FilterTestList = {
 };
 
 function isTestHidden(name) {
-  if (window.localStorage["hardware"] === undefined || window.localStorage["hardware"] == "All") {
+  if (window.localStorage["profile"] === undefined || window.localStorage["profile"] == "All") {
     return false;
   }
   if (name in FilterTestList && FilterTestList[name] == FilterTestEnum.HIDDEN) {
@@ -61,7 +61,7 @@ function isTestHidden(name) {
 }
 
 function isTestOptional(name) {
-  if (window.localStorage["hardware"] === undefined || window.localStorage["hardware"] == "All") {
+  if (window.localStorage["profile"] === undefined || window.localStorage["profile"] == "All") {
     return false;
   }
   if (name in FilterTestList && FilterTestList[name] == FilterTestEnum.OPTIONAL) {
