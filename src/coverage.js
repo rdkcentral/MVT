@@ -84,7 +84,7 @@ var GenerateCoverage = function () {
   var coverage = document.getElementById("coverage");
   coverage.innerHTML =
     "<p>Coverage Report for " +
-    HardwareConfig.hardware +
+    SelectedProfile.profile +
     '</p>\
   <p>This lists how many pieces of test content exist, not if the content pass or fail.</p>\
   <table><tr>\
@@ -100,7 +100,7 @@ var GenerateCoverage = function () {
   </tr></table>\
   Platform:';
   var select = createAndAdd(coverage, "select");
-  Object.keys(AllHardwareConfigs).forEach((key) => {
+  Object.keys(Profiles).forEach((key) => {
     var option = createAndAdd(select, "option");
     option.value = key;
     option.innerText = key;
@@ -108,14 +108,14 @@ var GenerateCoverage = function () {
   });
   select.addEventListener("change", (event) => {
     console.log(event.target.value);
-    window.localStorage["hardware"] = event.target.value;
+    window.localStorage["profile"] = event.target.value;
     location.reload();
   });
 
   var coverage = createAndAdd(coverage, "div");
   coverage.classList.add("coverage");
-  for (const container_ in HardwareConfig.containers) {
-    var container = HardwareConfig.containers[container_];
+  for (const container_ in SelectedProfile.containers) {
+    var container = SelectedProfile.containers[container_];
     var top = createAndAdd(coverage, "div");
     top.appendChild(util.createElement("h1", container_, "focusable", container_));
     var table = util.createElement("table", container_ + "_table", "coverage_table");
