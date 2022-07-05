@@ -32,7 +32,7 @@ Test streams use different audio/video/subtitles codecs and media containers. Fo
 
 ## Source
 
-    git clone git@github.com:stagingrdkm/MVT.git
+    git clone git@github.com:rdkcentral/mvt.git
     ./prepare_submodule.sh
 
 ### Relation to js_mse_eme
