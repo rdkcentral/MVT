@@ -27,7 +27,7 @@
  */
 
 const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
-const addCodec = (profile, name, codec) => {
+const addCodecToProfile = (profile, name, codec) => {
   profile["codecs"][name] = codec;
 };
 
@@ -90,20 +90,20 @@ Profiles.all = {
   note: "Everything enabled",
   codecs: deepCopy(Profiles["default"]["codecs"]),
 };
-addCodec(Profiles.all, "av01", {
+addCodecToProfile(Profiles.all, "av01", {
   codec: "av01.0.13M",
   note: "Main Profile Level 5.1 up to 4096x2176 at 60 fps",
 });
-addCodec(Profiles.all, "vc1", {
+addCodecToProfile(Profiles.all, "vc1", {
   codec: "vc-1",
   can_check: false,
   note: "Advanced Profile up to Level 3, Main Profile up to High Level, Simple Profile up to Medium Level",
 });
-addCodec(Profiles.all, "mpeg4part2", {
+addCodecToProfile(Profiles.all, "mpeg4part2", {
   codec: "mp4v.20.240",
   note: "Simple Profile (SP) and Advanced Simple Profile (ASP) elementary streams (up to HD) minus reversible VLC codecs and minus data partitioning",
 });
-addCodec(Profiles.all, "wma", {
+addCodecToProfile(Profiles.all, "wma", {
   codec: "wma",
   can_check: false,
   note: "WMA was never officially registered, so the codec string is undefined",
