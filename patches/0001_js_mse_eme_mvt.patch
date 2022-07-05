@@ -1,6 +1,6 @@
-From a28ec7f9a6bd8777e13e64d3043729d984c93a1c Mon Sep 17 00:00:00 2001
-From: Maciej Kolanski <maciej.kolanski@consult.red>
-Date: Fri, 22 Apr 2022 13:53:29 +0200
+From 7389c22b4310a1d4c772d08ecedf9de41baa68b5 Mon Sep 17 00:00:00 2001
+From: Lukasz Rutkowski <lukasz.rutkowski@consult.red>
+Date: Tue, 5 Jul 2022 14:36:34 +0200
 Subject: [PATCH] MVT changes
 
 * Load MVT tests instead of the upstream tests
@@ -12,17 +12,19 @@ Subject: [PATCH] MVT changes
 * Add engine (player) selectors
 * Remove some unsupported links
 * Add links to YouTube test suite and Media Coverage
+* Hide player version choices if not needed in selected testsuite
 ---
  harness/compactTestView.js | 33 +++++---------
  harness/constants.js       |  3 +-
  harness/main.js            | 13 +++++-
  harness/test.js            | 93 ++++++++++++++++----------------------
- harness/testView.js        | 32 +++++++------
+ harness/testView.js        | 40 +++++++++-------
  harness/timeout.js         |  9 ++++
- 6 files changed, 91 insertions(+), 92 deletions(-)
+ style.css                  |  3 +-
+ 7 files changed, 98 insertions(+), 96 deletions(-)
 
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
-index 77f7b68..9bcad03 100644
+index 77f7b68..9bc41a7 100644
 --- a/harness/compactTestView.js
 +++ b/harness/compactTestView.js
 @@ -1,6 +1,7 @@
@@ -337,7 +339,7 @@ index b781e31..b20d03d 100644
    }
    return results;
 diff --git a/harness/testView.js b/harness/testView.js
-index c040757..bf5192a 100644
+index c040757..ce476d4 100644
 --- a/harness/testView.js
 +++ b/harness/testView.js
 @@ -1,6 +1,7 @@
@@ -402,28 +404,35 @@ index c040757..bf5192a 100644
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -150,12 +151,17 @@ function TestView(testSuiteVer) {
+@@ -149,14 +150,21 @@ function TestView(testSuiteVer) {
+       switchDiv.lastChild.exec = switchDiv.lastChild.onclick;
      }
      for (var i = 0; i < selectors.length; ++i) {
-       switchDiv.appendChild(document.createTextNode(selectors[i].text));
+-      switchDiv.appendChild(document.createTextNode(selectors[i].text));
 -      var select = document.createElement('select');
-+      var select = document.createElement('span');
-+      select.id = selectors[i].id;
-       for (var j = 0; j < selectors[i].optionTexts.length; ++j) {
+-      for (var j = 0; j < selectors[i].optionTexts.length; ++j) {
 -        select.appendChild(createOption(selectors[i].optionTexts[j],
 -            selectors[i].values[j]));
-+        select.appendChild(createAnchor(selectors[i].optionTexts[j],selectors[i].optionTexts[j]));
-+        select.lastChild.setAttribute('data-href', location.origin + "?test_type=" + harnessConfig.testType + "&engine_" + selectors[i].id + "=" + selectors[i].optionTexts[j]);
-+        select.lastChild.onclick = window.navigate;
-+        if (selectors[i].optionTexts[j] != selectors[i].defaultValue)
-+            select.lastChild.classList.add('focusable');
-+        else
-+            select.lastChild.classList.add('bold');
++      if (harnessConfig.testType.includes(selectors[i].id)) {
++        switchDiv.appendChild(document.createTextNode(selectors[i].text));
++        var select = document.createElement('span');
++        select.id = selectors[i].id;
++        for (var j = 0; j < selectors[i].optionTexts.length; ++j) {
++          select.appendChild(createAnchor(selectors[i].optionTexts[j],selectors[i].optionTexts[j]));
++          select.lastChild.setAttribute('data-href', location.origin + "?test_type=" + harnessConfig.testType + "&engine_" + selectors[i].id + "=" + selectors[i].optionTexts[j]);
++          select.lastChild.onclick = window.navigate;
++          if (selectors[i].optionTexts[j] != selectors[i].defaultValue)
++              select.lastChild.classList.add('focusable');
++          else
++              select.lastChild.classList.add('bold');
++        }
++        switchDiv.appendChild(select);
        }
 -      select.onchange = selectors[i].cb;
-       switchDiv.appendChild(select);
+-      switchDiv.appendChild(select);
      }
  
+     switchDiv.appendChild(
 diff --git a/harness/timeout.js b/harness/timeout.js
 index 7c373c1..b4167ca 100644
 --- a/harness/timeout.js
@@ -453,3 +462,20 @@ index 7c373c1..b4167ca 100644
    this.setInterval = function(func, timeout) {
      var interval = getUniqueItem(intervals);
      interval.func = func;
+diff --git a/style.css b/style.css
+index 79f5cb1..a767191 100644
+--- a/style.css
++++ b/style.css
+@@ -202,7 +202,8 @@ div.container_hidden {
+ }
+ 
+ #controls {
+-  display: inline-block;
++  display: block;
++  margin: 5px 0;
+ }
+ 
+ #login-pop-up {
+-- 
+2.25.1
+
