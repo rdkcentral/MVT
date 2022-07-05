@@ -1,6 +1,6 @@
-From 7389c22b4310a1d4c772d08ecedf9de41baa68b5 Mon Sep 17 00:00:00 2001
+From 9e5b57a8cd862b34f3327748e74ef0a85450964c Mon Sep 17 00:00:00 2001
 From: Lukasz Rutkowski <lukasz.rutkowski@consult.red>
-Date: Tue, 5 Jul 2022 14:36:34 +0200
+Date: Tue, 5 Jul 2022 17:08:55 +0200
 Subject: [PATCH] MVT changes
 
 * Load MVT tests instead of the upstream tests
@@ -18,10 +18,10 @@ Subject: [PATCH] MVT changes
  harness/constants.js       |  3 +-
  harness/main.js            | 13 +++++-
  harness/test.js            | 93 ++++++++++++++++----------------------
- harness/testView.js        | 40 +++++++++-------
+ harness/testView.js        | 39 ++++++++++------
  harness/timeout.js         |  9 ++++
- style.css                  |  3 +-
- 7 files changed, 98 insertions(+), 96 deletions(-)
+ style.css                  |  6 ++-
+ 7 files changed, 101 insertions(+), 95 deletions(-)
 
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 77f7b68..9bc41a7 100644
@@ -339,7 +339,7 @@ index b781e31..b20d03d 100644
    }
    return results;
 diff --git a/harness/testView.js b/harness/testView.js
-index c040757..ce476d4 100644
+index c040757..640ba1b 100644
 --- a/harness/testView.js
 +++ b/harness/testView.js
 @@ -1,6 +1,7 @@
@@ -350,20 +350,7 @@ index c040757..ce476d4 100644
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
-@@ -27,10 +28,11 @@ var createAnchor = function(text, id) {
-   return anchor;
- };
- 
--var createOption = function(text, value) {
-+var createOption = function(text, value, isSelected = false) {
-   var option = document.createElement('option');
-   option.text = text;
-   option.value = value;
-+  isSelected && (option.selected = 'selected');
-   return option;
- };
- 
-@@ -44,18 +46,14 @@ function TestView(testSuiteVer) {
+@@ -44,18 +45,14 @@ function TestView(testSuiteVer) {
    var testSuites = [];
    var links = [];
  
@@ -385,7 +372,7 @@ index c040757..ce476d4 100644
      })
    };
  
-@@ -103,7 +101,7 @@ function TestView(testSuiteVer) {
+@@ -103,7 +100,7 @@ function TestView(testSuiteVer) {
  
    this.generate = function() {
      var heading = '[' + this.testSuiteVer + '] ' +
@@ -394,7 +381,7 @@ index c040757..ce476d4 100644
      try {
        document.title = testSuiteDescriptions[harnessConfig.testType].title;
      } catch (e) {
-@@ -112,6 +110,9 @@ function TestView(testSuiteVer) {
+@@ -112,6 +109,9 @@ function TestView(testSuiteVer) {
      document.body.appendChild(createElement('span', 'title', null, heading));
      document.body.appendChild(createElement('span', 'info', 'h4'));
      document.body.appendChild(createElement('span', 'usage', 'h4'));
@@ -404,7 +391,7 @@ index c040757..ce476d4 100644
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -149,14 +150,21 @@ function TestView(testSuiteVer) {
+@@ -149,14 +149,23 @@ function TestView(testSuiteVer) {
        switchDiv.lastChild.exec = switchDiv.lastChild.onclick;
      }
      for (var i = 0; i < selectors.length; ++i) {
@@ -418,8 +405,10 @@ index c040757..ce476d4 100644
 +        var select = document.createElement('span');
 +        select.id = selectors[i].id;
 +        for (var j = 0; j < selectors[i].optionTexts.length; ++j) {
-+          select.appendChild(createAnchor(selectors[i].optionTexts[j],selectors[i].optionTexts[j]));
-+          select.lastChild.setAttribute('data-href', location.origin + "?test_type=" + harnessConfig.testType + "&engine_" + selectors[i].id + "=" + selectors[i].optionTexts[j]);
++          select.appendChild(createAnchor(selectors[i].optionTexts[j], selectors[i].optionTexts[j]));
++          let url = `${location.origin}?test_type=${harnessConfig.testType}`
++          url += `&engine_${selectors[i].id}=${selectors[i].optionTexts[j]}`
++          select.lastChild.setAttribute('data-href', url);
 +          select.lastChild.onclick = window.navigate;
 +          if (selectors[i].optionTexts[j] != selectors[i].defaultValue)
 +              select.lastChild.classList.add('focusable');
@@ -463,10 +452,20 @@ index 7c373c1..b4167ca 100644
      var interval = getUniqueItem(intervals);
      interval.func = func;
 diff --git a/style.css b/style.css
-index 79f5cb1..a767191 100644
+index 79f5cb1..8fbf2cb 100644
 --- a/style.css
 +++ b/style.css
-@@ -202,7 +202,8 @@ div.container_hidden {
+@@ -23,6 +23,9 @@ body {
+   height: 710px;
+ }
+ 
++.bold {
++  font-weight: bold;
++}
+ 
+ .default-list .cell-category {
+   display: inline-block;
+@@ -202,7 +205,8 @@ div.container_hidden {
  }
  
  #controls {
