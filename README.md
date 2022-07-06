@@ -55,7 +55,7 @@ MVT introduces new tests, integration of MSE players and various media assets.
 
     # Populate |TEST_MATERIALS_SRC| with media assets.
     # Existing assets won't be overridden.
-    # If you want to use you own videos, you need to change URL's in media/media_urls.config,
+    # If you want to use your own videos, you need to change URL's in media/media_urls.config,
     # movies needs to be longer than 2 minutes and can be in any video format.
     # Runs withing running container (mvt-app) and takes ~30 minutes on decent PC.
     ./docker_prepare_assets.sh

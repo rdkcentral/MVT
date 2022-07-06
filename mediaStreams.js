@@ -187,7 +187,7 @@ var MvtMedia = {
       container: "dash",
       variant: "fragmentedmp4",
       name: "DASH-FMP4-MULTIAUDIO",
-      note: "video: BBB, audio en: BBB, audio pl: ToS",
+      note: "video: vid1, audio en: vid1, audio pl: vid2",
       src: "test-materials/dash/fmp4_multiaudio/manifest.mpd",
       video: {
         codec: "avc1.42C00D",
@@ -515,7 +515,7 @@ var MvtMedia = {
       testBase: "4.1.1",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-TOS-MP4-AVC1-AAC-WEBVTT",
+      name: "PROG-MP4-AVC1-AAC-WEBVTT",
       src: "test-materials/progressive/vid2_h264_aac.mp4",
       video: {
         codec: "avc1.42C01E",
@@ -541,7 +541,7 @@ var MvtMedia = {
       testBase: "4.1.1",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-TOS-MKV-AVC1-AAC-WEBVTT",
+      name: "PROG-MKV-AVC1-AAC-WEBVTT",
       src: "test-materials/progressive/vid2_h264_aac.mkv",
       video: {
         codec: "avc1.42C01E",
@@ -567,7 +567,7 @@ var MvtMedia = {
       testBase: "4.1.2",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-AVC1-AC3",
+      name: "PROG-MP4-AVC1-AC3",
       src: "test-materials/progressive/vid1_h264_ac3.mp4",
       video: {
         codec: "avc1.42C01E",
@@ -582,7 +582,7 @@ var MvtMedia = {
       testBase: "4.1.2",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-AVC1-AC3",
+      name: "PROG-MKV-AVC1-AC3",
       src: "test-materials/progressive/vid1_h264_ac3.mkv",
       video: {
         codec: "avc1.42C01E",
@@ -597,7 +597,7 @@ var MvtMedia = {
       testBase: "4.1.3",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-AVC1-EAC3",
+      name: "PROG-MP4-AVC1-EAC3",
       src: "test-materials/progressive/vid1_h264_eac3.mp4",
       video: {
         codec: "avc1.42C01E",
@@ -612,7 +612,7 @@ var MvtMedia = {
       testBase: "4.1.3",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-AVC1-EAC3",
+      name: "PROG-MKV-AVC1-EAC3",
       src: "test-materials/progressive/vid1_h264_eac3.mkv",
       video: {
         codec: "avc1.42C01E",
@@ -627,7 +627,7 @@ var MvtMedia = {
       testBase: "4.1.4",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-AVC1-MP3",
+      name: "PROG-MP4-AVC1-MP3",
       src: "test-materials/progressive/vid1_h264_mp3.mp4",
       video: {
         codec: "avc1.42C01E",
@@ -642,7 +642,7 @@ var MvtMedia = {
       testBase: "4.1.4",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-AVC1-MP3",
+      name: "PROG-MKV-AVC1-MP3",
       src: "test-materials/progressive/vid1_h264_mp3.mkv",
       video: {
         codec: "avc1.42C01E",
@@ -657,7 +657,7 @@ var MvtMedia = {
       testBase: "4.1.5",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-HEVC-AAC",
+      name: "PROG-MP4-HEVC-AAC",
       src: "test-materials/progressive/vid1_hevc_aac.mp4",
       video: {
         codec: "hvc1.1.6.L120.80",
@@ -672,7 +672,7 @@ var MvtMedia = {
       testBase: "4.1.5",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-HEVC-AAC",
+      name: "PROG-MKV-HEVC-AAC",
       src: "test-materials/progressive/vid1_hevc_aac.mkv",
       video: {
         codec: "hvc1.1.6.L120.80",
@@ -687,7 +687,7 @@ var MvtMedia = {
       testBase: "4.1.6",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-MPEG2V-AAC",
+      name: "PROG-MP4-MPEG2V-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mp2",
@@ -702,7 +702,7 @@ var MvtMedia = {
       testBase: "4.1.6",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-MPEG2V-AAC",
+      name: "PROG-MKV-MPEG2V-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mp2",
@@ -717,7 +717,7 @@ var MvtMedia = {
       testBase: "4.1.7",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-VP9-AAC",
+      name: "PROG-MP4-VP9-AAC",
       src: "test-materials/progressive/vid1_vp9_aac.mp4",
       video: {
         codec: "vp09.00.20.08.00.02.02.02.00",
@@ -732,7 +732,7 @@ var MvtMedia = {
       testBase: "4.1.7",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-VP9-AAC",
+      name: "PROG-MKV-VP9-AAC",
       src: "test-materials/progressive/vid1_vp9_aac.mkv",
       video: {
         codec: "vp09.00.20.08.00.02.02.02.00",
@@ -747,7 +747,7 @@ var MvtMedia = {
       testBase: "4.1.8",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-MPEG4PART2-AAC",
+      name: "PROG-MP4-MPEG4PART2-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mpeg4part2",
@@ -762,7 +762,7 @@ var MvtMedia = {
       testBase: "4.1.8",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-MPEG4PART2-AAC",
+      name: "PROG-MKV-MPEG4PART2-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mpeg4part2",
@@ -777,7 +777,7 @@ var MvtMedia = {
       testBase: "4.1.8",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-TOS-MP4-EAC3",
+      name: "PROG-MP4-EAC3",
       src: "test-materials/progressive/vid2_eac3.mp4",
       audio: {
         codec: "mp4a.a6",
@@ -788,7 +788,7 @@ var MvtMedia = {
       testBase: "4.1.8",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-TOS-MKV-EAC3",
+      name: "PROG-MKV-EAC3",
       src: "test-materials/progressive/vid2_eac3.mkv",
       audio: {
         codec: "mp4a.a6",
@@ -799,7 +799,7 @@ var MvtMedia = {
       testBase: "4.1.8",
       container: "progressive",
       variant: "mp4",
-      name: "PROG-BBB-MP4-AVC1",
+      name: "PROG-MP4-AVC1",
       src: "test-materials/progressive/vid2_h264.mp4",
       video: {
         codec: "avc1.42C01E",
@@ -810,7 +810,7 @@ var MvtMedia = {
       testBase: "4.1.8",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-BBB-MKV-AVC1",
+      name: "PROG-MKV-AVC1",
       src: "test-materials/progressive/vid2_h264.mkv",
       video: {
         codec: "avc1.42C01E",
@@ -821,7 +821,7 @@ var MvtMedia = {
       testBase: "4.1.9",
       container: "progressive",
       variant: "mp3",
-      name: "PROG-TOS-MP3-MP3",
+      name: "PROG-MP3-MP3",
       src: "test-materials/progressive/vid2_mp3.mp3",
       audio: {
         codec: "mp4a.69",

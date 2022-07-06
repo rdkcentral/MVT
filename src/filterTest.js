@@ -33,7 +33,7 @@ var FilterTestList = {
   "DASH-WEBM-VP9-OPUS-VTT Subtitles": FilterTestEnum.OPTIONAL, // TODO(ONEM-26034)
   "DASH-CMAF-AVC1-MP3-VTT Subtitles": FilterTestEnum.OPTIONAL, // TODO(ONEM-26032)
   "DASH-FMP4-MULTIAUDIO AudioTracks": FilterTestEnum.OPTIONAL, // TODO(ONEM-26279)
-  "PROG-TOS-MKV-EAC3 Position": FilterTestEnum.OPTIONAL,
+  "PROG-MKV-EAC3 Position": FilterTestEnum.OPTIONAL,
   'audio/mp2t; codecs="mp4a.40.29"(aac)': FilterTestEnum.HIDDEN,
   'audio/mp2t; codecs="mp4a.69"(mp3)': FilterTestEnum.HIDDEN,
   'audio/mp2t; codecs="mp4a.a5"(ac3)': FilterTestEnum.HIDDEN,
