@@ -55,6 +55,8 @@ MVT introduces new tests, integration of MSE players and various media assets.
 
     # Populate |TEST_MATERIALS_SRC| with media assets.
     # Existing assets won't be overridden.
+    # If you want to use you own videos, you need to change URL's in media/media_urls.config,
+    # movies needs to be longer than 2 minutes and can be in any video format.
     # Runs withing running container (mvt-app) and takes ~30 minutes on decent PC.
     ./docker_prepare_assets.sh
 
@@ -154,11 +156,10 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
   - dash-html5-test
   - dash-shaka-test
   - dash-dashjs-test
-  - dash-playready-shaka-test
-  - dash-playready-dashjs-test
   - hls-shaka-test
   - hls-hlsjs-test
   - hss-html5-test
+  - hss-dashjs-test
   - progressive-html5-test
 - `command=run` - test run autostart. Please note it may not work on desktop browser, because they tend to block autoplay before user interaction.
 - `tests=ID[,ID]|ID-ID2` - tests subset selection. Expected values:

@@ -516,7 +516,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-TOS-MP4-AVC1-AAC-WEBVTT",
-      src: "test-materials/progressive/tos_h264_aac.mp4",
+      src: "test-materials/progressive/vid2_h264_aac.mp4",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -542,7 +542,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-TOS-MKV-AVC1-AAC-WEBVTT",
-      src: "test-materials/progressive/tos_h264_aac.mkv",
+      src: "test-materials/progressive/vid2_h264_aac.mkv",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -568,7 +568,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-AVC1-AC3",
-      src: "test-materials/progressive/bbb_h264_ac3.mp4",
+      src: "test-materials/progressive/vid1_h264_ac3.mp4",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -583,7 +583,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-AVC1-AC3",
-      src: "test-materials/progressive/bbb_h264_ac3.mkv",
+      src: "test-materials/progressive/vid1_h264_ac3.mkv",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -598,7 +598,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-AVC1-EAC3",
-      src: "test-materials/progressive/bbb_h264_eac3.mp4",
+      src: "test-materials/progressive/vid1_h264_eac3.mp4",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -613,7 +613,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-AVC1-EAC3",
-      src: "test-materials/progressive/bbb_h264_eac3.mkv",
+      src: "test-materials/progressive/vid1_h264_eac3.mkv",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -628,7 +628,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-AVC1-MP3",
-      src: "test-materials/progressive/bbb_h264_mp3.mp4",
+      src: "test-materials/progressive/vid1_h264_mp3.mp4",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -643,7 +643,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-AVC1-MP3",
-      src: "test-materials/progressive/bbb_h264_mp3.mkv",
+      src: "test-materials/progressive/vid1_h264_mp3.mkv",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -658,7 +658,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-HEVC-AAC",
-      src: "test-materials/progressive/bbb_hevc_aac.mp4",
+      src: "test-materials/progressive/vid1_hevc_aac.mp4",
       video: {
         codec: "hvc1.1.6.L120.80",
         resolution: [1920, 800],
@@ -673,7 +673,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-HEVC-AAC",
-      src: "test-materials/progressive/bbb_hevc_aac.mkv",
+      src: "test-materials/progressive/vid1_hevc_aac.mkv",
       video: {
         codec: "hvc1.1.6.L120.80",
         resolution: [1920, 800],
@@ -688,7 +688,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-MPEG2V-AAC",
-      src: "test-materials/progressive/bbb_mpeg2video_aac.mp4",
+      src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mp2",
         resolution: [1280, 720],
@@ -703,7 +703,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-MPEG2V-AAC",
-      src: "test-materials/progressive/bbb_mpeg2video_aac.mkv",
+      src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mp2",
         resolution: [1280, 720],
@@ -718,7 +718,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-VP9-AAC",
-      src: "test-materials/progressive/bbb_vp9_aac.mp4",
+      src: "test-materials/progressive/vid1_vp9_aac.mp4",
       video: {
         codec: "vp09.00.20.08.00.02.02.02.00",
         resolution: [1280, 720],
@@ -733,7 +733,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-VP9-AAC",
-      src: "test-materials/progressive/bbb_vp9_aac.mkv",
+      src: "test-materials/progressive/vid1_vp9_aac.mkv",
       video: {
         codec: "vp09.00.20.08.00.02.02.02.00",
         resolution: [1280, 720],
@@ -748,7 +748,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-MPEG4PART2-AAC",
-      src: "test-materials/progressive/bbb_mpeg2video_aac.mp4",
+      src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mpeg4part2",
         resolution: [1280, 720],
@@ -763,7 +763,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-MPEG4PART2-AAC",
-      src: "test-materials/progressive/bbb_mpeg2video_aac.mkv",
+      src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mpeg4part2",
         resolution: [1280, 720],
@@ -778,7 +778,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-TOS-MP4-EAC3",
-      src: "test-materials/progressive/tos_eac3.mp4",
+      src: "test-materials/progressive/vid2_eac3.mp4",
       audio: {
         codec: "mp4a.a6",
         channels: "2",
@@ -789,7 +789,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-TOS-MKV-EAC3",
-      src: "test-materials/progressive/tos_eac3.mkv",
+      src: "test-materials/progressive/vid2_eac3.mkv",
       audio: {
         codec: "mp4a.a6",
         channels: "2",
@@ -800,7 +800,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp4",
       name: "PROG-BBB-MP4-AVC1",
-      src: "test-materials/progressive/tos_h264.mp4",
+      src: "test-materials/progressive/vid2_h264.mp4",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -811,7 +811,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mkv",
       name: "PROG-BBB-MKV-AVC1",
-      src: "test-materials/progressive/tos_h264.mkv",
+      src: "test-materials/progressive/vid2_h264.mkv",
       video: {
         codec: "avc1.42C01E",
         resolution: [1280, 720],
@@ -822,7 +822,7 @@ var MvtMedia = {
       container: "progressive",
       variant: "mp3",
       name: "PROG-TOS-MP3-MP3",
-      src: "test-materials/progressive/tos_mp3.mp3",
+      src: "test-materials/progressive/vid2_mp3.mp3",
       audio: {
         codec: "mp4a.69",
         channels: "2",

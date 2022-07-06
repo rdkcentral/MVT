@@ -67,15 +67,15 @@ function make_hls {
   fi
 }
 
-make_hls $progressive_path/bbb_h264_aac.mp4 mpegts libx264 copy $hls_path/mpegts_h264_aac
-make_hls $progressive_path/bbb_h264_aac.mp4 fmp4 libx264 eac3 $hls_path/fmp4_h264_eac3
-make_hls $progressive_path/tos_h264_aac.mp4 fmp4 hevc ac3 $hls_path/fmp4_hevc_ac3
-make_fmp4_audio_hls $progressive_path/tos_h264_aac.mp4 mp3 $hls_path/fmp4_mp3
+make_hls $progressive_path/vid1_h264_aac.mp4 mpegts libx264 copy $hls_path/mpegts_h264_aac
+make_hls $progressive_path/vid1_h264_aac.mp4 fmp4 libx264 eac3 $hls_path/fmp4_h264_eac3
+make_hls $progressive_path/vid2_h264_aac.mp4 fmp4 hevc ac3 $hls_path/fmp4_hevc_ac3
+make_fmp4_audio_hls $progressive_path/vid2_h264_aac.mp4 mp3 $hls_path/fmp4_mp3
 
 # Two audio tracks with different languages
 if [ ! -f $hls_path/fmp4_multiaudio/main.m3u8 ]; then
   mkdir -p $hls_path/fmp4_multiaudio
-  ffmpeg -i $progressive_path/bbb_h264_aac.mp4 -i $progressive_path/tos_h264_aac.mp4 \
+  ffmpeg -i $progressive_path/vid1_h264_aac.mp4 -i $progressive_path/vid2_h264_aac.mp4 \
     -map 0:v:0 -map 0:a:0 -map 1:a:0 \
     -b:v:0 1000k -c:v:1 copy -filter:v:1 "scale=640:-1" -g 96 -keyint_min 24 \
     -b:a:0 192k -c:a:0 copy -metadata:s:a:0 language=en \
@@ -90,7 +90,7 @@ fi
 # WebVTT subtitles
 if [ ! -f $hls_path/fmp4_h264_aac_vtt/main.m3u8 ]; then
   mkdir -p $hls_path/fmp4_h264_aac_vtt
-  ffmpeg -i $progressive_path/tos_h264_aac.mp4 \
+  ffmpeg -i $progressive_path/vid2_h264_aac.mp4 \
     -i $test_materials_path/subtitles/countdown-en.vtt \
     -map 0:v:0 -map 0:a:0 -map 1:s:0 \
     -b:v:0 1000k -c:v:1 copy -filter:v:1 "scale=640:-1" \
