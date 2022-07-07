@@ -81,34 +81,34 @@ function make_webm_dash {
   fi
 }
 
-make_fmp4_dash $progressive_path/bbb_h264_aac.mp4 libx264 aac $dash_path/fmp4_h264_aac
-make_fmp4_dash $progressive_path/bbb_h264_aac.mp4 libx264 ac3 $dash_path/fmp4_h264_ac3
-make_fmp4_dash $progressive_path/bbb_h264_aac.mp4 libx265 eac3 $dash_path/fmp4_hevc_eac3
+make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 aac $dash_path/fmp4_h264_aac
+make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 ac3 $dash_path/fmp4_h264_ac3
+make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx265 eac3 $dash_path/fmp4_hevc_eac3
 
 # fMP4 with single MP3 track (audio only)
 if [ ! -f $dash_path/fmp4_mp3/manifest.mpd ]; then
   mkdir -p $dash_path/fmp4_mp3
-  ffmpeg -i $progressive_path/tos_h264_aac.mp4 \
+  ffmpeg -i $progressive_path/vid2_h264_aac.mp4 \
     -vn -c:a mp3 -streaming 1 -use_timeline 1 -seg_duration 5 \
     -dash_segment_type mp4 -f dash $dash_path/fmp4_mp3/manifest.mpd
 fi
 
 # MPEG-2 video codec with codec name changed from mp4v.61 to mpeg in the manifest.
 if [ ! -f $dash_path/fmp4_mpeg2_mp3/manifest.mpd ]; then
-  make_fmp4_dash $progressive_path/bbb_h264_aac.mp4 mpeg2video mp3 $dash_path/fmp4_mpeg2_mp3 "-s:v:0 640x360 -b:v:0 2500k"
+  make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 mpeg2video mp3 $dash_path/fmp4_mpeg2_mp3 "-s:v:0 640x360 -b:v:0 2500k"
   sed -i 's/codecs="mp4v.61"/codecs="mpeg"/g' $dash_path/fmp4_mpeg2_mp3/manifest.mpd
 fi
 
 # Multiple periods (20s long period multiplied 6 times)
 if [ ! -f $dash_path/multiperiod/manifest.mpd ]; then
-  make_fmp4_dash $progressive_path/bbb_h264_aac.mp4 libx264 aac $dash_path/multiperiod "-t 20"
+  make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 aac $dash_path/multiperiod "-t 20"
   mv $dash_path/multiperiod/manifest.mpd $dash_path/multiperiod/single_period.mpd
   python3 $media_path/mpd_processor.py multiperiod $dash_path/multiperiod/single_period.mpd 20 6 $dash_path/multiperiod/manifest.mpd
 fi
 
 if [ ! -f $dash_path/fmp4_multiaudio/manifest.mpd ]; then
   mkdir -p $dash_path/fmp4_multiaudio
-  ffmpeg -i $progressive_path/bbb_h264_aac.mp4 -i $progressive_path/tos_h264_aac.mp4 \
+  ffmpeg -i $progressive_path/vid1_h264_aac.mp4 -i $progressive_path/vid2_h264_aac.mp4 \
     -map 0:v:0 -map 0:a:0 -map 1:a:0 \
     -b:v:0 1000k -c:v:1 h264 -filter:v:1 "scale=640:-1"  -g 96 -keyint_min 24 \
     -b:a:0 192k -c:a:0 aac -metadata:s:a:0 language=en \
@@ -120,13 +120,13 @@ fi
 
 # WEBM with VTT subtitles
 if [ ! -f $dash_path/webm_vp9_opus/manifest_vtt.mpd ]; then
-  make_webm_dash $progressive_path/tos_h264_aac.mp4 $dash_path/webm_vp9_opus
+  make_webm_dash $progressive_path/vid2_h264_aac.mp4 $dash_path/webm_vp9_opus
   python3 $media_path/mpd_processor.py add_subtitles $dash_path/webm_vp9_opus/manifest.mpd vtt $dash_path/webm_vp9_opus/manifest_vtt.mpd
 fi
 
 # fMP4 with TTML subtitles
 if [ ! -f $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd ]; then
-  make_fmp4_dash $progressive_path/tos_h264_aac.mp4 libx264 aac $dash_path/fmp4_h264_aac_ttml
+  make_fmp4_dash $progressive_path/vid2_h264_aac.mp4 libx264 aac $dash_path/fmp4_h264_aac_ttml
   python3 $media_path/mpd_processor.py add_subtitles $dash_path/fmp4_h264_aac_ttml/manifest.mpd ttml \
     $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd
 fi

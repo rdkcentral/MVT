@@ -19,6 +19,8 @@
 
 set -e
 
+source $MVT_PATH/media/media_urls.config
+
 export root_dir="$(dirname $(dirname "$(readlink -f "$0")"))"
 export test_materials_path=$root_dir/test-materials
 export media_path=$root_dir/media
@@ -37,7 +39,7 @@ function download_progressive_stream {
   local tmp_stream="${progressive_path}/.tmp_stream"
   if [ ! -f $target_filename ]; then
     echo "Downloading $1 into $target_filename"
-    wget $url -O $tmp_stream
+    wget $url --no-check-certificate -O $tmp_stream
     ffmpeg -ss 00:00:00.000 -i $tmp_stream -t 120 \
       -vcodec h264 -vf scale=1280:720,fps=24 -movflags faststart \
       -acodec aac -ac 2 \
@@ -51,8 +53,8 @@ function download_progressive_stream {
 
 mkdir -p $progressive_path
 
-download_progressive_stream "https://mirrors.dotsrc.org/blender/blender-demo/movies/BBB/bbb_sunflower_1080p_30fps_normal.mp4" "bbb"
-download_progressive_stream "http://ftp.nluug.nl/pub/graphics/blender/demo/movies/ToS/ToS-4k-1920.mov" "tos"
+download_progressive_stream $url_video1 "vid1"
+download_progressive_stream $url_video2 "vid2"
 
 # Prepare subtitles
 mkdir -p $test_materials_path/subtitles
