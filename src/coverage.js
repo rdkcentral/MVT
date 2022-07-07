@@ -102,6 +102,7 @@ var GenerateCoverage = function () {
   coverage.appendChild(profilesSpan);
   Object.keys(Profiles).forEach((profileId) => {
     let span = util.createElement("span", profileId, "rightmargin20", profileId);
+    span.setAttribute('tabindex', '0');
     if (SelectedProfile === Profiles[profileId]) span.classList.add("bold");
     else {
       span.classList.add("focusable");
