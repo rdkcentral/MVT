@@ -46,38 +46,38 @@ function convert_video_codec {
 	fi
 }
 
-convert_container $progressive_path/bbb_h264_aac.mp4 $progressive_path/bbb_h264_aac.mkv
+convert_container $progressive_path/vid1_h264_aac.mp4 $progressive_path/vid1_h264_aac.mkv
 
 # create alternative audio codec versions
 codecs="ac3 eac3 mp3"
 for codec in $codecs; do
-	convert_audio_codec $progressive_path/bbb_h264_aac.mp4 "$progressive_path/bbb_h264_${codec}.mp4" $codec
-	convert_audio_codec $progressive_path/bbb_h264_aac.mkv "$progressive_path/bbb_h264_${codec}.mkv" $codec
+	convert_audio_codec $progressive_path/vid1_h264_aac.mp4 "$progressive_path/vid1_h264_${codec}.mp4" $codec
+	convert_audio_codec $progressive_path/vid1_h264_aac.mkv "$progressive_path/vid1_h264_${codec}.mkv" $codec
 done
 
 # create alternative video codec versions
 codecs="mpeg2video vp9 mpeg4 hevc"
 for codec in $codecs; do
-	convert_video_codec $progressive_path/bbb_h264_aac.mp4 "$progressive_path/bbb_${codec}_aac.mp4" $codec
-	convert_video_codec $progressive_path/bbb_h264_aac.mkv "$progressive_path/bbb_${codec}_aac.mkv" $codec
+	convert_video_codec $progressive_path/vid1_h264_aac.mp4 "$progressive_path/vid1_${codec}_aac.mp4" $codec
+	convert_video_codec $progressive_path/vid1_h264_aac.mkv "$progressive_path/vid1_${codec}_aac.mkv" $codec
 done
 
 # For subtitles test
-convert_container $progressive_path/tos_h264_aac.mp4 $progressive_path/tos_h264_aac.mkv
+convert_container $progressive_path/vid2_h264_aac.mp4 $progressive_path/vid2_h264_aac.mkv
 
 # audio only
-if [ ! -f "$progressive_path/tos_eac3.mp4" ]; then
-	ffmpeg -y -i $progressive_path/tos_h264_aac.mp4 -acodec "eac3" -movflags faststart -vn "$progressive_path/tos_eac3.mp4"
+if [ ! -f "$progressive_path/vid2_eac3.mp4" ]; then
+	ffmpeg -y -i $progressive_path/vid2_h264_aac.mp4 -acodec "eac3" -movflags faststart -vn "$progressive_path/vid2_eac3.mp4"
 fi
-convert_container $progressive_path/tos_eac3.mp4 "$progressive_path/tos_eac3.mkv"
+convert_container $progressive_path/vid2_eac3.mp4 "$progressive_path/vid2_eac3.mkv"
 
 # video only
-if [ ! -f "$progressive_path/tos_h264.mp4" ]; then
-	ffmpeg -y -i $progressive_path/tos_h264_aac.mp4 -an -vcodec copy "$progressive_path/tos_h264.mp4"
+if [ ! -f "$progressive_path/vid2_h264.mp4" ]; then
+	ffmpeg -y -i $progressive_path/vid2_h264_aac.mp4 -an -vcodec copy "$progressive_path/vid2_h264.mp4"
 fi
-convert_container $progressive_path/tos_h264.mp4 $progressive_path/tos_h264.mkv
+convert_container $progressive_path/vid2_h264.mp4 $progressive_path/vid2_h264.mkv
 
 # MP3 container
-if [ ! -f "$progressive_path/tos_mp3.mp3" ]; then
-	ffmpeg -y -i $progressive_path/tos_h264_aac.mp4 -acodec mp3 -vn "$progressive_path/tos_mp3.mp3"
+if [ ! -f "$progressive_path/vid2_mp3.mp3" ]; then
+	ffmpeg -y -i $progressive_path/vid2_h264_aac.mp4 -acodec mp3 -vn "$progressive_path/vid2_mp3.mp3"
 fi
