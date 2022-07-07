@@ -19,6 +19,16 @@
 
 "use strict";
 
+/*
+ * Implementation of |Codec Support Tests| suite.
+ * Test uses |video.canPlayType| and |MediaSource.isTypeSupported| standard JS APIs to verify if browser *declares*
+ * support of a given codec. Please note that these functions do not verify actual playback, which may, or may not
+ * work regardless of the checks outcome, but in principle, browser's response should match its playback capabilities.
+ *
+ * The test registration in js_mse_eme's framework is a bit tricky. |CodecsupportTest| is a global function, which will
+ * be called by the |js_mse_eme/harness/main.js:loadTests| during page loading. The |loadTests| gets the test function
+ * name from test suite identifier (codecsupport-test), so they may not be changed separately.
+ */
 var CodecsupportTest = function () {
   var tests = {};
   var info = "Default Timeout: " + TestBase.timeout + "ms";
@@ -95,9 +105,11 @@ var CodecsupportTest = function () {
   return { tests: finalizeTests(tests), info: info, fields: fields, viewType: "default" };
 };
 
-try {
-  exports.getTest = CodecsupportTest;
-} catch (e) {
-  // do nothing, this function is not supposed to work for browser, but it's for
-  // Node js to generate json file instead.
-}
+window.testSuiteDescriptions["codecsupport-test"] = {
+  name: "Codec Support Tests",
+  title: "Codec Support Tests",
+  heading: "Codec Support Tests",
+};
+
+window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codecsupport-test";
+window.testSuiteVersions[testVersion].testSuites.push("codecsupport-test");

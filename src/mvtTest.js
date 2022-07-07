@@ -35,7 +35,7 @@ function getTestStatus(test) {
   else return "skipped";
 }
 
-window.getMvtTestResults = function (testStartId, testEndId) {
+function getMvtTestResults(testStartId, testEndId) {
   testStartId = testStartId || 0;
   testEndId = testEndId || window.globalRunner.testList.length;
 
@@ -64,23 +64,15 @@ window.getMvtTestResults = function (testStartId, testEndId) {
     }
   }
   return results;
-};
+}
 
-window.testSuiteDescriptions = {
-  "codecsupport-test": {
-    name: "Codec Support Tests",
-    title: "Codec Support Tests",
-    heading: "Codec Support Tests",
-  },
-};
+window.testSuiteDescriptions = {};
 window.testSuiteVersions = {
   [testVersion]: {
     testSuites: [],
     config: {
-      defaultTestSuite: "codecsupport-test",
       enablewebm: true,
       controlMediaFormatSelection: false,
     },
   },
 };
-window.testSuiteVersions[testVersion].testSuites.push("codecsupport-test");
