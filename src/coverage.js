@@ -84,7 +84,7 @@ var GenerateCoverage = function () {
   var coverage = document.getElementById("coverage");
   coverage.innerHTML =
     "<p>Coverage Report for " +
-    SelectedProfile.profile +
+    SelectedProfile.note +
     '</p>\
   <p>This lists how many pieces of test content exist, not if the content pass or fail.</p>\
   <table><tr>\
@@ -97,19 +97,21 @@ var GenerateCoverage = function () {
   <td style="background-color:' +
     someContentColor +
     '">Supported and number of content in Test Suite</td>\
-  </tr></table>\
-  Platform:';
-  var select = createAndAdd(coverage, "select");
-  Object.keys(Profiles).forEach((key) => {
-    var option = createAndAdd(select, "option");
-    option.value = key;
-    option.innerText = key;
-    option.selected = key == selectedConfig;
-  });
-  select.addEventListener("change", (event) => {
-    console.log(event.target.value);
-    window.localStorage["profile"] = event.target.value;
-    location.reload();
+  </tr></table>';
+  let profilesSpan = util.createElement("span", "profilesSpan", "rightmargin20", "Profile: ");
+  coverage.appendChild(profilesSpan);
+  Object.keys(Profiles).forEach((profileId) => {
+    let span = util.createElement("span", profileId, "rightmargin20", profileId);
+    if (SelectedProfile === Profiles[profileId]) span.classList.add("bold");
+    else {
+      span.classList.add("focusable");
+      let queryParams = new URLSearchParams(window.location.search);
+      queryParams.set("profile", profileId);
+      let url = `${location.origin}${location.pathname}?` + queryParams.toString();
+      span.setAttribute("data-href", url);
+      span.onclick = window.navigate;
+    }
+    profilesSpan.appendChild(span);
   });
 
   var coverage = createAndAdd(coverage, "div");
