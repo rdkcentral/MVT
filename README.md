@@ -176,7 +176,7 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 
 ### JavaScript API
 
-`getTestResults()` is a globally available JavaScript function, which can be run from console or via WebDriver to gather the results.
+`getMvtTestResults()` is a globally available JavaScript function, which can be run from console or via WebDriver to gather the results.
 It produces a JSON-like object, which should be easy to read by any automated test runner. Sample output:
 
 ```
@@ -209,6 +209,8 @@ It produces a JSON-like object, which should be easy to read by any automated te
     "ver": "1.0"
 }
 ```
+Please note there is also the original `getTestResults()` function provided by the `js_mse_eme`.
+It is still supported, but it uses different output format and does not include execution logs.
 
 ### Coverage
 
@@ -271,7 +273,7 @@ In example, to execute `DASH shaka` test suite the test runner should:
 
    command evaluates to true.
 
-4. Fetch test results through `WebDriver` with `return getTestResults()`
+4. Fetch test results through `WebDriver` with `return getMvtTestResults()`
 5. Parse JSON test results to adjust it for the format expected by CI system.
 
 Same procedure can be repeated for each test suite in order to make fully automated MVT test run.
