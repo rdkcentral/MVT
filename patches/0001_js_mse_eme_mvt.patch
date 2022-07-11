@@ -1,7 +1,7 @@
-From 2eb2e57c63fdf02d905425c8639dd507659abe92 Mon Sep 17 00:00:00 2001
+From 3a680d834af901766c20a80c5cc3361536a7b63e Mon Sep 17 00:00:00 2001
 From: Maciej Kolanski <maciej.kolanski@consult.red>
-Date: Fri, 8 Jul 2022 12:07:08 +0200
-Subject: [PATCH] [PATCH] MVT changes
+Date: Mon, 11 Jul 2022 12:54:50 +0200
+Subject: [PATCH] MVT changes
 
 * Load MVT tests instead of the upstream tests
 * Add execution logs to test results
@@ -12,14 +12,14 @@ Subject: [PATCH] [PATCH] MVT changes
 * Remove some unsupported links
 * Add links to YouTube test suite and Media Coverage
 ---
- harness/compactTestView.js | 33 +++++++++---------------
+ harness/compactTestView.js | 33 +++++++++++------------------
  harness/constants.js       |  3 ++-
- harness/main.js            | 13 ++++++++--
- harness/test.js            | 53 ++++++++++----------------------------
- harness/testView.js        | 39 +++++++++++++++++-----------
- harness/timeout.js         |  9 +++++++
- style.css                  |  6 ++++-
- 7 files changed, 76 insertions(+), 80 deletions(-)
+ harness/main.js            | 13 ++++++++++--
+ harness/test.js            | 43 ++++++++++++--------------------------
+ harness/testView.js        | 39 +++++++++++++++++++++-------------
+ harness/timeout.js         |  9 ++++++++
+ style.css                  |  6 +++++-
+ 7 files changed, 76 insertions(+), 70 deletions(-)
 
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 77f7b68..9bc41a7 100644
@@ -155,7 +155,7 @@ index c722460..21c0512 100644
    if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
      alert('Cannot find test type ' + harnessConfig.testType);
 diff --git a/harness/test.js b/harness/test.js
-index b781e31..cc4ea4f 100644
+index b781e31..a0de08b 100644
 --- a/harness/test.js
 +++ b/harness/test.js
 @@ -1,6 +1,7 @@
@@ -269,23 +269,6 @@ index b781e31..cc4ea4f 100644
    this.updateStatus();
  
    this.timeouts.clearAll();
-@@ -566,16 +549,6 @@ window.getTestResults = function(testStartId, testEndId) {
-     fail: {}
-   };
- 
--  for (var r in results) {
--    results[r][harnessConfig.testSuite] = {};
--    results[r][harnessConfig.testSuite][harnessConfig.testType] = {};
--  }
--
--  var passResults =
--      results.pass[harnessConfig.testSuite][harnessConfig.testType];
--  var failResults =
--      results.fail[harnessConfig.testSuite][harnessConfig.testType];
--
-   for (var i = testStartId; i < testEndId; ++i) {
-     if (window.globalRunner.testList[i]) {
-       var test = window.globalRunner.testList[i];
 diff --git a/harness/testView.js b/harness/testView.js
 index c040757..640ba1b 100644
 --- a/harness/testView.js
