@@ -209,6 +209,7 @@ It produces a JSON-like object, which should be easy to read by any automated te
     "ver": "1.0"
 }
 ```
+
 Please note there is also the original `getTestResults()` function provided by the `js_mse_eme`.
 It is still supported, but it uses different output format and does not include execution logs.
 
