@@ -216,6 +216,7 @@ class DashjsEngine extends Engine {
       video.style.position = "absolute";
       video.parentElement.appendChild(parentDiv);
       this.dashjsPlayer.attachTTMLRenderingDiv(subtitleDiv);
+      this.dashjsPlayer.setInitialMediaSettingsFor("text", { lang: "en", role: "subtitles" });
     };
     test.prototype.superTeardown = test.prototype.teardown;
     test.prototype.teardown = function (testSuiteVer, cb) {
@@ -252,9 +253,10 @@ class DashjsEngine extends Engine {
         this.log("No 'fragmentedText' tracks found, fall back to 'text' tracks");
         tracks = this.dashjsPlayer.getTracksFor("text");
       }
-      const track = tracks.find((track) => track.lang == language);
-      runner.assert(track, "Subtitle language " + language + " not found");
-      this.dashjsPlayer.setCurrentTrack(track);
+      const trackId = tracks.findIndex((track) => track.lang == language);
+      runner.assert(trackId != -1, "Subtitle language " + language + " not found");
+      this.log("Selecting text track " + trackId);
+      this.dashjsPlayer.setTextTrack(trackId);
       hookupSubtitleCue(video, content, callback);
       return tracks.map((track) => track.lang);
     };
