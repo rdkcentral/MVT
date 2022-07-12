@@ -34,7 +34,7 @@ function extractSubtitleCue(content, callback) {
       var subtitlesDiv = document.getElementById("subtitles");
       var elements = subtitlesDiv.getElementsByTagName("div");
       for (var i = 0; i < elements.length; i++) {
-        callback(elements[i].textContent);
+        callback(elements[i].innerText);
       }
     } else {
       for (var i = 0; i < cues.length; i++) {
