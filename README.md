@@ -125,9 +125,9 @@ Source files are auto formatted by [prettier](https://prettier.io/), which shoul
 Tests are grouped into test suites, which differ in streaming type (DASH, HLS, HSS, progressive) and player (Shaka Player, dash.js, hls.js, native).
 
 The test list is generated dynamically based on available streams (`mediaStreams.js`), test templates
-(`src/commonTests.js`) and selected profile configuration (e.g. `src/profiles.js`).
+(`src/mediaTests.js`) and selected profile configuration (e.g. `src/profiles.js`).
 Each test is actually an instantiation of a test template e.g. `DASH-FMP4-AVC1-AAC Playback` and
-`DASH-DYNAMIC Playback` share the same test code (`src/commonTests.js::testPlayback`),
+`DASH-DYNAMIC Playback` share the same test code (`src/mediaTests.js::testPlayback`),
 but use different media stream.
 
 There are six media test templates:
