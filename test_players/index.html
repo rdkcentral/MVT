@@ -2,31 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css" type="text/css" />
-  
   <script src="../js_mse_eme/harness/focusManager.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mux.js/5.10.0/mux.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="players.js"></script>
-  
-  <title>anyplayer</title>
+  <title>test players</title>
 </head>
 <body>
 
-  <p>Test 'any' player here... ;) <span style="margin-left: 20px; color: #316d24">// dashjs, shaka, hlsjs</span></p>
+  <div style="width: 800px; text-align: left; margin: 0 auto;">
+    <p>Test 'any' player and stream here... ;) <span style="margin-left: 20px; color: #316d24">// dashjs, shaka, hlsjs</span></p>
+
+    <div id="players_list"></div>
+  </div>
+
+  <video id="video" controls="true" autoplay="true"></video>
   <br><br>
 
-  <div id="players_list"></div>
-
-  <video id="video" width="640" controls="true" autoplay="true"></video>
-  <br><br>
-  
-  <button type="button" onclick="initDash()">run dash</button>
-  <button type="button" onclick="initShaka()">run shaka</button>
-  
   <script src="load_engine.js"></script>
 
 </body>

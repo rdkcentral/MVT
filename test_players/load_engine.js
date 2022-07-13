@@ -1,16 +1,16 @@
 function update_player(player, version) {
-  //   let script = document.createElement("script");
-  let url = "";
-  version = player == "dash" ? `v${version}` : version;
-  if (version.includes("latest")) {
-    url = `${Players[player]["url_pref"]}/latest/${Players[player]["url_suff"]}`;
+  if (player in Players) {
+    let script_url = "";
+    version = player == "dashjs" ? `v${version}` : version;
+    if (version.includes("latest")) {
+      script_url = `${Players[player]["url_pref"]}/latest/${Players[player]["url_suff"]}`;
+    } else {
+      script_url = `${Players[player]["url_pref"]}/${version}/${Players[player]["url_suff"]}`;
+    }
+    addScript(script_url, function () {});
   } else {
-    url = `${Players[player]["url_pref"]}/${version}/${Players[player]["url_suff"]}`;
+    console.error(`Player '${player_type}' is not available.`);
   }
-  //   script.async = script.defer = true;
-  //   script.onload = callback;
-  //   document.head.appendChild(script);
-  addScript(url, function () {});
 }
 
 function addScript(src, callback) {
@@ -19,15 +19,14 @@ function addScript(src, callback) {
   s.src = src;
   s.onload = callback;
   head.appendChild(s);
-  //   s.addEventListener('load', () => {
-  //     initApp()
-  //   })
 }
 
 var player_type = getQueryVariable("player");
 var player_ver = getQueryVariable("player_ver");
+var media_url = getQueryVariable("url");
 
-const manifestUri = "https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd";
+// var url = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
+// const manifestUri = "https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd";
 
 function initShaka() {
   if (!shaka.polyfill.installed) {
@@ -43,8 +42,7 @@ async function initShakaPlayer() {
   window.player = player;
   player.addEventListener("error", onErrorEvent);
   try {
-    await player.load(manifestUri);
-    console.log("The video has now been loaded!");
+    await player.load(media_url);
   } catch (e) {
     onError(e);
   }
@@ -58,15 +56,12 @@ function onError(error) {
   console.error("Error code", error.code, "object", error);
 }
 
-update_player(player_type, player_ver);
-
 function initDash() {
-  var url = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
   var player = dashjs.MediaPlayer().create();
   var video = document.querySelector("video");
-  player.initialize(); /* initialize the MediaPlayer instance */
-  player.attachView(video); /* tell the player which videoElement it should use */
-  player.attachSource(url); /* provide the manifest source */
+  player.initialize();
+  player.attachView(video);
+  player.attachSource(media_url);
 }
 
 function getQueryVariable(variable) {
@@ -82,17 +77,29 @@ function getQueryVariable(variable) {
 }
 
 div_player = document.getElementById("players_list");
-// sessionStorage.setItem("player_ver", player_ver);
+let current_conf = document.createElement("div");
+current_conf.innerHTML = `Current player: <span style="color: #f60;">${player_type}, ver: ${player_ver}</span><br>`;
+current_conf.innerHTML += `Stream URL: <input id="url_input" style="width: 600px;" value="${media_url}"></input> SET`;
+current_conf.style = "margin: 20px 0;";
+div_player.appendChild(current_conf);
+
 for (var _player in Players) {
   var div = document.createElement("div");
   div.innerHTML = `${_player}: `;
   for (var ver in Players[_player]["versions"]) {
-    console.log(Players[_player]["versions"][ver]);
-    let a = document.createElement("button");
-    a.onclick = update_player;
-    a.className = "ver";
-    a.innerHTML = Players[_player]["versions"][ver];
-    div.appendChild(a);
+    var same_ver = Players[_player]["versions"][ver] == player_ver;
+
+    if ((!same_ver && _player == player_type) || player_type != _player) {
+      var ver_link = document.createElement("a");
+      ver_link.href = `${location.origin}${location.pathname}?player=${_player}&player_ver=${Players[_player]["versions"][ver]}&url=${media_url}`;
+      ver_link.className = "ver";
+      ver_link.innerHTML = Players[_player]["versions"][ver];
+    } else {
+      var ver_link = document.createElement("span");
+      ver_link.className = "ver";
+      ver_link.innerHTML = Players[_player]["versions"][ver];
+    }
+    div.appendChild(ver_link);
   }
   div_player.appendChild(div);
 }
@@ -111,35 +118,18 @@ var createAnchor = function (text, id) {
   return anchor;
 };
 
-// let url = `${location.origin}/test_players/?player_ver=3.2.1&player=shaka`
-// div_player.appendChild(createAnchor("load shaka"));
-// div_player.lastChild.setAttribute('data-href', url);
-// div_player.lastChild.onclick = window.navigate;
-// div_player.lastChild.classList.add('focusable');
-
-// var prep = createElement('a', 'prep', 'focusable', 'shakalaka');
-// prep.href = url
-// prep.setAttribute('tabindex', '0');
-// div_player.appendChild(prep);
-
-// window.addEventListener('load', function() {
-//     var focusManager = new FocusManager;
-//     var elements = document.getElementsByClassName('focusable');
-//     elements[0].focus();
-//     for (var i = 0; i < elements.length; ++i)
-//       focusManager.add(elements[i]);
-//   });
-
-async function demo(player_type) {
-  if (player_type == "shaka") {
-    await new Promise((r) => setTimeout(r, 1000));
-    console.log("done");
-    initShaka();
+async function init_player(player_type) {
+  if (player_type && player_ver && media_url) {
+    update_player(player_type, player_ver);
+    await new Promise((r) => setTimeout(r, 2000));
+    if (player_type == "shaka") {
+      initShaka();
+    } else if (player_type == "dashjs") {
+      initDash();
+    }
   } else {
-    await new Promise((r) => setTimeout(r, 1000));
-    console.log("done");
-    initDash();
+    console.error("Missing some of the parameters: 'player', 'player_ver' or 'url'.");
   }
 }
 
-demo(player_type);
+init_player(player_type);

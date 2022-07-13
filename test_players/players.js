@@ -1,6 +1,6 @@
 Players = {
-  dash: {
-    versions: ["2.9.3", "3.1.1", "3.2.2", "4.0.0", "4.2.0", "4.3.0", "latest"],
+  dashjs: {
+    versions: ["2.9.3", "3.1.1", "3.2.1", "4.0.0", "4.2.0", "4.3.0", "latest"],
     default: "latest",
     url_pref: "https://cdn.dashjs.org",
     url_suff: "dash.all.min.js",
@@ -12,5 +12,3 @@ Players = {
     url_suff: "shaka-player.compiled.js",
   },
 };
-
-
