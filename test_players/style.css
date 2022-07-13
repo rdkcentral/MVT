@@ -5,29 +5,62 @@ body {
   margin: 25px auto;
   font-size: 1.1em;
   color: #eee;
-  line-height: 1.6em;
+  line-height: 1.75em;
 }
 
 video {
   width: 800px;
-  height: 450px;
   border-radius: 10px;
-  margin: 20px;
+  margin: 25px;
+}
+
+input {
+  background-color: #222;
+  color: #f60;
+  font-style: italic;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 3px 10px;
+  font-size: 0.8em;
+}
+
+button {
+  background-color: #00005a;
+  border: 1px solid #444 !important;
+  color: #eee;
+  font-weight: bold;
+  border: none;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #000;
+  color: #ff0;
+}
+
+.leftmargin15 {
+  margin-left: 15px;
+}
+
+.orange {
+  color: #f60 !important;
 }
 
 .focusable {
-  color: #0000EE;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.ver {
-  margin-left: 20px;
-  color: #cf0000;
-}
-
-.ver:link,
-.ver:visited {
   color: #ffda35;
+  cursor: pointer;
   text-decoration: none;
+  padding: 3px 10px;
+}
+
+.focusable:focus {
+  color: #ffbb00;
+  background-color: #000;
+  border: 1px solid #333;
+  border-radius: 10px;
+  outline: none;
+  text-decoration: underline;
 }

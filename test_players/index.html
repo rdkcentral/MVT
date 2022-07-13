@@ -1,17 +1,35 @@
 <!DOCTYPE html>
+<!--
+Copyright 2018 Google Inc. All rights reserved.
+Copyright 2022 Liberty Global BV
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="style.css" type="text/css" />
+  <script src="../js_mse_eme/harness/key.js"></script>
   <script src="../js_mse_eme/harness/focusManager.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mux.js/5.10.0/mux.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="players.js"></script>
-  <title>test players</title>
+  <script src="functions.js"></script>
+  <title>Test players</title>
 </head>
 <body>
-
-  <div style="width: 800px; text-align: left; margin: 0 auto;">
+  
+  <div style="width: 850px; text-align: left; margin: 0 auto;">
+    <a class="focusable" href="../">Back to MVT</a>
     <p>Test 'any' player and stream here... ;) <span style="margin-left: 20px; color: #316d24">// dashjs, shaka, hlsjs</span></p>
 
     <div id="players_list"></div>
