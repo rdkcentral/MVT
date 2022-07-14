@@ -19,7 +19,7 @@
 "use strict";
 
 function set_source_url() {
-  let url_input = document.getElementById("url_input").value
+  let url_input = document.getElementById("url_input").value;
   window.location.replace(`?player=${player_type}&player_ver=${player_ver}&url=${url_input}`);
 }
 
@@ -80,18 +80,6 @@ function initDash() {
   player.initialize();
   player.attachView(video);
   player.attachSource(media_url);
-}
-
-function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
-    if (decodeURIComponent(pair[0]) == variable) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
-  return false;
 }
 
 async function init_player(player_type) {

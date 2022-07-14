@@ -1,9 +1,9 @@
 body {
   font-family: Verdana, sans-serif;
-  background-color: #10131a;
+  background-color: #191a20;
   text-align: center;
-  margin: 25px auto;
-  font-size: 1.1em;
+  margin: 15px auto;
+  font-size: 1.05em;
   color: #eee;
   line-height: 1.75em;
 }
@@ -11,7 +11,7 @@ body {
 video {
   width: 800px;
   border-radius: 10px;
-  margin: 25px;
+  margin: 25px 10px;
 }
 
 input {
@@ -49,18 +49,28 @@ button:hover {
   color: #f60 !important;
 }
 
+.green {
+  color: #6bc900 !important;
+}
+
 .focusable {
   color: #ffda35;
   cursor: pointer;
   text-decoration: none;
   padding: 3px 10px;
+  border-radius: 10px;
+}
+
+.focusable:hover {
+  color: #f00;
+  text-decoration: underline;
+  background-color: #000;
 }
 
 .focusable:focus {
-  color: #ffbb00;
+  color: #f00;
   background-color: #000;
   border: 1px solid #333;
-  border-radius: 10px;
   outline: none;
   text-decoration: underline;
 }
