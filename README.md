@@ -55,6 +55,8 @@ MVT introduces new tests, integration of MSE players and various media assets.
 
     # Populate |TEST_MATERIALS_SRC| with media assets.
     # Existing assets won't be overridden.
+    # If you want to use your own videos, you need to change URL's in media/media_urls.config,
+    # movies needs to be longer than 2 minutes and can be in any video format.
     # Runs withing running container (mvt-app) and takes ~30 minutes on decent PC.
     ./docker_prepare_assets.sh
 
@@ -154,11 +156,10 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
   - dash-html5-test
   - dash-shaka-test
   - dash-dashjs-test
-  - dash-playready-shaka-test
-  - dash-playready-dashjs-test
   - hls-shaka-test
   - hls-hlsjs-test
   - hss-html5-test
+  - hss-dashjs-test
   - progressive-html5-test
 - `command=run` - test run autostart. Please note it may not work on desktop browser, because they tend to block autoplay before user interaction.
 - `tests=ID[,ID]|ID-ID2` - tests subset selection. Expected values:
@@ -175,7 +176,7 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 
 ### JavaScript API
 
-`getTestResults()` is a globally available JavaScript function, which can be run from console or via WebDriver to gather the results.
+`getMvtTestResults()` is a globally available JavaScript function, which can be run from console or via WebDriver to gather the results.
 It produces a JSON-like object, which should be easy to read by any automated test runner. Sample output:
 
 ```
@@ -208,6 +209,9 @@ It produces a JSON-like object, which should be easy to read by any automated te
     "ver": "1.0"
 }
 ```
+
+Please note there is also the original `getTestResults()` function provided by the `js_mse_eme`.
+It is still supported, but it uses different output format and does not include execution logs.
 
 ### Coverage
 
@@ -270,7 +274,7 @@ In example, to execute `DASH shaka` test suite the test runner should:
 
    command evaluates to true.
 
-4. Fetch test results through `WebDriver` with `return getTestResults()`
+4. Fetch test results through `WebDriver` with `return getMvtTestResults()`
 5. Parse JSON test results to adjust it for the format expected by CI system.
 
 Same procedure can be repeated for each test suite in order to make fully automated MVT test run.

@@ -18,6 +18,7 @@
 FROM httpd:latest
 
 ARG MVT_PATH=/usr/local/apache2/htdocs
+ENV MVT_PATH=$MVT_PATH
 
 COPY . $MVT_PATH
 WORKDIR $MVT_PATH
