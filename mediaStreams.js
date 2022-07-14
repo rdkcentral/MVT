@@ -49,81 +49,7 @@ const TimeCountdownSubtitlesLongLangCodes = {
 // Define content
 var MvtMedia = {
   DASH: [
-    {
-      testBase: "1.1.1",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-AVC1-AAC",
-      src: "test-materials/dash/fmp4_h264_aac/manifest.mpd",
-      video: {
-        codec: "avc1.42C01E",
-      },
-      audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
-      },
-    },
-    {
-      testBase: "1.1.2",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-AVC1-AAC-TTML",
-      src: "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
-      video: {
-        codec: "avc1.42C01E",
-      },
-      audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
-      },
-      subtitles: {
-        format: "ttml",
-        languages: ["de", "en", "fr", "es"],
-        expectedText: TimeCountdownSubtitles,
-      },
-    },
-    {
-      testBase: "1.1.3",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-AVC1-AC3",
-      src: "test-materials/dash/fmp4_h264_ac3/manifest.mpd",
-      video: {
-        codec: "avc1.42C01E",
-      },
-      audio: {
-        codec: "mp4a.a5",
-        channels: "2",
-      },
-    },
-    {
-      testBase: "1.1.4",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-HEVC-EAC3",
-      src: "test-materials/dash/fmp4_hevc_eac3/manifest.mpd",
-      video: {
-        codec: "hvc1.1.6.L120.80",
-      },
-      audio: {
-        codec: "mp4a.a6",
-        channels: "2",
-      },
-    },
-    {
-      testBase: "1.1.5",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-MPEG2V-MP3",
-      src: "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd",
-      video: {
-        codec: "mp2",
-      },
-      audio: {
-        codec: "mp4a.69",
-        channels: "2",
-      },
-    },
+    ,
     {
       testBase: "1.1.6",
       container: "dash",
@@ -230,20 +156,6 @@ var MvtMedia = {
       video: {
         codec: "avc1.64001e",
         resolution: [360, 640],
-      },
-      audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
-      },
-    },
-    {
-      testBase: "1.1.13",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-MULTIPERIOD",
-      src: "test-materials/dash/multiperiod/manifest.mpd",
-      video: {
-        codec: "avc1.42C01E",
       },
       audio: {
         codec: "mp4a.40.2",
@@ -830,3 +742,98 @@ var MvtMedia = {
     },
   ],
 };
+
+// MS = MediaStreams
+const MS = {};
+
+function addMediaStream(category, name, container, src, vCodec, aCodec, subtitles = null) {
+  if (!(category in MS)) MS[category] = {};
+  MS[category][name] = {
+    name: `${category}_${name}`,
+    container: container,
+    src: src,
+    video: { codec: vCodec },
+    audio: { codec: aCodec },
+  };
+  if (subtitles) MS[category]["subtitles"] = subtitles;
+}
+
+addMediaStream(
+  "DASH",
+  "FMP4_AVC1_AAC",
+  "fragmentedmp4",
+  "test-materials/dash/fmp4_h264_aac/manifest.mpd",
+  "avc1.42C01E",
+  "mp4a.40.2"
+);
+addMediaStream(
+  "DASH",
+  "FMP4_AVC1_AC3",
+  "fragmentedmp4",
+  "test-materials/dash/fmp4_h264_ac3/manifest.mpd",
+  "avc1.42C01E",
+  "mp4a.a5"
+);
+addMediaStream(
+  "DASH",
+  "FMP4_HEVC_EAC3",
+  "fragmentedmp4",
+  "test-materials/dash/fmp4_hevc_eac3/manifest.mpd",
+  "hvc1.1.6.L120.80",
+  "mp4a.a6"
+);
+addMediaStream(
+  "DASH",
+  "FMP4_MPEG2V_MP3",
+  "fragmentedmp4",
+  "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd",
+  "mp2",
+  "mp4a.69"
+);
+addMediaStream(
+  "DASH",
+  "FMP4_AVC1_AAC_TTML",
+  "fragmentedmp4",
+  "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
+  "avc1.42C01E",
+  "mp4a.40.2",
+  {
+    subtitles: {
+      format: "ttml",
+      languages: ["de", "en", "fr", "es"],
+      expectedText: TimeCountdownSubtitles,
+    },
+  }
+);
+addMediaStream(
+  "DASH",
+  "MULTIPERIOD",
+  "fragmentedmp4",
+  "test-materials/dash/multiperiod/manifest.mpd",
+  "avc1.42C01E",
+  "mp4a.40.2"
+);
+
+//addMediaStream("DASH",
+// "",
+// "fragmentedmp4",
+// "",
+// "",
+// "
+// {
+//   testBase: "1.1.13",
+//   container: "dash",
+//   variant: "fragmentedmp4",
+//   name: "DASH-MULTIPERIOD",
+//   src: "test-materials/dash/multiperiod/manifest.mpd",
+//   video: {
+//     codec: "avc1.42C01E",
+//   },
+//   audio: {
+//     codec: "mp4a.40.2",
+//     channels: "2",
+//   },
+// },
+
+const CommonDash = [MS.DASH.FMP4_AVC1_AAC, MS.DASH.FMP4_AVC1_AC3, MS.DASH.FMP4_HEVC_EAC3, MS.DASH.FMP4_MPEG2V_MP3,
+MS.DASH.MULTIPERIOD];

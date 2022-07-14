@@ -25,7 +25,17 @@
 
 "use strict";
 
-makeTests(MvtMedia.DASH, ["dash"]);
-makeTests(MvtMedia.HLS, ["hls"]);
-makeTests(MvtMedia.HSS, ["hss"]);
-makeTests(MvtMedia.Progressive, ["progressive"]);
+// makeTests(MvtMedia.DASH, ["dash"]);
+// makeTests(MvtMedia.HLS, ["hls"]);
+// makeTests(MvtMedia.HSS, ["hss"]);
+// makeTests(MvtMedia.Progressive, ["progressive"]);
+
+(function () {
+  let shaka = new ShakaEngine();
+
+  let tests = createMediaTests(testPlayback, "Playback", shaka, CommonDash);
+  tests = tests.concat(createMediaTests(testSetPosition, "Seek", shaka, CommonDash));
+  tests.push(createMediaTest(testSubtitles, "Subtitles", shaka, MS.DASH.FMP4_AVC1_AAC_TTML));
+
+  registerTestSuite("DASH Shaka", tests);
+})();

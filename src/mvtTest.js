@@ -40,7 +40,7 @@ function createMvtTest(tests, testId, category, categorySort, name, mandatory = 
     tests[categorySort].push(t);
   }
   return t;
-};
+}
 
 function finalizeTests(tests) {
   var tests_ = [];
@@ -54,7 +54,7 @@ function finalizeTests(tests) {
     tests_[index].prototype.index = index;
   }
   return tests_;
-};
+}
 
 function createBaselineTest(tests, engine, media, sortorder, name, func, timeout) {
   var testId = media.testBase + "." + sortorder;
@@ -73,7 +73,7 @@ function createBaselineTest(tests, engine, media, sortorder, name, func, timeout
   };
   test.prototype.content = media;
   engine.setup(test, media);
-};
+}
 
 function makeBaselineTests(medialist) {
   var tests = {};
@@ -83,7 +83,7 @@ function makeBaselineTests(medialist) {
     });
   });
   return finalizeTestSuite(tests);
-};
+}
 
 function finalizeTestSuite(tests) {
   return function () {
@@ -93,7 +93,7 @@ function finalizeTestSuite(tests) {
 
     return { tests: finalizeTests(tests), info: info, fields: fields, viewType: "default" };
   };
-};
+}
 
 function createTestsForMedia(media, tests, engine) {
   createBaselineTest(tests, engine, media, 1, "Playback", testPlayback, TestBase.timeout);
@@ -213,3 +213,49 @@ window.testSuiteVersions = {
     },
   },
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+function createMediaTest(testCode, testType, engine, stream, timeout = TestBase.timeout) {
+  let testName = stream.name + " " + testType;
+
+  let test = createTest(testName, testType);
+  test.prototype.timeout = timeout;
+  test.prototype.onload = function (runner, video) {
+    if (!test.prototype.playing) {
+      test.prototype.playing = true;
+      video.playbackRate = 1;
+      video.play();
+      testCode.bind(this)(video, runner);
+    }
+  };
+  test.prototype.content = stream;
+  engine.setup(test, stream);
+  return test;
+}
+
+function createMediaTests(testCode, testType, engine, streams, timeout = TestBase.timeout) {
+  let tests = [];
+  streams.forEach((stream) => {
+    tests.push(createMediaTest(testCode, testType, engine, stream, timeout));
+  });
+  return tests;
+}
+
+function registerTestSuite(name, tests) {
+  let suiteKey = name.replace(" ", "-").toLowerCase() + "-test";
+  let info = "Default Timeout: " + TestBase.timeout + "ms";
+  let fields = ["passes", "failures", "timeouts"];
+  tests.forEach((test, index) => {
+    test.prototype.index = index;
+  });
+  let testSet = { tests: tests, info: info, fields: fields, viewType: "default" };
+
+  var testSuiteDescription = {
+    name: name + " Tests",
+    title: name + " Tests",
+    heading: name + " Tests",
+    tests: () => testSet,
+  };
+  window.testSuiteDescriptions[suiteKey] = testSuiteDescription;
+  window.testSuiteVersions[testVersion].testSuites.push(suiteKey);
+}
