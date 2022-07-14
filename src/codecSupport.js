@@ -270,6 +270,6 @@ for (var container in SelectedProfile.containers) {
   }
 }
 // Fill in name field for codecs, so we can return data structures
-for (var codec in SelectedProfile.codecs) {
-  SelectedProfile.codecs[codec].name = codec;
-}
+// for (var codec in SelectedProfile.codecs) {
+//   SelectedProfile.codecs[codec].name = codec;
+// }

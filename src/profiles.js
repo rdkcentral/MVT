@@ -26,6 +26,24 @@
  * If left unspecified, |default| profile will be selected.
  */
 
+function isSupportedOnProfile(profile, codecName, engine) {
+  let codec = Object.values(profile.codecs).find((codecObj) => codecObj.codec === codecName);
+  if (!codec) return false;
+  if (codec.engines && !codec.engines.includes(engine.name)) return false;
+  return true;
+}
+
+function filterUnsupportedOnProfile(profile, tests) {
+  return tests.filter((test) => {
+    let content = test.prototype.content;
+    let engine = test.prototype.engine;
+    let videoSupported = !content.video || isSupportedOnProfile(profile, content.video.codec, engine);
+    let audioSupported = !content.audio || isSupportedOnProfile(profile, content.audio.codec, engine);
+    let subtitlesSupported = !content.subtitles || isSupportedOnProfile(profile, content.subtitles.codec, engine);
+    return videoSupported && audioSupported && subtitlesSupported;
+  });
+}
+
 const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 const addCodecToProfile = (profile, name, codec) => {
   profile["codecs"][name] = codec;
@@ -37,18 +55,14 @@ Profiles = {
     codecs: {
       mp2: {
         codec: "mpeg2",
-        can_check: false,
-        resolution: [1920, 1080, 30],
         note: "Main Profile at High Level (ISO/IEC 13818-2)",
       },
       avc1: {
         codec: "avc1.64002a",
-        resolution: [1920, 1088, 60],
         note: "Main and High Profiles (ISO 14496-10) up to Level 4.2 up to 1920x1088 at 60 fps",
       },
       hevc: {
         codec: "hvc1.2.4.L153.00",
-        resolution: [4096, 2176, 60],
         note: "Standard Main and/or Main10 Profiles Level 4.1, 5.0 and 5.1 up to 4096x2176 at 60 fps",
       },
       vp9: {
@@ -57,30 +71,28 @@ Profiles = {
       },
       aac: {
         codec: "mp4a.40.29",
-        channels: "5.1",
         note: "AAC-LC (Supported), HE-AAC (Supported (level 4))",
       },
       mp3: {
         codec: "mp4a.69",
-        channels: "2",
-        note2: "Does mp3 support more than 2 channels?",
-        note: "Supported",
       },
       ac3: {
         codec: "mp4a.a5",
-        channels: "5.1",
         note: "MS12, max 5.1",
       },
       eac3: {
         codec: "mp4a.a6",
-        channels: "7.1",
         note: "MS12, max 7.1",
       },
       opus: {
         codec: "opus",
-        channels: 2,
-        note: "2 channel, in mp4 this is mp4a.ad",
-        codecMime: { webm: "opus", mp4: "mp4a.ad" },
+      },
+      vtt: {
+        codec: "webvtt",
+      },
+      ttml: {
+        codec: "ttml",
+        engines: ["shaka", "dashjs"],
       },
     },
   },
@@ -96,7 +108,6 @@ addCodecToProfile(Profiles.all, "av01", {
 });
 addCodecToProfile(Profiles.all, "vc1", {
   codec: "vc-1",
-  can_check: false,
   note: "Advanced Profile up to Level 3, Main Profile up to High Level, Simple Profile up to Medium Level",
 });
 addCodecToProfile(Profiles.all, "mpeg4part2", {
@@ -105,6 +116,5 @@ addCodecToProfile(Profiles.all, "mpeg4part2", {
 });
 addCodecToProfile(Profiles.all, "wma", {
   codec: "wma",
-  can_check: false,
   note: "WMA was never officially registered, so the codec string is undefined",
 });

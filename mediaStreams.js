@@ -755,7 +755,7 @@ function addMediaStream(category, name, container, src, vCodec, aCodec, subtitle
     video: { codec: vCodec },
     audio: { codec: aCodec },
   };
-  if (subtitles) MS[category]["subtitles"] = subtitles;
+  if (subtitles) MS[category][name]["subtitles"] = subtitles;
 }
 
 addMediaStream(
@@ -763,15 +763,15 @@ addMediaStream(
   "FMP4_AVC1_AAC",
   "fragmentedmp4",
   "test-materials/dash/fmp4_h264_aac/manifest.mpd",
-  "avc1.42C01E",
-  "mp4a.40.2"
+  "avc1.64002a",
+  "mp4a.40.29"
 );
 addMediaStream(
   "DASH",
   "FMP4_AVC1_AC3",
   "fragmentedmp4",
   "test-materials/dash/fmp4_h264_ac3/manifest.mpd",
-  "avc1.42C01E",
+  "avc1.64002a",
   "mp4a.a5"
 );
 addMediaStream(
@@ -779,7 +779,7 @@ addMediaStream(
   "FMP4_HEVC_EAC3",
   "fragmentedmp4",
   "test-materials/dash/fmp4_hevc_eac3/manifest.mpd",
-  "hvc1.1.6.L120.80",
+  "hvc1.2.4.L153.00",
   "mp4a.a6"
 );
 addMediaStream(
@@ -787,7 +787,7 @@ addMediaStream(
   "FMP4_MPEG2V_MP3",
   "fragmentedmp4",
   "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd",
-  "mp2",
+  "mpeg2",
   "mp4a.69"
 );
 addMediaStream(
@@ -795,14 +795,12 @@ addMediaStream(
   "FMP4_AVC1_AAC_TTML",
   "fragmentedmp4",
   "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
-  "avc1.42C01E",
-  "mp4a.40.2",
+  "avc1.64002a",
+  "mp4a.40.29",
   {
-    subtitles: {
-      format: "ttml",
-      languages: ["de", "en", "fr", "es"],
-      expectedText: TimeCountdownSubtitles,
-    },
+    codec: "ttml",
+    languages: ["de", "en", "fr", "es"],
+    expectedText: TimeCountdownSubtitles,
   }
 );
 addMediaStream(
@@ -810,8 +808,8 @@ addMediaStream(
   "MULTIPERIOD",
   "fragmentedmp4",
   "test-materials/dash/multiperiod/manifest.mpd",
-  "avc1.42C01E",
-  "mp4a.40.2"
+  "avc1.64002a",
+  "mp4a.40.29"
 );
 
 //addMediaStream("DASH",
@@ -820,20 +818,11 @@ addMediaStream(
 // "",
 // "",
 // "
-// {
-//   testBase: "1.1.13",
-//   container: "dash",
-//   variant: "fragmentedmp4",
-//   name: "DASH-MULTIPERIOD",
-//   src: "test-materials/dash/multiperiod/manifest.mpd",
-//   video: {
-//     codec: "avc1.42C01E",
-//   },
-//   audio: {
-//     codec: "mp4a.40.2",
-//     channels: "2",
-//   },
-// },
 
-const CommonDash = [MS.DASH.FMP4_AVC1_AAC, MS.DASH.FMP4_AVC1_AC3, MS.DASH.FMP4_HEVC_EAC3, MS.DASH.FMP4_MPEG2V_MP3,
-MS.DASH.MULTIPERIOD];
+const CommonDash = [
+  MS.DASH.FMP4_AVC1_AAC,
+  MS.DASH.FMP4_AVC1_AC3,
+  MS.DASH.FMP4_HEVC_EAC3,
+  MS.DASH.FMP4_MPEG2V_MP3,
+  MS.DASH.MULTIPERIOD,
+];

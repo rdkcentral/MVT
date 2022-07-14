@@ -215,10 +215,18 @@ window.testSuiteVersions = {
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-function createMediaTest(testCode, testType, engine, stream, timeout = TestBase.timeout) {
-  let testName = stream.name + " " + testType;
+class MediaTestTemplate {
+  constructor(code, name, engine) {
+    this.code = code;
+    this.name = name;
+    this.engine = engine;
+  }
+}
 
-  let test = createTest(testName, testType);
+function createMediaTest(mediaTestTemplate, stream, mandatory = true, timeout = TestBase.timeout) {
+  let testName = stream.name + " " + mediaTestTemplate.name;
+
+  let test = createTest(testName, mediaTestTemplate.name, mandatory);
   test.prototype.timeout = timeout;
   test.prototype.onload = function (runner, video) {
     if (!test.prototype.playing) {
@@ -229,14 +237,17 @@ function createMediaTest(testCode, testType, engine, stream, timeout = TestBase.
     }
   };
   test.prototype.content = stream;
-  engine.setup(test, stream);
+  test.prototype.engine = mediaTestTemplate.engine;
+  mediaTestTemplate.engine.setup(test, stream);
   return test;
 }
 
-function createMediaTests(testCode, testType, engine, streams, timeout = TestBase.timeout) {
+function createMediaTests(mediaTestTemplates, streams, timeout = TestBase.timeout) {
   let tests = [];
-  streams.forEach((stream) => {
-    tests.push(createMediaTest(testCode, testType, engine, stream, timeout));
+  mediaTestTemplates.forEach((mediaTestTemplate) => {
+    streams.forEach((stream) => {
+      tests.push(createMediaTest(mediaTestTemplate, stream, timeout));
+    });
   });
   return tests;
 }

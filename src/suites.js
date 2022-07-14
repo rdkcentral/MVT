@@ -33,9 +33,16 @@
 (function () {
   let shaka = new ShakaEngine();
 
-  let tests = createMediaTests(testPlayback, "Playback", shaka, CommonDash);
-  tests = tests.concat(createMediaTests(testSetPosition, "Seek", shaka, CommonDash));
-  tests.push(createMediaTest(testSubtitles, "Subtitles", shaka, MS.DASH.FMP4_AVC1_AAC_TTML));
+  let commonTemplates = [
+    new MediaTestTemplate(testPlayback, "Playback", shaka),
+    new MediaTestTemplate(testSetPosition, "Seek", shaka),
+  ];
+  let subtitlesTemplate = new MediaTestTemplate(testSubtitles, "Subtitles", shaka);
+
+  let tests = createMediaTests(commonTemplates, CommonDash);
+  tests.push(createMediaTest(subtitlesTemplate, MS.DASH.FMP4_AVC1_AAC_TTML));
+
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
   registerTestSuite("DASH Shaka", tests);
 })();
