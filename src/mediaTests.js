@@ -17,6 +17,13 @@
  * limitations under the License.
  */
 
+/**
+ * Implements media tests.
+ * All |test*| functions represent a media test - a sequence of actions and expectations, which can be executed on
+ * a given media stream. Same test code is used multiple times on various streams. Binding between test code
+ * and media stream is implemented in |src/mvtTest.js:createTestsForMedia|.
+ */
+
 "use strict";
 
 function waitForEvent(video, runner, event, predicate = null, maxWaitTimeMs = 10000, times = 1) {
