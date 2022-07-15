@@ -126,27 +126,6 @@ var MvtMedia = {
       },
     },
     {
-      testBase: "1.1.11",
-      container: "dash",
-      variant: "fragmentedmp4",
-      note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
-      name: "DASH-PLAYREADY-2.0",
-      video: {
-        codec: "avc1.42C01E",
-      },
-      audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
-      },
-      src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
-      drm: {
-        servers: {
-          "com.microsoft.playready":
-            "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
-        },
-      },
-    },
-    {
       testBase: "1.1.12",
       container: "dash",
       variant: "fragmentedmp4",
@@ -746,7 +725,8 @@ var MvtMedia = {
 // MS = MediaStreams
 const MS = {};
 
-function addMediaStream(category, name, container, src, vCodec, aCodec, subtitles = null) {
+function addMediaStream(category, container, src, vCodec, aCodec, name = null, custom = null) {
+  if (!name) name = `${container}_${vCodec}_${aCodec}`.toUpperCase();
   if (!(category in MS)) MS[category] = {};
   MS[category][name] = {
     name: `${category}_${name}`,
@@ -755,74 +735,52 @@ function addMediaStream(category, name, container, src, vCodec, aCodec, subtitle
     video: { codec: vCodec },
     audio: { codec: aCodec },
   };
-  if (subtitles) MS[category][name]["subtitles"] = subtitles;
+  if (custom) MS[category][name] = Object.assign({}, MS[category][name], custom);
 }
 
+addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_h264_aac/manifest.mpd", "avc", "aac");
+addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_h264_ac3/manifest.mpd", "avc", "ac3");
+addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_hevc_eac3/manifest.mpd", "hevc", "eac3");
+addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd", "mp2", "mp3");
+addMediaStream("DASH", "fmp4", "test-materials/dash/multiperiod/manifest.mpd", "avc", "aac", "MULTIPERIOD");
 addMediaStream(
   "DASH",
-  "FMP4_AVC1_AAC",
-  "fragmentedmp4",
-  "test-materials/dash/fmp4_h264_aac/manifest.mpd",
-  "avc1.64002a",
-  "mp4a.40.29"
-);
-addMediaStream(
-  "DASH",
-  "FMP4_AVC1_AC3",
-  "fragmentedmp4",
-  "test-materials/dash/fmp4_h264_ac3/manifest.mpd",
-  "avc1.64002a",
-  "mp4a.a5"
-);
-addMediaStream(
-  "DASH",
-  "FMP4_HEVC_EAC3",
-  "fragmentedmp4",
-  "test-materials/dash/fmp4_hevc_eac3/manifest.mpd",
-  "hvc1.2.4.L153.00",
-  "mp4a.a6"
-);
-addMediaStream(
-  "DASH",
-  "FMP4_MPEG2V_MP3",
-  "fragmentedmp4",
-  "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd",
-  "mpeg2",
-  "mp4a.69"
-);
-addMediaStream(
-  "DASH",
-  "FMP4_AVC1_AAC_TTML",
-  "fragmentedmp4",
+  "fmp4",
   "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
-  "avc1.64002a",
-  "mp4a.40.29",
+  "avc",
+  "aac",
+  "FMP4_AVC_AAC_TTML",
   {
-    codec: "ttml",
-    languages: ["de", "en", "fr", "es"],
-    expectedText: TimeCountdownSubtitles,
+    subtitles: {
+      codec: "ttml",
+      languages: ["de", "en", "fr", "es"],
+      expectedText: TimeCountdownSubtitles,
+    },
   }
 );
 addMediaStream(
   "DASH",
-  "MULTIPERIOD",
-  "fragmentedmp4",
-  "test-materials/dash/multiperiod/manifest.mpd",
-  "avc1.64002a",
-  "mp4a.40.29"
+  "fmp4",
+  "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
+  "avc",
+  "aac",
+  "PLAYREADY_2_0",
+  {
+    drm: {
+      servers: {
+        "com.microsoft.playready":
+          "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
+      },
+    },
+    note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
+  }
 );
 
-//addMediaStream("DASH",
-// "",
-// "fragmentedmp4",
-// "",
-// "",
-// "
-
 const CommonDash = [
-  MS.DASH.FMP4_AVC1_AAC,
-  MS.DASH.FMP4_AVC1_AC3,
+  MS.DASH.FMP4_AVC_AAC,
+  MS.DASH.FMP4_AVC_AC3,
   MS.DASH.FMP4_HEVC_EAC3,
-  MS.DASH.FMP4_MPEG2V_MP3,
+  MS.DASH.FMP4_MPEG2_MP3,
   MS.DASH.MULTIPERIOD,
+  MS.DASH.PLAYREADY_2_0,
 ];

@@ -237,7 +237,6 @@ function createMediaTest(mediaTestTemplate, stream, mandatory = true, timeout = 
     }
   };
   test.prototype.content = stream;
-  test.prototype.engine = mediaTestTemplate.engine;
   mediaTestTemplate.engine.setup(test, stream);
   return test;
 }

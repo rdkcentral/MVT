@@ -40,7 +40,7 @@
   let subtitlesTemplate = new MediaTestTemplate(testSubtitles, "Subtitles", shaka);
 
   let tests = createMediaTests(commonTemplates, CommonDash);
-  tests.push(createMediaTest(subtitlesTemplate, MS.DASH.FMP4_AVC1_AAC_TTML));
+  tests.push(createMediaTest(subtitlesTemplate, MS.DASH.FMP4_AVC_AAC_TTML));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
