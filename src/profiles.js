@@ -28,10 +28,11 @@
 
 function filterUnsupportedOnProfile(profile, tests) {
   return tests.filter((test) => {
-    let content = test.prototype.content;
-    let videoSupported = !content.video || profile.codecs.includes(content.video.codec);
-    let audioSupported = !content.audio || profile.codecs.includes(content.audio.codec);
-    let drmSupported = !content.drm || Object.keys(content.drm.servers).some((drm) => profile.drm.includes(drm));
+    if (!test instanceof MvtMediaTest) return true;
+    let stream = test.stream;
+    let videoSupported = !stream.video || profile.codecs.includes(stream.video.codec);
+    let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
+    let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
     return videoSupported && audioSupported && drmSupported;
   });
 }
@@ -40,16 +41,16 @@ Profiles = {
   all: {
     note: "Everything enabled",
     drm: ["com.microsoft.playready"],
-    codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"]
+    codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
   },
   default: {
     note: "Default",
     drm: ["com.microsoft.playready"],
-    codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"]
+    codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
   },
   desktop: {
     note: "For desktop browsers",
     drm: [],
-    codecs: ["avc", "mpeg2", "mpeg4part2", "vp9", "aac" , "mp3", "opus"]
+    codecs: ["avc", "mpeg2", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
   },
 };

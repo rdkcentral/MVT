@@ -82,7 +82,7 @@ function checkVideoFramesIncreasing(video, runner, hasVideoTrack) {
   });
 }
 
-var testPlayback = function (video, runner) {
+var testPlayback = new TestTemplate("Playback", function (video, runner) {
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
   const playbackTime = 10;
@@ -101,7 +101,7 @@ var testPlayback = function (video, runner) {
     promise = promise.then(makePlaybackTestStep(initialPosition + i));
   }
   promise.then(() => runner.succeed());
-};
+});
 
 var testPlayRate = function (video, runner) {
   const rates = [0.5, 2, 0.75, 1.5, 0];
@@ -196,7 +196,7 @@ var testPause = function (video, runner) {
   promise.then(() => runner.succeed());
 };
 
-var testSetPosition = function (video, runner) {
+var testSetPosition = new TestTemplate("Seek", function (video, runner) {
   const initialPosition = 2;
   const hasVideoTrack = this.content.video;
   var positions = [0, 20, 45];
@@ -225,7 +225,7 @@ var testSetPosition = function (video, runner) {
     promise = promise.then(makeSeekTest(position));
   });
   promise.then(() => runner.succeed());
-};
+});
 
 function arraysEqual(a, b) {
   if (a === b) return true;
@@ -275,7 +275,7 @@ var testChangeAudioTracks = function (video, runner) {
   promise.then(() => runner.succeed());
 };
 
-var testSubtitles = function (video, runner) {
+var testSubtitles = new TestTemplate("Subtitles", function (video, runner) {
   const initialPosition = this.content.subtitles.startOffset || 1;
 
   if (this.content.subtitles.tracks) {
@@ -331,4 +331,4 @@ var testSubtitles = function (video, runner) {
     promise = promise.then(makeChangeSubtitlesTest(language));
   });
   promise.then(() => runner.succeed());
-};
+});

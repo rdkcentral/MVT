@@ -25,24 +25,21 @@
 
 "use strict";
 
-// makeTests(MvtMedia.DASH, ["dash"]);
-// makeTests(MvtMedia.HLS, ["hls"]);
-// makeTests(MvtMedia.HSS, ["hss"]);
-// makeTests(MvtMedia.Progressive, ["progressive"]);
-
 (function () {
   let shaka = new ShakaEngine();
 
-  let commonTemplates = [
-    new MediaTestTemplate(testPlayback, "Playback", shaka),
-    new MediaTestTemplate(testSetPosition, "Seek", shaka),
+  let mvtTests = [
+    new MvtMediaTest(testPlayback, MS.DASH.FMP4_AVC_AAC, shaka),
+    new MvtMediaTest(testPlayback, MS.DASH.FMP4_AVC_AC3, shaka),
+    new MvtMediaTest(testPlayback, MS.DASH.FMP4_HEVC_EAC3, shaka),
+    new MvtMediaTest(testPlayback, MS.DASH.FMP4_MPEG2_MP3, shaka),
+    new MvtMediaTest(testPlayback, MS.DASH.MULTIPERIOD, shaka),
+    new MvtMediaTest(testPlayback, MS.DASH.PLAYREADY_2_0, shaka),
+    new MvtMediaTest(testSetPosition, MS.DASH.FMP4_AVC_AAC, shaka),
+    new MvtMediaTest(testSubtitles, MS.DASH.FMP4_AVC_AAC_TTML, shaka),
   ];
-  let subtitlesTemplate = new MediaTestTemplate(testSubtitles, "Subtitles", shaka);
 
-  let tests = createMediaTests(commonTemplates, CommonDash);
-  tests.push(createMediaTest(subtitlesTemplate, MS.DASH.FMP4_AVC_AAC_TTML));
+  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
 
-  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
-
-  registerTestSuite("DASH Shaka", tests);
+  registerTestSuite("DASH Shaka", makeTests(mvtTests));
 })();

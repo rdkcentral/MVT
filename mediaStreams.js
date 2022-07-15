@@ -741,7 +741,7 @@ function addMediaStream(category, container, src, vCodec, aCodec, name = null, c
 addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_h264_aac/manifest.mpd", "avc", "aac");
 addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_h264_ac3/manifest.mpd", "avc", "ac3");
 addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_hevc_eac3/manifest.mpd", "hevc", "eac3");
-addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd", "mp2", "mp3");
+addMediaStream("DASH", "fmp4", "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd", "mpeg2", "mp3");
 addMediaStream("DASH", "fmp4", "test-materials/dash/multiperiod/manifest.mpd", "avc", "aac", "MULTIPERIOD");
 addMediaStream(
   "DASH",

@@ -79,7 +79,7 @@ function makeBaselineTests(medialist) {
   var tests = {};
   medialist.forEach((media) => {
     getEnginesForMedia(media, function (engine) {
-      createTestsForMedia(media, tests, engine);
+      makeTestsForMedia(media, tests, engine);
     });
   });
   return finalizeTestSuite(tests);
@@ -95,7 +95,7 @@ function finalizeTestSuite(tests) {
   };
 }
 
-function createTestsForMedia(media, tests, engine) {
+function makeTestsForMedia(media, tests, engine) {
   createBaselineTest(tests, engine, media, 1, "Playback", testPlayback, TestBase.timeout);
   // TODO: ONEM-26308 Fix Pause tests
   // createBaselineTest(tests, engine, media, 2, "Pause", testPause, TestBase.timeout);
@@ -114,50 +114,50 @@ function createTestsForMedia(media, tests, engine) {
   }
 }
 
-var makeTests = function (medialist, category) {
-  var niceNames = {
-    dash: "DASH",
-    hls: "HLS",
-    progressive: "Progressive",
-    hss: "HSS",
-    playready: "PlayReady",
-    custom: "Custom",
-  };
+// var makeTests = function (medialist, category) {
+//   var niceNames = {
+//     dash: "DASH",
+//     hls: "HLS",
+//     progressive: "Progressive",
+//     hss: "HSS",
+//     playready: "PlayReady",
+//     custom: "Custom",
+//   };
 
-  if (medialist.length != 0) {
-    var tests = {};
-    medialist.forEach((media) => {
-      getEnginesForMedia(media, function (engine) {
-        if (!(engine.name in tests)) {
-          tests[engine.name] = {};
-        }
-        createTestsForMedia(media, tests[engine.name], engine);
-      });
-    });
+//   if (medialist.length != 0) {
+//     var tests = {};
+//     medialist.forEach((media) => {
+//       getEnginesForMedia(media, function (engine) {
+//         if (!(engine.name in tests)) {
+//           tests[engine.name] = {};
+//         }
+//         makeTestsForMedia(media, tests[engine.name], engine);
+//       });
+//     });
 
-    for (var engine in tests) {
-      var testlist = tests[engine];
-      if (testlist.length != 0) {
-        var category_engine = category.slice();
-        category_engine.push(engine);
+//     for (var engine in tests) {
+//       var testlist = tests[engine];
+//       if (testlist.length != 0) {
+//         var category_engine = category.slice();
+//         category_engine.push(engine);
 
-        var category_key = category_engine.join("-") + "-test";
-        var nice_category = category_engine.map((name) => (niceNames[name] ? niceNames[name] : name));
-        var category_name = nice_category.join(" ");
-        var testsuite = finalizeTestSuite(testlist);
+//         var category_key = category_engine.join("-") + "-test";
+//         var nice_category = category_engine.map((name) => (niceNames[name] ? niceNames[name] : name));
+//         var category_name = nice_category.join(" ");
+//         var testsuite = finalizeTestSuite(testlist);
 
-        var test_desc = {
-          name: category_name + " Tests",
-          title: category_name + " Tests",
-          heading: category_name + " Tests",
-          tests: testsuite,
-        };
-        window.testSuiteDescriptions[category_key] = test_desc;
-        window.testSuiteVersions[testVersion].testSuites.push(category_key);
-      }
-    }
-  }
-};
+//         var test_desc = {
+//           name: category_name + " Tests",
+//           title: category_name + " Tests",
+//           heading: category_name + " Tests",
+//           tests: testsuite,
+//         };
+//         window.testSuiteDescriptions[category_key] = test_desc;
+//         window.testSuiteVersions[testVersion].testSuites.push(category_key);
+//       }
+//     }
+//   }
+// };
 
 var TestOutcome = {
   UNKNOWN: 0,
@@ -215,38 +215,62 @@ window.testSuiteVersions = {
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-class MediaTestTemplate {
-  constructor(code, name, engine) {
+class TestTemplate {
+  constructor(name, code) {
+    this.testName = name;
     this.code = code;
-    this.name = name;
+  }
+}
+
+class MvtTest {
+  constructor(testTemplate, timeout = TestBase.timeout) {
+    this.testTemplate = testTemplate;
+    this.timeout = timeout;
+  }
+}
+
+class MvtMediaTest extends MvtTest {
+  constructor(testTemplate, stream, engine, timeout = TestBase.timeout) {
+    super(testTemplate, timeout);
+    this.stream = stream;
     this.engine = engine;
   }
 }
 
-function createMediaTest(mediaTestTemplate, stream, mandatory = true, timeout = TestBase.timeout) {
-  let testName = stream.name + " " + mediaTestTemplate.name;
+function makeBasicTest(testTemplate, timeout = TestBase.timeout, mandatory = true) {
+  let test = createTest(testTemplate.name, testTemplate.name, mandatory);
+  test.prototype.timeout = timeout;
+  test.prototype.onload = () => {
+    testTemplate.code();
+  };
+  return test;
+}
 
-  let test = createTest(testName, mediaTestTemplate.name, mandatory);
+function makeMediaTest(testTemplate, stream, engine, timeout = TestBase.timeout, mandatory = true) {
+  let testName = stream.name + " " + testTemplate.testName;
+  let test = createTest(testName, testTemplate.testName, mandatory);
   test.prototype.timeout = timeout;
   test.prototype.onload = function (runner, video) {
     if (!test.prototype.playing) {
       test.prototype.playing = true;
       video.playbackRate = 1;
       video.play();
-      testCode.bind(this)(video, runner);
+      testTemplate.code.bind(this)(video, runner);
     }
   };
   test.prototype.content = stream;
-  mediaTestTemplate.engine.setup(test, stream);
+  engine.setup(test, stream);
   return test;
 }
 
-function createMediaTests(mediaTestTemplates, streams, timeout = TestBase.timeout) {
+function makeTests(mvtTests) {
   let tests = [];
-  mediaTestTemplates.forEach((mediaTestTemplate) => {
-    streams.forEach((stream) => {
-      tests.push(createMediaTest(mediaTestTemplate, stream, timeout));
-    });
+  mvtTests.forEach((t) => {
+    if (t instanceof MvtMediaTest) {
+      tests.push(makeMediaTest(t.testTemplate, t.stream, t.engine, t.timeout));
+    } else {
+      tests.push(makeBasicTest(t.testTemplate, t.timeout));
+    }
   });
   return tests;
 }
