@@ -103,7 +103,7 @@ var testPlayback = new TestTemplate("Playback", function (video, runner) {
   promise.then(() => runner.succeed());
 });
 
-var testPlayRate = function (video, runner) {
+var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
   const rates = [0.5, 2, 0.75, 1.5, 0];
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
@@ -163,9 +163,9 @@ var testPlayRate = function (video, runner) {
     promise = promise.then(makePlayRateTest(rate));
   });
   promise.then(() => runner.succeed());
-};
+});
 
-var testPause = function (video, runner) {
+var testPause = new TestTemplate("Pause", function (video, runner) {
   const hasVideoTrack = this.content.video;
   var pauseTimes = [1.5, 5];
   if (this.content.dynamic) {
@@ -194,7 +194,7 @@ var testPause = function (video, runner) {
   var promise = Promise.resolve();
   pauseTimes.forEach((pauseTime) => (promise = promise.then(makePauseTest(pauseTime))));
   promise.then(() => runner.succeed());
-};
+});
 
 var testSetPosition = new TestTemplate("Seek", function (video, runner) {
   const initialPosition = 2;
@@ -238,12 +238,12 @@ function arraysEqual(a, b) {
   return true;
 }
 
-var testChangeAudioTracks = function (video, runner) {
+var testChangeAudioTracks = new TestTemplate("AudioTracks", function (video, runner) {
   const initialPosition = 1;
   const trackPlaybackTime = 7;
   const positionInaccuracyThreshold = 2;
 
-  var languages = this.content.audio.languages.slice().reverse();
+  var languages = this.content.audioLanguages.slice().reverse();
   // Set the first language twice at start and end
   languages.unshift(languages[languages.length - 1]);
 
@@ -253,7 +253,7 @@ var testChangeAudioTracks = function (video, runner) {
         runner.log("Changing language to " + lang);
         let availableLanguages = this.changeLanguage(video, runner, lang);
         runner.assert(
-          arraysEqual(availableLanguages.sort(), this.content.audio.languages.slice().sort()),
+          arraysEqual(availableLanguages.sort(), this.content.audioLanguages.slice().sort()),
           "languages to match declared"
         );
         let trackChangePosition = video.currentTime;
@@ -273,7 +273,7 @@ var testChangeAudioTracks = function (video, runner) {
     promise = promise.then(makeChangeAudioTrackTest(lang));
   });
   promise.then(() => runner.succeed());
-};
+});
 
 var testSubtitles = new TestTemplate("Subtitles", function (video, runner) {
   const initialPosition = this.content.subtitles.startOffset || 1;
