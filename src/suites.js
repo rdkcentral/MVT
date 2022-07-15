@@ -25,137 +25,56 @@
 
 "use strict";
 
+const CommonDashStreams = [
+  MS.DASH.FMP4_AVC_AAC,
+  MS.DASH.FMP4_AVC_AC3,
+  MS.DASH.FMP4_HEVC_EAC3,
+  MS.DASH.FMP4_MPEG2_MP3,
+  MS.DASH.MULTIPERIOD,
+  MS.DASH.PLAYREADY_2_0,
+  MS.DASH.FMP4_MP3,
+  MS.DASH.WEBM_VP9_OPUS,
+  MS.DASH.CMAF_HEVC_AAC,
+  MS.DASH.DYNAMIC,
+  MS.DASH.CMAF_AVC_AC3,
+  MS.DASH.CMAF_HEVC_EAC3,
+  MS.DASH.CMAF_AVC_MP3_VTT,
+];
+
+const SubtitlesDashStreams = [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT];
+
+function makeMvtMediaTests(testTemplate, engine, streams) {
+  let tests = [];
+  streams.forEach((stream) => {
+    tests.push(new MvtMediaTest(testTemplate, stream, engine));
+  });
+  return tests;
+}
+
+// DASH Shaka
 (function () {
   let shaka = new ShakaEngine();
-  const makeShakaTest = (testTemplate, stream) => new MvtMediaTest(testTemplate, stream, shaka);
 
-  let mvtTests = [
-    makeShakaTest(testPlayback, MS.DASH.FMP4_AVC_AAC),
-    makeShakaTest(testPlayback, MS.DASH.FMP4_AVC_AC3),
-    makeShakaTest(testPlayback, MS.DASH.FMP4_HEVC_EAC3),
-    makeShakaTest(testPlayback, MS.DASH.FMP4_MPEG2_MP3),
-    makeShakaTest(testPlayback, MS.DASH.MULTIPERIOD),
-    makeShakaTest(testPlayback, MS.DASH.PLAYREADY_2_0),
-    makeShakaTest(testPlayback, MS.DASH.FMP4_MP3),
-    makeShakaTest(testPlayback, MS.DASH.WEBM_VP9_OPUS),
-    makeShakaTest(testPlayback, MS.DASH.CMAF_HEVC_AAC),
-    makeShakaTest(testPlayback, MS.DASH.DYNAMIC),
-    makeShakaTest(testPlayback, MS.DASH.CMAF_AVC_AC3),
-    makeShakaTest(testPlayback, MS.DASH.CMAF_HEVC_EAC3),
-    makeShakaTest(testPlayback, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeShakaTest(testPause, MS.DASH.FMP4_AVC_AAC),
-    makeShakaTest(testPause, MS.DASH.FMP4_AVC_AC3),
-    makeShakaTest(testPause, MS.DASH.FMP4_HEVC_EAC3),
-    makeShakaTest(testPause, MS.DASH.FMP4_MPEG2_MP3),
-    makeShakaTest(testPause, MS.DASH.MULTIPERIOD),
-    makeShakaTest(testPause, MS.DASH.PLAYREADY_2_0),
-    makeShakaTest(testPause, MS.DASH.FMP4_MP3),
-    makeShakaTest(testPause, MS.DASH.WEBM_VP9_OPUS),
-    makeShakaTest(testPause, MS.DASH.CMAF_HEVC_AAC),
-    makeShakaTest(testPause, MS.DASH.DYNAMIC),
-    makeShakaTest(testPause, MS.DASH.CMAF_AVC_AC3),
-    makeShakaTest(testPause, MS.DASH.CMAF_HEVC_EAC3),
-    makeShakaTest(testPause, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeShakaTest(testSetPosition, MS.DASH.FMP4_AVC_AAC),
-    makeShakaTest(testSetPosition, MS.DASH.FMP4_AVC_AC3),
-    makeShakaTest(testSetPosition, MS.DASH.FMP4_HEVC_EAC3),
-    makeShakaTest(testSetPosition, MS.DASH.FMP4_MPEG2_MP3),
-    makeShakaTest(testSetPosition, MS.DASH.MULTIPERIOD),
-    makeShakaTest(testSetPosition, MS.DASH.PLAYREADY_2_0),
-    makeShakaTest(testSetPosition, MS.DASH.FMP4_MP3),
-    makeShakaTest(testSetPosition, MS.DASH.WEBM_VP9_OPUS),
-    makeShakaTest(testSetPosition, MS.DASH.CMAF_HEVC_AAC),
-    makeShakaTest(testSetPosition, MS.DASH.DYNAMIC),
-    makeShakaTest(testSetPosition, MS.DASH.CMAF_AVC_AC3),
-    makeShakaTest(testSetPosition, MS.DASH.CMAF_HEVC_EAC3),
-    makeShakaTest(testSetPosition, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeShakaTest(testPlayRate, MS.DASH.FMP4_AVC_AAC),
-    makeShakaTest(testPlayRate, MS.DASH.FMP4_AVC_AC3),
-    makeShakaTest(testPlayRate, MS.DASH.FMP4_HEVC_EAC3),
-    makeShakaTest(testPlayRate, MS.DASH.FMP4_MPEG2_MP3),
-    makeShakaTest(testPlayRate, MS.DASH.MULTIPERIOD),
-    makeShakaTest(testPlayRate, MS.DASH.PLAYREADY_2_0),
-    makeShakaTest(testPlayRate, MS.DASH.FMP4_MP3),
-    makeShakaTest(testPlayRate, MS.DASH.WEBM_VP9_OPUS),
-    makeShakaTest(testPlayRate, MS.DASH.CMAF_HEVC_AAC),
-    makeShakaTest(testPlayRate, MS.DASH.DYNAMIC),
-    makeShakaTest(testPlayRate, MS.DASH.CMAF_AVC_AC3),
-    makeShakaTest(testPlayRate, MS.DASH.CMAF_HEVC_EAC3),
-    makeShakaTest(testPlayRate, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeShakaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO),
-    makeShakaTest(testSubtitles, MS.DASH.FMP4_AVC_AAC_TTML),
-    makeShakaTest(testSubtitles, MS.DASH.WEBM_VP9_OPUS_VTT),
-    makeShakaTest(testSubtitles, MS.DASH.CMAF_AVC_MP3_VTT),
-  ];
+  let mvtTests = makeMvtMediaTests(testPlayback, shaka, CommonDashStreams);
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, shaka, CommonDashStreams));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, shaka, CommonDashStreams));
+  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, shaka));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, shaka, SubtitlesDashStreams));
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
 
   registerTestSuite("DASH Shaka", makeTests(mvtTests));
 })();
 
-
+// DASH dashjs
 (function () {
   let dashjs = new DashjsEngine();
-  const makeDashJsTest = (testTemplate, stream) => new MvtMediaTest(testTemplate, stream, dashjs);
 
-  let mvtTests = [
-    makeDashJsTest(testPlayback, MS.DASH.FMP4_AVC_AAC),
-    makeDashJsTest(testPlayback, MS.DASH.FMP4_AVC_AC3),
-    makeDashJsTest(testPlayback, MS.DASH.FMP4_HEVC_EAC3),
-    makeDashJsTest(testPlayback, MS.DASH.FMP4_MPEG2_MP3),
-    makeDashJsTest(testPlayback, MS.DASH.MULTIPERIOD),
-    makeDashJsTest(testPlayback, MS.DASH.PLAYREADY_2_0),
-    makeDashJsTest(testPlayback, MS.DASH.FMP4_MP3),
-    makeDashJsTest(testPlayback, MS.DASH.WEBM_VP9_OPUS),
-    makeDashJsTest(testPlayback, MS.DASH.CMAF_HEVC_AAC),
-    makeDashJsTest(testPlayback, MS.DASH.DYNAMIC),
-    makeDashJsTest(testPlayback, MS.DASH.CMAF_AVC_AC3),
-    makeDashJsTest(testPlayback, MS.DASH.CMAF_HEVC_EAC3),
-    makeDashJsTest(testPlayback, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeDashJsTest(testPause, MS.DASH.FMP4_AVC_AAC),
-    makeDashJsTest(testPause, MS.DASH.FMP4_AVC_AC3),
-    makeDashJsTest(testPause, MS.DASH.FMP4_HEVC_EAC3),
-    makeDashJsTest(testPause, MS.DASH.FMP4_MPEG2_MP3),
-    makeDashJsTest(testPause, MS.DASH.MULTIPERIOD),
-    makeDashJsTest(testPause, MS.DASH.PLAYREADY_2_0),
-    makeDashJsTest(testPause, MS.DASH.FMP4_MP3),
-    makeDashJsTest(testPause, MS.DASH.WEBM_VP9_OPUS),
-    makeDashJsTest(testPause, MS.DASH.CMAF_HEVC_AAC),
-    makeDashJsTest(testPause, MS.DASH.DYNAMIC),
-    makeDashJsTest(testPause, MS.DASH.CMAF_AVC_AC3),
-    makeDashJsTest(testPause, MS.DASH.CMAF_HEVC_EAC3),
-    makeDashJsTest(testPause, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeDashJsTest(testSetPosition, MS.DASH.FMP4_AVC_AAC),
-    makeDashJsTest(testSetPosition, MS.DASH.FMP4_AVC_AC3),
-    makeDashJsTest(testSetPosition, MS.DASH.FMP4_HEVC_EAC3),
-    makeDashJsTest(testSetPosition, MS.DASH.FMP4_MPEG2_MP3),
-    makeDashJsTest(testSetPosition, MS.DASH.MULTIPERIOD),
-    makeDashJsTest(testSetPosition, MS.DASH.PLAYREADY_2_0),
-    makeDashJsTest(testSetPosition, MS.DASH.FMP4_MP3),
-    makeDashJsTest(testSetPosition, MS.DASH.WEBM_VP9_OPUS),
-    makeDashJsTest(testSetPosition, MS.DASH.CMAF_HEVC_AAC),
-    makeDashJsTest(testSetPosition, MS.DASH.DYNAMIC),
-    makeDashJsTest(testSetPosition, MS.DASH.CMAF_AVC_AC3),
-    makeDashJsTest(testSetPosition, MS.DASH.CMAF_HEVC_EAC3),
-    makeDashJsTest(testSetPosition, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeDashJsTest(testPlayRate, MS.DASH.FMP4_AVC_AAC),
-    makeDashJsTest(testPlayRate, MS.DASH.FMP4_AVC_AC3),
-    makeDashJsTest(testPlayRate, MS.DASH.FMP4_HEVC_EAC3),
-    makeDashJsTest(testPlayRate, MS.DASH.FMP4_MPEG2_MP3),
-    makeDashJsTest(testPlayRate, MS.DASH.MULTIPERIOD),
-    makeDashJsTest(testPlayRate, MS.DASH.PLAYREADY_2_0),
-    makeDashJsTest(testPlayRate, MS.DASH.FMP4_MP3),
-    makeDashJsTest(testPlayRate, MS.DASH.WEBM_VP9_OPUS),
-    makeDashJsTest(testPlayRate, MS.DASH.CMAF_HEVC_AAC),
-    makeDashJsTest(testPlayRate, MS.DASH.DYNAMIC),
-    makeDashJsTest(testPlayRate, MS.DASH.CMAF_AVC_AC3),
-    makeDashJsTest(testPlayRate, MS.DASH.CMAF_HEVC_EAC3),
-    makeDashJsTest(testPlayRate, MS.DASH.CMAF_AVC_MP3_VTT),
-    makeDashJsTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO),
-    makeDashJsTest(testSubtitles, MS.DASH.FMP4_AVC_AAC_TTML),
-    makeDashJsTest(testSubtitles, MS.DASH.WEBM_VP9_OPUS_VTT),
-    makeDashJsTest(testSubtitles, MS.DASH.CMAF_AVC_MP3_VTT),
-  ];
+  let mvtTests = makeMvtMediaTests(testPlayback, dashjs, CommonDashStreams);
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, dashjs, CommonDashStreams));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, dashjs, CommonDashStreams));
+  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, dashjs));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, dashjs, SubtitlesDashStreams));
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
 

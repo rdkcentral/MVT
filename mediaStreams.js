@@ -708,8 +708,8 @@ MS.DASH.CMAF_HEVC_EAC3 = new DashStream("cmaf", "test-materials/cmaf/hevc_eac3/m
 MS.DASH.CMAF_AVC_MP3_VTT = new DashStream(
   "cmaf",
   "test-materials/cmaf/h264_mp3/manifest_vtt.mp",
-  "AVC",
-  "MP3",
+  "avc",
+  "mp3",
   "DASH-CMAF-AVC1-MP3-VTT",
   {
     subtitles: {
