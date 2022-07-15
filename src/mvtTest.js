@@ -276,6 +276,7 @@ function makeTests(mvtTests) {
 }
 
 function registerTestSuite(name, tests) {
+  if (tests.length === 0) return;
   let suiteKey = name.replace(" ", "-").toLowerCase() + "-test";
   let info = "Default Timeout: " + TestBase.timeout + "ms";
   let fields = ["passes", "failures", "timeouts"];

@@ -30,10 +30,11 @@ function filterUnsupportedOnProfile(profile, tests) {
   return tests.filter((test) => {
     if (!test instanceof MvtMediaTest) return true;
     let stream = test.stream;
+    let variantSupported = profile.engines[test.engine.name].includes(stream.variant);
     let videoSupported = !stream.video || profile.codecs.includes(stream.video.codec);
     let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
     let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
-    return videoSupported && audioSupported && drmSupported;
+    return variantSupported && videoSupported && audioSupported && drmSupported;
   });
 }
 
@@ -42,15 +43,33 @@ Profiles = {
     note: "Everything enabled",
     drm: ["com.microsoft.playready"],
     codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
+    engines: {
+      html5: ["dash", "hls", "hss", "progressive"],
+      shaka: ["dash", "hls"],
+      dashjs: ["dash", "hss"],
+      hlsjs: ["hls"],
+    },
   },
   default: {
     note: "Default",
     drm: ["com.microsoft.playready"],
     codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
+    engines: {
+      html5: ["hss", "progressive"],
+      shaka: ["dash", "hls"],
+      dashjs: ["dash", "hss"],
+      hlsjs: ["hls"],
+    },
   },
   desktop: {
     note: "For desktop browsers",
     drm: [],
     codecs: ["avc", "mpeg2", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
+    engines: {
+      html5: ["progressive"],
+      shaka: ["dash", "hls"],
+      dashjs: ["dash", "hss"],
+      hlsjs: ["hls"],
+    },
   },
 };

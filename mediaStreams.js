@@ -50,8 +50,8 @@ const TimeCountdownSubtitlesLongLangCodes = {
 var MS = {
   DASH: {
     FMP4_AVC_AAC: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_h264_aac/manifest.mpd",
       video: {
         codec: "avc",
@@ -62,8 +62,8 @@ var MS = {
     },
     FMP4_AVC_AAC_TTML: {
       testBase: "1.1.2",
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
       video: {
         codec: "avc",
@@ -78,8 +78,8 @@ var MS = {
       },
     },
     FMP4_AVC_AC3: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_h264_ac3/manifest.mpd",
       video: {
         codec: "avc",
@@ -89,8 +89,8 @@ var MS = {
       },
     },
     FMP4_HEVC_EAC3: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_hevc_eac3/manifest.mpd",
       video: {
         codec: "hevc",
@@ -100,8 +100,8 @@ var MS = {
       },
     },
     FMP4_MPEG2_MP3: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd",
       video: {
         codec: "mpeg2",
@@ -111,16 +111,16 @@ var MS = {
       },
     },
     FMP4_MP3: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_mp3/manifest.mpd",
       audio: {
         codec: "mp3",
       },
     },
     WEBM_VP9_OPUS: {
-      container: "dash",
-      variant: "webm",
+      variant: "dash",
+      container: "webm",
       src: "test-materials/dash/webm_vp9_opus/manifest.mpd",
       video: {
         codec: "vp9",
@@ -130,8 +130,8 @@ var MS = {
       },
     },
     WEBM_VP9_OPUS_VTT: {
-      container: "dash",
-      variant: "webm",
+      variant: "dash",
+      container: "webm",
       src: "test-materials/dash/webm_vp9_opus/manifest_vtt.mpd",
       video: {
         codec: "vp9",
@@ -146,8 +146,8 @@ var MS = {
       },
     },
     CMAF_HEVC_AAC: {
-      container: "dash",
-      variant: "cmaf",
+      variant: "dash",
+      container: "cmaf",
       src: "https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_AAC_Eng_WebVTT.mpd",
       video: {
         codec: "hevc",
@@ -157,8 +157,8 @@ var MS = {
       },
     },
     MULTIAUDIO: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       note: "video: vid1, audio en: vid1, audio pl: vid2",
       src: "test-materials/dash/fmp4_multiaudio/manifest.mpd",
       video: {
@@ -170,8 +170,8 @@ var MS = {
       },
     },
     PLAYREADY_2_0: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       video: {
         codec: "avc",
@@ -188,8 +188,8 @@ var MS = {
       },
     },
     DYNAMIC: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "https://livesim.dashif.org/livesim/mup_300/tsbd_500/testpic_2s/Manifest.mpd",
       dynamic: true,
       video: {
@@ -200,8 +200,8 @@ var MS = {
       },
     },
     MULTIPERIOD: {
-      container: "dash",
-      variant: "fmp4",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/multiperiod/manifest.mpd",
       video: {
         codec: "avc",
@@ -211,8 +211,8 @@ var MS = {
       },
     },
     CMAF_AVC_AC3: {
-      container: "dash",
-      variant: "cmaf",
+      variant: "dash",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_ac3/manifest.mpd",
       video: {
         codec: "avc",
@@ -222,7 +222,7 @@ var MS = {
       },
     },
     CMAF_HEVC_EAC3: {
-      container: "dash",
+      variant: "dash",
       name: "DASH-CMAF-HEVC-EAC3",
       src: "test-materials/cmaf/hevc_eac3/manifest.mpd",
       video: {
@@ -233,8 +233,8 @@ var MS = {
       },
     },
     CMAF_AVC_MP3_VTT: {
-      container: "dash",
-      variant: "cmaf",
+      variant: "dash",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_mp3/manifest_vtt.mpd",
       video: {
         codec: "avc",
@@ -251,8 +251,8 @@ var MS = {
   },
   HLS: {
     MP2TS_AVC_AAC: {
-      container: "hls",
-      variant: "mpeg2ts",
+      variant: "hls",
+      container: "mpeg2ts",
       src: "test-materials/hls/mpegts_h264_aac/main.m3u8",
       video: {
         codec: "avc",
@@ -262,8 +262,8 @@ var MS = {
       },
     },
     FMP4_AVC_EAC3: {
-      container: "hls",
-      variant: "fmp4",
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_h264_eac3/main.m3u8",
       video: {
         codec: "avc",
@@ -273,8 +273,8 @@ var MS = {
       },
     },
     FMP4_HEVC_AC3: {
-      container: "hls",
-      variant: "fmp4",
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_hevc_ac3/main.m3u8",
       video: {
         codec: "hevc",
@@ -284,16 +284,16 @@ var MS = {
       },
     },
     FMP4_MP3: {
-      container: "hls",
-      variant: "fmp4",
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_mp3/main.m3u8",
       audio: {
         codec: "mp3",
       },
     },
     FMP4_MULTIAUDIO: {
-      container: "hls",
-      variant: "fmp4",
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_multiaudio/main.m3u8",
       video: {
         codec: "avc",
@@ -304,8 +304,8 @@ var MS = {
       },
     },
     FMP4_AVC_AAC_VTT: {
-      container: "hls",
-      variant: "fmp4",
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_h264_aac_vtt/main.m3u8",
       note: "TODO: Prepare stream with multiple subtitles tracks (hard to achieve with ffmpeg)",
       video: {
@@ -322,8 +322,8 @@ var MS = {
       },
     },
     CMAF_AVC_AAC: {
-      container: "hls",
-      variant: "cmaf",
+      variant: "hls",
+      container: "cmaf",
       note: "Source: https://testassets.dashif.org/",
       src: "https://media.axprod.net/TestVectors/v9-MultiFormat/Clear/Manifest_1080p.m3u8",
       video: {
@@ -334,8 +334,8 @@ var MS = {
       },
     },
     CMAF_HEVC_AAC: {
-      container: "hls",
-      variant: "cmaf",
+      variant: "hls",
+      container: "cmaf",
       note: "Source: https://testassets.dashif.org/",
       src: "https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_IFrame_AAC_WebVTT.m3u8",
       video: {
@@ -346,8 +346,8 @@ var MS = {
       },
     },
     CMAF_AVC_AC3: {
-      container: "hls",
-      variant: "cmaf",
+      variant: "hls",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_ac3/master.m3u8",
       video: {
         codec: "avc",
@@ -357,8 +357,8 @@ var MS = {
       },
     },
     CMAF_HEVC_EAC3: {
-      container: "hls",
-      variant: "cmaf",
+      variant: "hls",
+      container: "cmaf",
       src: "test-materials/cmaf/hevc_eac3/master.m3u8",
       video: {
         codec: "hevc",
@@ -368,8 +368,8 @@ var MS = {
       },
     },
     CMAF_AVC_MP3: {
-      container: "hls",
-      variant: "cmaf",
+      variant: "hls",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_mp3/master.m3u8",
       video: {
         codec: "avc",
@@ -382,8 +382,8 @@ var MS = {
   },
   HSS: {
     FMP4_AVC_AAC_VTT: {
-      container: "hss",
-      variant: "fmp4",
+      variant: "hss",
+      container: "fmp4",
       name: "HSS-AVC1-AAC",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://amssamples.streaming.mediaservices.windows.net/683f7e47-bd83-4427-b0a3-26a6c4547782/BigBuckBunny.ism/manifest(format=mpd-time-csf)",
@@ -406,8 +406,8 @@ var MS = {
       },
     },
     PLAYREADY_2_0: {
-      container: "hss",
-      variant: "fmp4",
+      variant: "hss",
+      container: "fmp4",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest",
       drm: {
@@ -426,8 +426,8 @@ var MS = {
   },
   PROG: {
     MP4_AVC_AAC_VTT: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid2_h264_aac.mp4",
       video: {
         codec: "avc",
@@ -448,8 +448,8 @@ var MS = {
       },
     },
     MKV_AVC_AAC_VTT: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid2_h264_aac.mkv",
       video: {
         codec: "avc",
@@ -470,8 +470,8 @@ var MS = {
       },
     },
     MP4_AVC_AC3: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_h264_ac3.mp4",
       video: {
         codec: "avc",
@@ -481,8 +481,8 @@ var MS = {
       },
     },
     MKV_AVC_AC3: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_h264_ac3.mkv",
       video: {
         codec: "avc",
@@ -492,8 +492,8 @@ var MS = {
       },
     },
     MP4_AVC_EAC3: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_h264_eac3.mp4",
       video: {
         codec: "avc",
@@ -503,8 +503,8 @@ var MS = {
       },
     },
     MKV_AVC_EAC3: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_h264_eac3.mkv",
       video: {
         codec: "avc",
@@ -514,8 +514,8 @@ var MS = {
       },
     },
     MP4_AVC_MP3: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_h264_mp3.mp4",
       video: {
         codec: "avc",
@@ -525,8 +525,8 @@ var MS = {
       },
     },
     MKV_AVC_MP3: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_h264_mp3.mkv",
       video: {
         codec: "avc",
@@ -536,8 +536,8 @@ var MS = {
       },
     },
     MP4_HEVC_AAC: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_hevc_aac.mp4",
       video: {
         codec: "hevc",
@@ -547,8 +547,8 @@ var MS = {
       },
     },
     MKV_HEVC_AAC: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_hevc_aac.mkv",
       video: {
         codec: "hevc",
@@ -558,8 +558,8 @@ var MS = {
       },
     },
     MP4_MPEG2V_AAC: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mpeg2",
@@ -569,8 +569,8 @@ var MS = {
       },
     },
     MKV_MPEG2V_AAC: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mpeg2",
@@ -580,8 +580,8 @@ var MS = {
       },
     },
     MP4_VP9_AAC: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_vp9_aac.mp4",
       video: {
         codec: "vp9",
@@ -592,8 +592,8 @@ var MS = {
     },
     MKV_VP9_AAC: {
       testBase: "4.1.7",
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_vp9_aac.mkv",
       video: {
         codec: "vp9",
@@ -603,8 +603,8 @@ var MS = {
       },
     },
     MP4_MPEG4PART2_AAC: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mpeg4part2",
@@ -614,8 +614,8 @@ var MS = {
       },
     },
     MKV_MPEG4PART2_AAC: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mpeg4part2",
@@ -625,40 +625,40 @@ var MS = {
       },
     },
     MP4_EAC3: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid2_eac3.mp4",
       audio: {
         codec: "eac3",
       },
     },
     MKV_EAC3: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid2_eac3.mkv",
       audio: {
         codec: "eac3",
       },
     },
     MP4_AVC: {
-      container: "progressive",
-      variant: "mp4",
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid2_h264.mp4",
       video: {
         codec: "avc",
       },
     },
     MKV_AVC: {
-      container: "progressive",
-      variant: "mkv",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid2_h264.mkv",
       video: {
         codec: "avc",
       },
     },
     MP3_MP3: {
-      container: "progressive",
-      variant: "mp3",
+      variant: "progressive",
+      container: "mp3",
       src: "test-materials/progressive/vid2_mp3.mp3",
       audio: {
         codec: "mp3",
