@@ -380,9 +380,8 @@ var MS = {
       },
     },
   },
-  HSS: [
-    {
-      testBase: "3.1.1",
+  HSS: {
+    FMP4_AVC_AAC_VTT: {
       container: "hss",
       variant: "fmp4",
       name: "HSS-AVC1-AAC",
@@ -392,8 +391,7 @@ var MS = {
         codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "track-tag-webvtt",
@@ -407,11 +405,9 @@ var MS = {
         ],
       },
     },
-    {
-      testBase: "3.1.2",
+    PLAYREADY_2_0: {
       container: "hss",
       variant: "fmp4",
-      name: "HSS-AVC1-AAC-PLAYREADY-2.0",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest",
       drm: {
@@ -424,25 +420,20 @@ var MS = {
         codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-  ],
-  Progressive: [
-    {
-      testBase: "4.1.1",
+  },
+  PROG: {
+    MP4_AVC_AAC_VTT: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-AVC1-AAC-WEBVTT",
       src: "test-materials/progressive/vid2_h264_aac.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "track-tag-webvtt",
@@ -456,19 +447,15 @@ var MS = {
         ],
       },
     },
-    {
-      testBase: "4.1.1",
+    MKV_AVC_AAC_VTT: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-AVC1-AAC-WEBVTT",
       src: "test-materials/progressive/vid2_h264_aac.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "track-tag-webvtt",
@@ -482,272 +469,202 @@ var MS = {
         ],
       },
     },
-    {
-      testBase: "4.1.2",
+    MP4_AVC_AC3: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-AVC1-AC3",
       src: "test-materials/progressive/vid1_h264_ac3.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "4.1.2",
+    MKV_AVC_AC3: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-AVC1-AC3",
       src: "test-materials/progressive/vid1_h264_ac3.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "4.1.3",
+    MP4_AVC_EAC3: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-AVC1-EAC3",
       src: "test-materials/progressive/vid1_h264_eac3.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
         codec: "eac3",
-        channels: "2",
       },
     },
-    {
-      testBase: "4.1.3",
+    MKV_AVC_EAC3: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-AVC1-EAC3",
       src: "test-materials/progressive/vid1_h264_eac3.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
         codec: "eac3",
-        channels: "2",
       },
     },
-    {
-      testBase: "4.1.4",
+    MP4_AVC_MP3: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-AVC1-MP3",
       src: "test-materials/progressive/vid1_h264_mp3.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
         codec: "mp3",
-        channels: "2",
       },
     },
-    {
-      testBase: "4.1.4",
+    MKV_AVC_MP3: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-AVC1-MP3",
       src: "test-materials/progressive/vid1_h264_mp3.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
         codec: "mp3",
-        channels: "2",
       },
     },
-    {
-      testBase: "4.1.5",
+    MP4_HEVC_AAC: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-HEVC-AAC",
       src: "test-materials/progressive/vid1_hevc_aac.mp4",
       video: {
-        codec: "hvc1.1.6.L120.80",
-        resolution: [1920, 800],
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.5",
+    MKV_HEVC_AAC: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-HEVC-AAC",
       src: "test-materials/progressive/vid1_hevc_aac.mkv",
       video: {
-        codec: "hvc1.1.6.L120.80",
-        resolution: [1920, 800],
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.6",
+    MP4_MPEG2V_AAC: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-MPEG2V-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
-        codec: "mp2",
-        resolution: [1280, 720],
+        codec: "mpeg2",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.6",
+    MKV_MPEG2V_AAC: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-MPEG2V-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
-        codec: "mp2",
-        resolution: [1280, 720],
+        codec: "mpeg2",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.7",
+    MP4_VP9_AAC: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-VP9-AAC",
       src: "test-materials/progressive/vid1_vp9_aac.mp4",
       video: {
-        codec: "vp09.00.20.08.00.02.02.02.00",
-        resolution: [1280, 720],
+        codec: "vp9",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
+    MKV_VP9_AAC: {
       testBase: "4.1.7",
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-VP9-AAC",
       src: "test-materials/progressive/vid1_vp9_aac.mkv",
       video: {
-        codec: "vp09.00.20.08.00.02.02.02.00",
-        resolution: [1280, 720],
+        codec: "vp9",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.8",
+    MP4_MPEG4PART2_AAC: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-MPEG4PART2-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mpeg4part2",
-        resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.8",
+    MKV_MPEG4PART2_AAC: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-MPEG4PART2-AAC",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mpeg4part2",
-        resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.8",
+    MP4_EAC3: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-EAC3",
       src: "test-materials/progressive/vid2_eac3.mp4",
       audio: {
         codec: "eac3",
-        channels: "2",
       },
     },
-    {
-      testBase: "4.1.8",
+    MKV_EAC3: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-EAC3",
       src: "test-materials/progressive/vid2_eac3.mkv",
       audio: {
         codec: "eac3",
-        channels: "2",
       },
     },
-    {
-      testBase: "4.1.8",
+    MP4_AVC: {
       container: "progressive",
       variant: "mp4",
-      name: "PROG-MP4-AVC1",
       src: "test-materials/progressive/vid2_h264.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
     },
-    {
-      testBase: "4.1.8",
+    MKV_AVC: {
       container: "progressive",
       variant: "mkv",
-      name: "PROG-MKV-AVC1",
       src: "test-materials/progressive/vid2_h264.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
     },
-    {
-      testBase: "4.1.9",
+    MP3_MP3: {
       container: "progressive",
       variant: "mp3",
-      name: "PROG-MP3-MP3",
       src: "test-materials/progressive/vid2_mp3.mp3",
       audio: {
         codec: "mp3",
-        channels: "2",
       },
     },
-  ],
+  },
 };
 
 (function setMediaStreamNames() {
@@ -789,6 +706,30 @@ const StreamSets = {
       MS.HLS.CMAF_HEVC_EAC3,
       MS.HLS.CMAF_AVC_MP3,
     ],
-    Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT]
-  }
+    Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT],
+  },
+  Progressive: {
+    Common: [
+      MS.PROG.MP4_AVC_AC3,
+      MS.PROG.MKV_AVC_AC3,
+      MS.PROG.MP4_AVC_EAC3,
+      MS.PROG.MKV_AVC_EAC3,
+      MS.PROG.MP4_AVC_MP3,
+      MS.PROG.MKV_AVC_MP3,
+      MS.PROG.MP4_HEVC_AAC,
+      MS.PROG.MKV_HEVC_AAC,
+      MS.PROG.MP4_MPEG2V_AAC,
+      MS.PROG.MKV_MPEG2V_AAC,
+      MS.PROG.MP4_VP9_AAC,
+      MS.PROG.MKV_VP9_AAC,
+      MS.PROG.MP4_MPEG4PART2_AAC,
+      MS.PROG.MKV_MPEG4PART2_AAC,
+      MS.PROG.MP4_EAC3,
+      MS.PROG.MKV_EAC3,
+      MS.PROG.MP4_AVC,
+      MS.PROG.MKV_AVC,
+      MS.PROG.MP3_MP3,
+    ],
+    Subtitles: [MS.PROG.MP4_AVC_AAC_VTT, MS.PROG.MKV_AVC_AAC_VTT],
+  },
 };

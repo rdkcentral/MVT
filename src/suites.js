@@ -106,3 +106,47 @@ function makeMvtMediaTests(testTemplate, engine, streams) {
 
   registerTestSuite("HLS hlsjs", makeTests(mvtTests));
 })();
+
+// HSS html5
+(function () {
+  let html5Engine = new Html5Engine();
+
+  let mvtTests = [
+    new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, html5Engine),
+    new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, html5Engine),
+    new MvtMediaTest(testSubtitles, MS.HSS.FMP4_AVC_AAC_VTT, html5Engine),
+  ];
+
+  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+
+  registerTestSuite("HSS html5", makeTests(mvtTests));
+})();
+
+// HSS dashjs
+(function () {
+  let dashjs = new DashjsEngine();
+
+  let mvtTests = [
+    new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, dashjs),
+    new MvtMediaTest(testPlayback, MS.HSS.PLAYREADY_2_0, dashjs),
+    new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, dashjs),
+    new MvtMediaTest(testSetPosition, MS.HSS.PLAYREADY_2_0, dashjs),
+  ];
+
+  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+
+  registerTestSuite("DASH dashjs", makeTests(mvtTests));
+})();
+
+// Progressive html5
+(function () {
+  let html5Engine = new Html5Engine();
+
+  let mvtTests = makeMvtMediaTests(testPlayback, html5Engine, StreamSets.Progressive.Common);
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, html5Engine, StreamSets.Progressive.Common));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, html5Engine, StreamSets.Progressive.Subtitles));
+
+  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+
+  registerTestSuite("Progressive html5", makeTests(mvtTests));
+})();
