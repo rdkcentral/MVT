@@ -46,90 +46,273 @@ const TimeCountdownSubtitlesLongLangCodes = {
   fra: TimeCountdownSubtitles["fr"],
 };
 
-// Define content
-var MvtMedia = {
-  HLS: [
-    {
-      testBase: "2.1.1",
-      container: "hls",
-      variant: "mpeg2ts",
-      name: "HLS-MP2TS-AVC1-AAC",
-      src: "test-materials/hls/mpegts_h264_aac/main.m3u8",
+// Media Streams
+var MS = {
+  DASH: {
+    FMP4_AVC_AAC: {
+      container: "dash",
+      variant: "fmp4",
+      src: "test-materials/dash/fmp4_h264_aac/manifest.mpd",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "2.2.1",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-AVC1-EAC3",
-      src: "test-materials/hls/fmp4_h264_eac3/main.m3u8",
+    FMP4_AVC_AAC_TTML: {
+      testBase: "1.1.2",
+      container: "dash",
+      variant: "fmp4",
+      src: "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "aac",
+      },
+      subtitles: {
+        format: "ttml",
+        languages: ["de", "en", "fr", "es"],
+        expectedText: TimeCountdownSubtitles,
       },
     },
-    {
-      testBase: "2.2.2",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-HEVC-AC3",
-      src: "test-materials/hls/fmp4_hevc_ac3/main.m3u8",
+    FMP4_AVC_AC3: {
+      container: "dash",
+      variant: "fmp4",
+      src: "test-materials/dash/fmp4_h264_ac3/manifest.mpd",
       video: {
-        codec: "hvc1.1.6.L150.90",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "2.2.3",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-MP3",
-      src: "test-materials/hls/fmp4_mp3/main.m3u8",
+    FMP4_HEVC_EAC3: {
+      container: "dash",
+      variant: "fmp4",
+      src: "test-materials/dash/fmp4_hevc_eac3/manifest.mpd",
+      video: {
+        codec: "hevc",
+      },
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "2.2.4",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-MULTIAUDIO",
-      src: "test-materials/hls/fmp4_multiaudio/main.m3u8",
+    FMP4_MPEG2_MP3: {
+      container: "dash",
+      variant: "fmp4",
+      src: "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd",
       video: {
-        codec: "avc1.42C00D",
+        codec: "mpeg2",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "mp3",
+      },
+    },
+    FMP4_MP3: {
+      container: "dash",
+      variant: "fmp4",
+      src: "test-materials/dash/fmp4_mp3/manifest.mpd",
+      audio: {
+        codec: "mp3",
+      },
+    },
+    WEBM_VP9_OPUS: {
+      container: "dash",
+      variant: "webm",
+      src: "test-materials/dash/webm_vp9_opus/manifest.mpd",
+      video: {
+        codec: "vp9",
+      },
+      audio: {
+        codec: "opus",
+      },
+    },
+    WEBM_VP9_OPUS_VTT: {
+      container: "dash",
+      variant: "webm",
+      src: "test-materials/dash/webm_vp9_opus/manifest_vtt.mpd",
+      video: {
+        codec: "vp9",
+      },
+      audio: {
+        codec: "opus",
+      },
+      subtitles: {
+        format: "webvtt",
+        languages: ["de", "en", "fr", "es"],
+        expectedText: TimeCountdownSubtitles,
+      },
+    },
+    CMAF_HEVC_AAC: {
+      container: "dash",
+      variant: "cmaf",
+      src: "https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_AAC_Eng_WebVTT.mpd",
+      video: {
+        codec: "hevc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
+    MULTIAUDIO: {
+      container: "dash",
+      variant: "fmp4",
+      note: "video: vid1, audio en: vid1, audio pl: vid2",
+      src: "test-materials/dash/fmp4_multiaudio/manifest.mpd",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
         languages: ["en", "pl"],
       },
     },
-    {
-      testBase: "2.2.4",
+    PLAYREADY_2_0: {
+      container: "dash",
+      variant: "fmp4",
+      note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+      src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
+      drm: {
+        servers: {
+          "com.microsoft.playready":
+            "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
+        },
+      },
+    },
+    DYNAMIC: {
+      container: "dash",
+      variant: "fmp4",
+      src: "https://livesim.dashif.org/livesim/mup_300/tsbd_500/testpic_2s/Manifest.mpd",
+      dynamic: true,
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
+    MULTIPERIOD: {
+      container: "dash",
+      variant: "fmp4",
+      src: "test-materials/dash/multiperiod/manifest.mpd",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
+    CMAF_AVC_AC3: {
+      container: "dash",
+      variant: "cmaf",
+      src: "test-materials/cmaf/h264_ac3/manifest.mpd",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "ac3",
+      },
+    },
+    CMAF_HEVC_EAC3: {
+      container: "dash",
+      name: "DASH-CMAF-HEVC-EAC3",
+      src: "test-materials/cmaf/hevc_eac3/manifest.mpd",
+      video: {
+        codec: "hevc",
+      },
+      audio: {
+        codec: "eac3",
+      },
+    },
+    CMAF_AVC_MP3_VTT: {
+      container: "dash",
+      variant: "cmaf",
+      src: "test-materials/cmaf/h264_mp3/manifest_vtt.mpd",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "mp3",
+      },
+      subtitles: {
+        format: "webvtt",
+        languages: ["de", "en", "fr", "es"],
+        expectedText: TimeCountdownSubtitles,
+      },
+    },
+  },
+  HLS: {
+    MP2TS_AVC_AAC: {
       container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-AVC1-AAC-VTT",
+      variant: "mpeg2ts",
+      src: "test-materials/hls/mpegts_h264_aac/main.m3u8",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
+    FMP4_AVC_EAC3: {
+      container: "hls",
+      variant: "fmp4",
+      src: "test-materials/hls/fmp4_h264_eac3/main.m3u8",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "eac3",
+      },
+    },
+    FMP4_HEVC_AC3: {
+      container: "hls",
+      variant: "fmp4",
+      src: "test-materials/hls/fmp4_hevc_ac3/main.m3u8",
+      video: {
+        codec: "hevc",
+      },
+      audio: {
+        codec: "ac3",
+      },
+    },
+    FMP4_MP3: {
+      container: "hls",
+      variant: "fmp4",
+      src: "test-materials/hls/fmp4_mp3/main.m3u8",
+      audio: {
+        codec: "mp3",
+      },
+    },
+    FMP4_MULTIAUDIO: {
+      container: "hls",
+      variant: "fmp4",
+      src: "test-materials/hls/fmp4_multiaudio/main.m3u8",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+        languages: ["en", "pl"],
+      },
+    },
+    FMP4_AVC_AAC_VTT: {
+      container: "hls",
+      variant: "fmp4",
       src: "test-materials/hls/fmp4_h264_aac_vtt/main.m3u8",
       note: "TODO: Prepare stream with multiple subtitles tracks (hard to achieve with ffmpeg)",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "webvtt",
@@ -138,89 +321,75 @@ var MvtMedia = {
         expectedText: TimeCountdownSubtitles,
       },
     },
-    {
-      testBase: "2.3.1",
+    CMAF_AVC_AAC: {
       container: "hls",
       variant: "cmaf",
-      name: "HLS-CMAF-AVC1-AAC",
       note: "Source: https://testassets.dashif.org/",
       src: "https://media.axprod.net/TestVectors/v9-MultiFormat/Clear/Manifest_1080p.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "2.3.2",
+    CMAF_HEVC_AAC: {
       container: "hls",
       variant: "cmaf",
-      name: "HLS-CMAF-HEVC-AAC",
       note: "Source: https://testassets.dashif.org/",
       src: "https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_IFrame_AAC_WebVTT.m3u8",
       video: {
-        codec: "hvc1.1.6.L150.90",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "2.3.3",
+    CMAF_AVC_AC3: {
       container: "hls",
       variant: "cmaf",
-      name: "HLS-CMAF-AVC1-AC3",
       src: "test-materials/cmaf/h264_ac3/master.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "2.3.4",
+    CMAF_HEVC_EAC3: {
       container: "hls",
       variant: "cmaf",
-      name: "HLS-CMAF-HEVC-EAC3",
       src: "test-materials/cmaf/hevc_eac3/master.m3u8",
       video: {
-        codec: "hvc1.1.6.L150.90",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "2.3.5",
+    CMAF_AVC_MP3: {
       container: "hls",
       variant: "cmaf",
-      name: "HLS-CMAF-AVC1-MP3",
       src: "test-materials/cmaf/h264_mp3/master.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.69",
+        codec: "mp3",
         channels: "2",
       },
     },
-  ],
+  },
   HSS: [
     {
       testBase: "3.1.1",
       container: "hss",
-      variant: "fragmentedmp4",
+      variant: "fmp4",
       name: "HSS-AVC1-AAC",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://amssamples.streaming.mediaservices.windows.net/683f7e47-bd83-4427-b0a3-26a6c4547782/BigBuckBunny.ism/manifest(format=mpd-time-csf)",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
         codec: "mp4a.40.2",
@@ -241,7 +410,7 @@ var MvtMedia = {
     {
       testBase: "3.1.2",
       container: "hss",
-      variant: "fragmentedmp4",
+      variant: "fmp4",
       name: "HSS-AVC1-AAC-PLAYREADY-2.0",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest",
@@ -252,7 +421,7 @@ var MvtMedia = {
         },
       },
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
         codec: "mp4a.40.2",
@@ -354,7 +523,7 @@ var MvtMedia = {
         resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.a6",
+        codec: "eac3",
         channels: "2",
       },
     },
@@ -369,7 +538,7 @@ var MvtMedia = {
         resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.a6",
+        codec: "eac3",
         channels: "2",
       },
     },
@@ -384,7 +553,7 @@ var MvtMedia = {
         resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.69",
+        codec: "mp3",
         channels: "2",
       },
     },
@@ -399,7 +568,7 @@ var MvtMedia = {
         resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.69",
+        codec: "mp3",
         channels: "2",
       },
     },
@@ -530,7 +699,7 @@ var MvtMedia = {
       name: "PROG-MP4-EAC3",
       src: "test-materials/progressive/vid2_eac3.mp4",
       audio: {
-        codec: "mp4a.a6",
+        codec: "eac3",
         channels: "2",
       },
     },
@@ -541,7 +710,7 @@ var MvtMedia = {
       name: "PROG-MKV-EAC3",
       src: "test-materials/progressive/vid2_eac3.mkv",
       audio: {
-        codec: "mp4a.a6",
+        codec: "eac3",
         channels: "2",
       },
     },
@@ -574,155 +743,52 @@ var MvtMedia = {
       name: "PROG-MP3-MP3",
       src: "test-materials/progressive/vid2_mp3.mp3",
       audio: {
-        codec: "mp4a.69",
+        codec: "mp3",
         channels: "2",
       },
     },
   ],
 };
 
-function makeStreamDefaultName(category, container, vCodec, aCodec) {
-  let name = `${category}_${container}`;
-  if (vCodec) name = name.concat(`_${vCodec}`);
-  if (aCodec) name = name.concat(`_${aCodec}`);
-  return name.toUpperCase();
-}
+(function setMediaStreamNames() {
+  Object.keys(MS).forEach((category) => {
+    Object.keys(MS[category]).forEach((streamName) => {
+      MS[category][streamName].name = `${category}_${streamName}`.toUpperCase();
+    });
+  });
+})();
 
-class MediaStream {
-  constructor(category, container, src, vCodec, aCodec, name = null, custom = null) {
-    this.category = category;
-    this.name = name;
-    this.container = container;
-    this.src = src;
-    this.videoCodec = vCodec;
-    this.audioCodec = aCodec;
-
-    if (name) this.name = name;
-    else this.name = makeStreamDefaultName(category, container, vCodec, aCodec);
-
-    if (!custom) custom = {};
-    this.subtitles = custom.subtitles;
-    this.drm = custom.drm;
-    if (custom.audio && custom.audio.languages) this.audioLanguages = custom.audio.languages;
-    else this.audioLanguages = ["en"];
-    this.dynamic = Boolean(custom.dynamic);
+const StreamSets = {
+  DASH: {
+    Common: [
+      MS.DASH.FMP4_AVC_AAC,
+      MS.DASH.FMP4_AVC_AC3,
+      MS.DASH.FMP4_HEVC_EAC3,
+      MS.DASH.FMP4_MPEG2_MP3,
+      MS.DASH.FMP4_MP3,
+      MS.DASH.WEBM_VP9_OPUS,
+      MS.DASH.MULTIPERIOD,
+      MS.DASH.CMAF_HEVC_AAC,
+      MS.DASH.DYNAMIC,
+      MS.DASH.CMAF_AVC_AC3,
+      MS.DASH.CMAF_HEVC_EAC3,
+      MS.DASH.CMAF_AVC_MP3_VTT,
+    ],
+    DRM: [MS.DASH.PLAYREADY_2_0],
+    Subtitles: [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT],
+  },
+  HLS: {
+    Common: [
+      MS.HLS.MP2TS_AVC_AAC,
+      MS.HLS.FMP4_AVC_EAC3,
+      MS.HLS.FMP4_HEVC_AC3,
+      MS.HLS.FMP4_MP3,
+      MS.HLS.CMAF_AVC_AAC,
+      MS.HLS.CMAF_HEVC_AAC,
+      MS.HLS.CMAF_AVC_AC3,
+      MS.HLS.CMAF_HEVC_EAC3,
+      MS.HLS.CMAF_AVC_MP3,
+    ],
+    Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT]
   }
-}
-
-class DashStream extends MediaStream {
-  constructor(container, src, vCodec, aCodec, name = null, custom = null) {
-    super("DASH", container, src, vCodec, aCodec, name, custom);
-  }
-}
-
-// MS = MediaStreams
-const MS = { DASH: {}, HLS: {}, HSS: {}, progressive: {} };
-
-MS.DASH.FMP4_AVC_AAC = new DashStream("fmp4", "test-materials/dash/fmp4_h264_aac/manifest.mpd", "avc", "aac");
-MS.DASH.FMP4_AVC_AC3 = new DashStream("fmp4", "test-materials/dash/fmp4_h264_ac3/manifest.mpd", "avc", "ac3");
-MS.DASH.FMP4_HEVC_EAC3 = new DashStream("fmp4", "test-materials/dash/fmp4_hevc_eac3/manifest.mpd", "hevc", "eac3");
-MS.DASH.FMP4_MPEG2_MP3 = new DashStream("fmp4", "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd", "mpeg2", "mp3");
-MS.DASH.MULTIPERIOD = new DashStream(
-  "fmp4",
-  "test-materials/dash/multiperiod/manifest.mpd",
-  "avc",
-  "aac",
-  "DASH_MULTIPERIOD"
-);
-MS.DASH.FMP4_AVC_AAC_TTML = new DashStream(
-  "fmp4",
-  "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
-  "avc",
-  "aac",
-  "DASH_FMP4_AVC_AAC_TTML",
-  {
-    subtitles: {
-      format: "ttml",
-      languages: ["de", "en", "fr", "es"],
-      expectedText: TimeCountdownSubtitles,
-    },
-  }
-);
-// Source: https://testweb.playready.microsoft.com/Content/Content2X"
-MS.DASH.PLAYREADY_2_0 = new DashStream(
-  "fmp4",
-  "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
-  "avc",
-  "aac",
-  "DASH_PLAYREADY_2_0",
-  {
-    drm: {
-      servers: {
-        "com.microsoft.playready":
-          "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
-      },
-    },
-  }
-);
-MS.DASH.FMP4_MP3 = new DashStream("fmp4", "test-materials/dash/fmp4_mp3/manifest.mpd", null, "mp3");
-MS.DASH.WEBM_VP9_OPUS = new DashStream("webm", "test-materials/dash/webm_vp9_opus/manifest.mpd", "vp9", "opus");
-MS.DASH.WEBM_VP9_OPUS_VTT = new DashStream(
-  "webm",
-  "test-materials/dash/webm_vp9_opus/manifest_vtt.mpd",
-  "vp9",
-  "opus",
-  "DASH_WEBM_VP9_OPUS_VTT",
-  {
-    subtitles: {
-      format: "webvtt",
-      languages: ["de", "en", "fr", "es"],
-      expectedText: TimeCountdownSubtitles,
-    },
-  }
-);
-MS.DASH.CMAF_HEVC_AAC = new DashStream(
-  "cmaf",
-  "https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_AAC_Eng_WebVTT.mpd",
-  "hevc",
-  "aac"
-);
-MS.DASH.MULTIAUDIO = new DashStream(
-  "fmp4",
-  "test-materials/dash/fmp4_multiaudio/manifest.mpd",
-  "avc",
-  "aac",
-  "DASH_MULTIAUDIO",
-  {
-    audio: {
-      languages: ["en", "pl"],
-    },
-  }
-);
-MS.DASH.DYNAMIC = new DashStream(
-  "fmp4",
-  "https://livesim.dashif.org/livesim/mup_300/tsbd_500/testpic_2s/Manifest.mpd",
-  "avc",
-  "aac",
-  "DASH_DYNAMIC",
-  {
-    dynamic: true,
-  }
-);
-MS.DASH.CMAF_AVC_AC3 = new DashStream("cmaf", "test-materials/cmaf/h264_ac3/manifest.mpd", "avc", "ac3");
-MS.DASH.CMAF_HEVC_EAC3 = new DashStream("cmaf", "test-materials/cmaf/hevc_eac3/manifest.mpd", "hevc", "eac3");
-MS.DASH.CMAF_AVC_MP3_VTT = new DashStream(
-  "cmaf",
-  "test-materials/cmaf/h264_mp3/manifest_vtt.mp",
-  "avc",
-  "mp3",
-  "DASH-CMAF-AVC1-MP3-VTT",
-  {
-    subtitles: {
-      format: "webvtt",
-      languages: ["de", "en", "fr", "es"],
-      expectedText: TimeCountdownSubtitles,
-    },
-  }
-);
-
-// MS.DASH. = new DashStream(
-//   "",
-//   "",
-//   "",
-//   ""
-// );
+};

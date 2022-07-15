@@ -30,8 +30,8 @@ function filterUnsupportedOnProfile(profile, tests) {
   return tests.filter((test) => {
     if (!test instanceof MvtMediaTest) return true;
     let stream = test.stream;
-    let videoSupported = !stream.videoCodec || profile.codecs.includes(stream.videoCodec);
-    let audioSupported = !stream.audioCodec || profile.codecs.includes(stream.audioCodec);
+    let videoSupported = !stream.video || profile.codecs.includes(stream.video.codec);
+    let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
     let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
     return videoSupported && audioSupported && drmSupported;
   });

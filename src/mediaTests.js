@@ -243,7 +243,7 @@ var testChangeAudioTracks = new TestTemplate("AudioTracks", function (video, run
   const trackPlaybackTime = 7;
   const positionInaccuracyThreshold = 2;
 
-  var languages = this.content.audioLanguages.slice().reverse();
+  var languages = this.content.audio.languages.slice().reverse();
   // Set the first language twice at start and end
   languages.unshift(languages[languages.length - 1]);
 
@@ -253,7 +253,7 @@ var testChangeAudioTracks = new TestTemplate("AudioTracks", function (video, run
         runner.log("Changing language to " + lang);
         let availableLanguages = this.changeLanguage(video, runner, lang);
         runner.assert(
-          arraysEqual(availableLanguages.sort(), this.content.audioLanguages.slice().sort()),
+          arraysEqual(availableLanguages.sort(), this.content.audio.languages.slice().sort()),
           "languages to match declared"
         );
         let trackChangePosition = video.currentTime;

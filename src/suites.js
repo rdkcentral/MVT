@@ -25,24 +25,6 @@
 
 "use strict";
 
-const CommonDashStreams = [
-  MS.DASH.FMP4_AVC_AAC,
-  MS.DASH.FMP4_AVC_AC3,
-  MS.DASH.FMP4_HEVC_EAC3,
-  MS.DASH.FMP4_MPEG2_MP3,
-  MS.DASH.MULTIPERIOD,
-  MS.DASH.PLAYREADY_2_0,
-  MS.DASH.FMP4_MP3,
-  MS.DASH.WEBM_VP9_OPUS,
-  MS.DASH.CMAF_HEVC_AAC,
-  MS.DASH.DYNAMIC,
-  MS.DASH.CMAF_AVC_AC3,
-  MS.DASH.CMAF_HEVC_EAC3,
-  MS.DASH.CMAF_AVC_MP3_VTT,
-];
-
-const SubtitlesDashStreams = [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT];
-
 function makeMvtMediaTests(testTemplate, engine, streams) {
   let tests = [];
   streams.forEach((stream) => {
@@ -55,11 +37,13 @@ function makeMvtMediaTests(testTemplate, engine, streams) {
 (function () {
   let shaka = new ShakaEngine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, shaka, CommonDashStreams);
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, shaka, CommonDashStreams));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, shaka, CommonDashStreams));
+  let commonStreams = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM);
+  let mvtTests = makeMvtMediaTests(testPlayback, shaka, commonStreams);
+  // TODO (ONEM-26308) Restore testPause for all suites once WebKit bug is fixed
+  // mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, shaka, commonStreams));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, shaka, commonStreams));
   mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, shaka));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, shaka, SubtitlesDashStreams));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, shaka, StreamSets.DASH.Subtitles));
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
 
@@ -70,13 +54,55 @@ function makeMvtMediaTests(testTemplate, engine, streams) {
 (function () {
   let dashjs = new DashjsEngine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, dashjs, CommonDashStreams);
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, dashjs, CommonDashStreams));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, dashjs, CommonDashStreams));
+  let commonStreams = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM);
+  let mvtTests = makeMvtMediaTests(testPlayback, dashjs, commonStreams);
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, dashjs, commonStreams));
   mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, dashjs));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, dashjs, SubtitlesDashStreams));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, dashjs, StreamSets.DASH.Subtitles));
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
 
   registerTestSuite("DASH dashjs", makeTests(mvtTests));
+})();
+
+// DASH html5
+(function () {
+  let html5Engine = new Html5Engine();
+
+  let mvtTests = makeMvtMediaTests(testPlayback, html5Engine, StreamSets.DASH.Common);
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, html5Engine, StreamSets.DASH.Common));
+  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, html5Engine));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, html5Engine, StreamSets.DASH.Subtitles));
+
+  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+
+  registerTestSuite("DASH html5", makeTests(mvtTests));
+})();
+
+// HLS Shaka
+(function () {
+  let shaka = new ShakaEngine();
+
+  let mvtTests = makeMvtMediaTests(testPlayback, shaka, StreamSets.HLS.Common);
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, shaka, StreamSets.HLS.Common));
+  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, shaka));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, shaka, StreamSets.HLS.Subtitles));
+
+  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+
+  registerTestSuite("HLS Shaka", makeTests(mvtTests));
+})();
+
+// HLS hlsjs
+(function () {
+  let shaka = new HlsjsEngine();
+
+  let mvtTests = makeMvtMediaTests(testPlayback, shaka, StreamSets.HLS.Common);
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, shaka, StreamSets.HLS.Common));
+  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, shaka));
+  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, shaka, StreamSets.HLS.Subtitles));
+
+  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+
+  registerTestSuite("HLS hlsjs", makeTests(mvtTests));
 })();
