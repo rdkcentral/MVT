@@ -19,12 +19,24 @@
 
 "use strict";
 
-function CountContent(engine, containerName, variantName, variant) {
+const StreamingTypes = ["dash", "hls", "hss", "progressive"]
+const columns = {
+  "Video": ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9"],
+  "Audio": ["aac", "ac3", "eac3", "mp3", "opus"],
+  "DRM": ["PlayReady"],
+  "Subtitles": ["Out-of-band WebVTT", "In-band WebVTT", "TTML"]
+}
+const unsupportedColor = "#fffae5";
+const noContentColor = "#ffebe5";
+const someContentColor = "#e3fcef";
+
+
+function CountContent(engine, variantName, containerName, variant) {
   var codecs = {};
-  for (const key in MvtMedia) {
-    var type = MvtMedia[key];
-    type.forEach((media) => {
-      if (media.container != containerName || media.variant != variantName) {
+  for (const key in MS) {
+    var type = MS[key];
+    Object.values(type).forEach((media) => {
+      if (media.variant != variantName || media.container != containerName) {
         return;
       }
 
@@ -43,9 +55,6 @@ function CountContent(engine, containerName, variantName, variant) {
   return codecs;
 }
 
-var unsupportedColor = "#fffae5";
-var noContentColor = "#ffebe5";
-var someContentColor = "#e3fcef";
 
 function CodecSupport(count, engine, variant, codec) {
   var td = document.createElement("td");
@@ -80,10 +89,9 @@ function createAndAdd(parent, tag, content) {
   return child;
 }
 
-var GenerateCoverage = function () {
-  var coverage = document.getElementById("coverage");
-  coverage.innerHTML =
-    "<p>Coverage Report for " +
+function setCoverageHeader(coverageDiv) {
+  coverageDiv.innerHTML =
+    "<p>Coverage report for profile: " +
     SelectedProfile.note +
     '</p>\
   <p>This lists how many pieces of test content exist, not if the content pass or fail.</p>\
@@ -98,8 +106,11 @@ var GenerateCoverage = function () {
     someContentColor +
     '">Supported and number of content in Test Suite</td>\
   </tr></table>';
+}
+
+function addProfileSelector(coverageDiv) {
   let profilesSpan = util.createElement("span", "profilesSpan", "rightmargin20", "Profile: ");
-  coverage.appendChild(profilesSpan);
+  coverageDiv.appendChild(profilesSpan);
   Object.keys(Profiles).forEach((profileId) => {
     let span = util.createElement("span", profileId, "rightmargin20", profileId);
     span.setAttribute("tabindex", "0");
@@ -116,10 +127,16 @@ var GenerateCoverage = function () {
     profilesSpan.appendChild(span);
   });
 
+}
+
+function generateCoverage() {
+  let coverageDiv = document.getElementById("coverage");
+  setCoverageHeader(coverageDiv);
+  addProfileSelector(coverageDiv);
+
   var coverage = createAndAdd(coverage, "div");
   coverage.classList.add("coverage");
-  for (const container_ in SelectedProfile.containers) {
-    var container = SelectedProfile.containers[container_];
+  for (const container in AllContainers) {
     var top = createAndAdd(coverage, "div");
     top.appendChild(util.createElement("h1", container_, "focusable", container_));
     var table = util.createElement("table", container_ + "_table", "coverage_table");
@@ -129,11 +146,7 @@ var GenerateCoverage = function () {
     var drm = [];
     var subtitles = [];
     var note = false;
-    for (const variant_ in container) {
-      if (variant_ == "engine") {
-        continue;
-      }
-      var variant = container[variant_];
+    for (const variant in AllVariants) {
       if (variant.video) {
         videoCodecs = videoCodecs.concat(variant.video);
       }
@@ -243,10 +256,3 @@ var GenerateCoverage = function () {
     }
   }
 };
-
-try {
-  exports.getTest = GenerateCoverage;
-} catch (e) {
-  // do nothing, this function is not supposed to work for browser, but it's for
-  // Node js to generate json file instead.
-}

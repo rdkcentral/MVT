@@ -135,7 +135,7 @@ function makeMvtMediaTests(testTemplate, engine, streams) {
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
 
-  registerTestSuite("DASH dashjs", makeTests(mvtTests));
+  registerTestSuite("HSS dashjs", makeTests(mvtTests));
 })();
 
 // Progressive html5

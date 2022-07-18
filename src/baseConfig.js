@@ -17,7 +17,9 @@
  * limitations under the License.
  */
 
-var DefaultProfile = "default";
+
+const AllContainers = ["cmaf", "fmp4", "mkv", "mpeg2ts", "mp3", "mp4", "webm"]
+const AllVariants = ["dash", "hls", "hss", "progressive"]
 
 var DefaultEngines = {
   html5: {
@@ -43,7 +45,7 @@ var DefaultEngines = {
 
 var DefaultContainers = {
   hls: {
-    fragmentedmp4: {
+    fmp4: {
       video: ["avc1", "hevc"],
       audio: ["aac", "ac3", "eac3", "mp3"],
       subtitles: ["webvtt", "ttml"],

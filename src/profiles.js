@@ -64,7 +64,7 @@ Profiles = {
   desktop: {
     note: "For desktop browsers",
     drm: [],
-    codecs: ["avc", "mpeg2", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
+    codecs: ["avc", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
     engines: {
       html5: ["progressive"],
       shaka: ["dash", "hls"],
@@ -73,3 +73,5 @@ Profiles = {
     },
   },
 };
+
+var DefaultProfile = "default";
