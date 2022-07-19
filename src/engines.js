@@ -93,6 +93,7 @@ class Html5Engine extends Engine {
       return languages;
     };
 
+    test.prototype.engine = this.name;
     test.prototype.changeSubtitles = function (video, content, runner, language, callback) {
       var tracks = video.textTracks;
       var found = false;
@@ -149,6 +150,7 @@ class ShakaEngine extends Engine {
       });
       this.shakaPlayer.load(media.src).catch(onError);
     };
+    test.prototype.engine = this.name;
     test.prototype.superTeardown = test.prototype.teardown;
     test.prototype.teardown = function (testSuiteVer, cb) {
       this.shakaPlayer.destroy();
@@ -218,6 +220,7 @@ class DashjsEngine extends Engine {
       this.dashjsPlayer.attachTTMLRenderingDiv(subtitleDiv);
       this.dashjsPlayer.setInitialMediaSettingsFor("text", { lang: "en", role: "subtitles" });
     };
+    test.prototype.engine = this.name;
     test.prototype.superTeardown = test.prototype.teardown;
     test.prototype.teardown = function (testSuiteVer, cb) {
       try {
@@ -286,6 +289,7 @@ class HlsjsEngine extends Engine {
         runner.fail(error);
       }
     };
+    test.prototype.engine = this.name;
     test.prototype.superTeardown = test.prototype.teardown;
     test.prototype.teardown = function (testSuiteVer, cb) {
       this.hls.destroy();

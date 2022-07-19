@@ -223,6 +223,7 @@ var MS = {
     },
     CMAF_HEVC_EAC3: {
       variant: "dash",
+      container: "cmaf",
       name: "DASH-CMAF-HEVC-EAC3",
       src: "test-materials/cmaf/hevc_eac3/manifest.mpd",
       video: {

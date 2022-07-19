@@ -17,9 +17,8 @@
  * limitations under the License.
  */
 
-
-const AllContainers = ["cmaf", "fmp4", "mkv", "mpeg2ts", "mp3", "mp4", "webm"]
-const AllVariants = ["dash", "hls", "hss", "progressive"]
+const AllContainers = ["cmaf", "fmp4", "mkv", "mpeg2ts", "mp3", "mp4", "webm"];
+const AllVariants = ["dash", "hls", "hss", "progressive"];
 
 var DefaultEngines = {
   html5: {
