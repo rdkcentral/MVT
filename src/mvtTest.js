@@ -81,14 +81,15 @@ window.testSuiteVersions = {
 
 class TestTemplate {
   constructor(name, code) {
-    this.testName = name;
+    this.name = name;
     this.code = code;
   }
 }
 
 class MvtTest {
-  constructor(testTemplate, unstable = null, timeout = TestBase.timeout) {
+  constructor(testTemplate, testCaseName, unstable = null, timeout = TestBase.timeout) {
     this.testTemplate = testTemplate;
+    this.testCaseName = testCaseName;
     this.unstable = unstable;
     this.mandatory = !Boolean(unstable);
     this.timeout = timeout;
@@ -97,27 +98,30 @@ class MvtTest {
 
 class MvtMediaTest extends MvtTest {
   constructor(testTemplate, stream, engine, unstable = null, timeout = TestBase.timeout) {
-    super(testTemplate, unstable ? unstable : stream.unstable, timeout);
+    let testCaseName = stream.name + " " + testTemplate.name;
+    super(testTemplate, testCaseName, unstable ? unstable : stream.unstable, timeout);
     this.stream = stream;
     this.engine = engine;
   }
 }
 
-function makeBasicTest(mvtTest) {
-  let test = createTest(mvtTest.testTemplate.name, mvtTest.testTemplate.name, mvtTest.mandatory);
+function createFrameworkTest(mvtTest) {
+  let test = createTest(mvtTest.testCaseName, mvtTest.testTemplate.name, mvtTest.mandatory);
   test.prototype.timeout = mvtTest.timeout;
   test.prototype.unstable = mvtTest.unstable;
-  test.prototype.onload = () => {
-    mvtTest.testTemplate.code();
+  return test;
+}
+
+function makeBasicTest(mvtTest) {
+  let test = createFrameworkTest(mvtTest);
+  test.prototype.start = function (runner, video) {
+    mvtTest.testTemplate.code.bind(this)(runner, video);
   };
   return test;
 }
 
 function makeMediaTest(mvtMediaTest) {
-  let testName = mvtMediaTest.stream.name + " " + mvtMediaTest.testTemplate.testName;
-  let test = createTest(testName, mvtMediaTest.testTemplate.testName, mvtMediaTest.mandatory);
-  test.prototype.timeout = mvtMediaTest.timeout;
-  test.prototype.unstable = mvtMediaTest.unstable;
+  let test = createFrameworkTest(mvtMediaTest);
   test.prototype.onload = function (runner, video) {
     if (!test.prototype.playing) {
       test.prototype.playing = true;

@@ -82,6 +82,26 @@ function checkVideoFramesIncreasing(video, runner, hasVideoTrack) {
   });
 }
 
+function makeVideoCanPlayTest(codec, container, mimeType) {
+  return new TestTemplate(`VideoCanPlayType`, function (runner, video) {
+    const fullMime = `${container}; codecs="${mimeType}"`;
+    runner.log(`Executing canPlayType test for ${codec} (${fullMime})`);
+    const canPlayType = video.canPlayType(fullMime);
+    runner.assert(canPlayType === "probably", `canPlayType should be probably for ${fullMime}`);
+    runner.succeed();
+  });
+}
+
+function makeIsTypeSupportedTest(codec, container, mimeType) {
+  return new TestTemplate(`IsTypeSupported`, function (runner, video) {
+    const fullMime = `${container}; codecs="${mimeType}"`;
+    runner.log(`Executing IsTypeSupported test for ${codec} (${fullMime})`);
+    const isTypeSupported = MediaSource.isTypeSupported(fullMime);
+    runner.assert(isTypeSupported, `MediaSource.isTypeSupported should be true for ${fullMime}`);
+    runner.succeed();
+  });
+}
+
 var testPlayback = new TestTemplate("Playback", function (video, runner) {
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;

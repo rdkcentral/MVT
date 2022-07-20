@@ -33,6 +33,36 @@ function makeMvtMediaTests(testTemplate, engine, streams, Unstable = null, timeo
 }
 
 (function () {
+  const testSuite = "Codec Support";
+
+  let tests = [];
+
+  for (let codec of SelectedProfile.codecs) {
+    for (let container of CONTAINER_MAPPING[codec]) {
+      tests.push(
+        new MvtTest(makeVideoCanPlayTest(codec, container, MIME_TYPE_MAPPING[codec]), `CanPlay ${container} ${codec}`)
+      );
+    }
+  }
+  for (let codec of SelectedProfile.codecs) {
+    for (let container of CONTAINER_MAPPING[codec]) {
+      let unstable = undefined;
+      if (container === V_MP2T || container === V_MKV) {
+        unstable = new Unstable(`IsTypeSupported returns incorrect value for container ${container}`);
+      }
+      tests.push(
+        new MvtTest(
+          makeIsTypeSupportedTest(codec, container, MIME_TYPE_MAPPING[codec]),
+          `IsTypeSupported ${container} ${codec}`,
+          unstable
+        )
+      );
+    }
+  }
+  registerTestSuite(testSuite, makeTests(tests));
+})();
+
+(function () {
   const testSuite = "DASH Shaka";
   let engine = new ShakaEngine();
 
@@ -47,6 +77,7 @@ function makeMvtMediaTests(testTemplate, engine, streams, Unstable = null, timeo
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
+window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-support-test";
 
 (function () {
   const testSuite = "DASH dashjs";

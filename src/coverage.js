@@ -19,21 +19,11 @@
 
 "use strict";
 
-const streamingTypes = {
+const STREAMING_TYPES = {
   dash: { containers: ["cmaf", "fmp4", "webm"], codecs: Profiles.all.codecs },
   hls: { containers: ["cmaf", "fmp4", "mpeg2ts"], codecs: ["avc", "hevc", "aac", "ac3", "eac3", "mp3"] },
   hss: { containers: ["fmp4"], codecs: ["avc", "hevc", "aac", "mp3"] },
   progressive: { containers: ["mp4", "mp3", "mkv"], codecs: Profiles.all.codecs },
-};
-const subtitlesTypes = ["track-tag-webvtt", "webvtt", "ttml"];
-const customContainers = {
-  webm: ["vp9", "opus", "com.microsoft.playready"],
-  mp3: ["mp3"],
-};
-const niceNames = {
-  "com.microsoft.playready": "PlayReady",
-  "track-tag-webvtt": "out-of-band WebVTT",
-  webvtt: "WebVTT",
 };
 
 const unsupportedColor = "#fffae5";
@@ -104,9 +94,9 @@ function getVariantTests(variant) {
 function countTests(attribute, tests, container, engine) {
   let numOfTests = 0;
   if (
-    customContainers[container] &&
-    !subtitlesTypes.includes(attribute) &&
-    !customContainers[container].includes(attribute)
+    CUSTOM_CONTAINERS[container] &&
+    !SUBTITLES_TYPES.includes(attribute) &&
+    !CUSTOM_CONTAINERS[container].includes(attribute)
   )
     return -1;
 
@@ -128,8 +118,8 @@ function generateCoverage() {
 
   let coverage = createAndAdd(coverageDiv, "div");
   coverage.classList.add("coverage");
-  for (const streamingName in streamingTypes) {
-    const streamingType = streamingTypes[streamingName];
+  for (const streamingName in STREAMING_TYPES) {
+    const streamingType = STREAMING_TYPES[streamingName];
 
     let top = createAndAdd(coverage, "div");
     top.appendChild(util.createElement("h1", streamingName, "focusable", streamingName));
@@ -153,13 +143,13 @@ function generateCoverage() {
     const drms = streamingName === "progressive" ? [] : SelectedProfile.drm;
     addColumn("Codecs", codecs);
     addColumn("DRM", drms);
-    addColumn("Subtitles", subtitlesTypes);
+    addColumn("Subtitles", SUBTITLES_TYPES);
 
-    const attributes = [...codecs, ...drms, ...subtitlesTypes];
+    const attributes = [...codecs, ...drms, ...SUBTITLES_TYPES];
     attributes.forEach((attribute) => {
       let element = createAndAdd(secondHeader, "th", "");
-      if (niceNames[attribute]) {
-        element.innerText = niceNames[attribute];
+      if (NICE_NAMES[attribute]) {
+        element.innerText = NICE_NAMES[attribute];
       } else {
         element.innerText = attribute;
         element.style["text-transform"] = "uppercase";
