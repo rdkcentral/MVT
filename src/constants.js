@@ -56,12 +56,7 @@ const MIME_TYPE_MAPPING = {
 
 const SUBTITLES_TYPES = ["track-tag-webvtt", "webvtt", "ttml"];
 
-const CUSTOM_CONTAINERS = {
-  webm: ["vp9", "opus", "com.microsoft.playready"],
-  mp3: ["mp3"],
-};
-
-const niceNames = {
+const NICE_NAMES = {
   "com.microsoft.playready": "PlayReady",
   "track-tag-webvtt": "out-of-band WebVTT",
   webvtt: "WebVTT",

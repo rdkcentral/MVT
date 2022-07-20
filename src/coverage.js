@@ -26,6 +26,12 @@ const STREAMING_TYPES = {
   progressive: { containers: ["mp4", "mp3", "mkv"], codecs: Profiles.all.codecs },
 };
 
+// Containers that support specific subset of codecs
+const CUSTOM_CONTAINERS = {
+  webm: ["vp9", "opus", "com.microsoft.playready"],
+  mp3: ["mp3"],
+};
+
 const unsupportedColor = "#fffae5";
 const noContentColor = "#ffebe5";
 const someContentColor = "#e3fcef";
@@ -83,9 +89,9 @@ function getVariantTests(variant) {
   let tests = [];
   for (let suiteName in window.testSuiteDescriptions) {
     if (!window.testSuiteDescriptions[suiteName].tests) continue;
-    let suiteTests = window.testSuiteDescriptions[suiteName].tests().tests;
+    let suiteTests = window.testSuiteDescriptions[suiteName].tests(false).tests;
     for (let test of suiteTests) {
-      if (test.prototype.content.variant === variant) tests.push(test);
+      if (test.prototype.content && test.prototype.content.variant === variant) tests.push(test);
     }
   }
   return tests;

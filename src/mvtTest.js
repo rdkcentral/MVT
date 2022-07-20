@@ -148,11 +148,13 @@ function makeTests(mvtTests) {
 }
 
 function startTestSuite(name, testSet) {
-  return () => {
-    console.log(`Loaded MVT test suite: ${name}`);
-    for (let test of testSet.tests) {
-      if (test.prototype.unstable)
-        console.log(`${test.prototype.name} is optional due to: ${test.prototype.unstable.reason}`);
+  return (verbose = true) => {
+    if (verbose) {
+      console.log(`Loaded MVT test suite: ${name}`);
+      for (let test of testSet.tests) {
+        if (test.prototype.unstable)
+          console.log(`${test.prototype.name} is optional due to: ${test.prototype.unstable.reason}`);
+      }
     }
     return testSet;
   };
