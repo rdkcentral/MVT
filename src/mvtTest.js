@@ -87,16 +87,17 @@ class TestTemplate {
 }
 
 class MvtTest {
-  constructor(testTemplate, mandatory = true, timeout = TestBase.timeout) {
+  constructor(testTemplate, unstable = null, timeout = TestBase.timeout) {
     this.testTemplate = testTemplate;
-    this.mandatory = mandatory;
+    this.unstable = unstable;
+    this.mandatory = !Boolean(unstable);
     this.timeout = timeout;
   }
 }
 
 class MvtMediaTest extends MvtTest {
-  constructor(testTemplate, stream, engine, mandatory = true, timeout = TestBase.timeout) {
-    super(testTemplate, mandatory, timeout);
+  constructor(testTemplate, stream, engine, unstable = null, timeout = TestBase.timeout) {
+    super(testTemplate, unstable ? unstable : stream.unstable, timeout);
     this.stream = stream;
     this.engine = engine;
   }
@@ -105,6 +106,7 @@ class MvtMediaTest extends MvtTest {
 function makeBasicTest(mvtTest) {
   let test = createTest(mvtTest.testTemplate.name, mvtTest.testTemplate.name, mvtTest.mandatory);
   test.prototype.timeout = mvtTest.timeout;
+  test.prototype.unstable = mvtTest.unstable;
   test.prototype.onload = () => {
     mvtTest.testTemplate.code();
   };
@@ -115,6 +117,7 @@ function makeMediaTest(mvtMediaTest) {
   let testName = mvtMediaTest.stream.name + " " + mvtMediaTest.testTemplate.testName;
   let test = createTest(testName, mvtMediaTest.testTemplate.testName, mvtMediaTest.mandatory);
   test.prototype.timeout = mvtMediaTest.timeout;
+  test.prototype.unstable = mvtMediaTest.unstable;
   test.prototype.onload = function (runner, video) {
     if (!test.prototype.playing) {
       test.prototype.playing = true;
@@ -140,6 +143,17 @@ function makeTests(mvtTests) {
   return tests;
 }
 
+function startTestSuite(name, testSet) {
+  return () => {
+    console.log(`Loaded MVT test suite: ${name}`);
+    for (let test of testSet.tests) {
+      if (test.prototype.unstable)
+        console.log(`${test.prototype.name} is optional due to: ${test.prototype.unstable.reason}`);
+    }
+    return testSet;
+  };
+}
+
 function registerTestSuite(name, tests) {
   if (tests.length === 0) return;
   let suiteKey = name.replace(" ", "-").toLowerCase() + "-test";
@@ -154,7 +168,7 @@ function registerTestSuite(name, tests) {
     name: name + " Tests",
     title: name + " Tests",
     heading: name + " Tests",
-    tests: () => testSet,
+    tests: startTestSuite(name, testSet),
   };
   window.testSuiteDescriptions[suiteKey] = testSuiteDescription;
   window.testSuiteVersions[testVersion].testSuites.push(suiteKey);

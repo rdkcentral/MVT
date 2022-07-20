@@ -24,179 +24,148 @@
 
 "use strict";
 
-function makeMvtMediaTests(testTemplate, engine, streams, mandatory = true, timeout = TestBase.timeout) {
+function makeMvtMediaTests(testTemplate, engine, streams, Unstable = null, timeout = TestBase.timeout) {
   let tests = [];
   streams.forEach((stream) => {
-    tests.push(new MvtMediaTest(testTemplate, stream, engine, mandatory, timeout));
+    tests.push(new MvtMediaTest(testTemplate, stream, engine, Unstable, timeout));
   });
   return tests;
 }
 
-class UnstableTest {
-  constructor(testTemplate, stream, reason) {
-    this.testTemplate = testTemplate;
-    this.stream = stream;
-    this.reason = reason;
-  }
-}
-
-function markUnstable(mvtTests, unstableList) {
-  for (let unstable of unstableList) {
-    let test = mvtTests.find(
-      (test) =>
-        (!unstable.testTemplate || test.testTemplate === unstable.testTemplate) && test.stream === unstable.stream
-    );
-    let testName = `${test.stream.name} ${test.testTemplate.testName}`;
-    if (!test) {
-      console.warn(`Failed to find unstable test '${testName}'`);
-      continue;
-    }
-    test.mandatory = false;
-    console.info(`Test '${testName}' is optional due to: ${unstable.reason}`);
-  }
-}
-
-// DASH Shaka
 (function () {
+  const testSuite = "DASH Shaka";
   let engine = new ShakaEngine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRM));
-  // TODO: ONEM-26268 Fix Rate tests
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, false));
-  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRM));
+  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
+  tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine, new Unstable("ONEM-26279")));
+  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
-  markUnstable(mvtTests, [new UnstableTest(null, MS.DASH.MULTIPERIOD, "ONEM-26036"),
-  new UnstableTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, "ONEM-26279")]);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("DASH Shaka", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();
 
-// DASH dashjs
 (function () {
+  const testSuite = "DASH dashjs";
   let engine = new DashjsEngine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRM));
-  // TODO: ONEM-26268 Fix Rate tests
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, false));
-  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRM));
+  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
+  tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
+  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
-  markUnstable(mvtTests, [new UnstableTest(null, MS.DASH.MULTIPERIOD, "ONEM-26036")]);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("DASH dashjs", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();
 
-// DASH html5
 (function () {
+  const testSuite = "DASH html5";
   let engine = new Html5Engine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.Common);
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.Common));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.Common));
-  // TODO: ONEM-26268 Fix Rate tests
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, false));
-  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.Common);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.Common));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.Common));
+  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
+  tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
+  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
-  markUnstable(mvtTests, [new UnstableTest(null, MS.DASH.MULTIPERIOD, "ONEM-26036")]);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("DASH html5", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();
 
-// HLS Shaka
 (function () {
+  const testSuite = "HLS Shaka";
   let engine = new ShakaEngine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
-  // TODO: ONEM-26268 Fix Rate tests
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, false));
-  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
+  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
+  tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
+  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("HLS Shaka", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();
 
-// HLS hlsjs
 (function () {
+  const testSuite = "HLS hlsjs";
   let engine = new HlsjsEngine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
   // TODO: ONEM-26268 Fix Rate tests
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, false));
-  mvtTests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
+  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
+  tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
+  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("HLS hlsjs", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();
 
-// HSS html5
 (function () {
+  const testSuite = "HSS html5";
   let engine = new Html5Engine();
 
-  let mvtTests = [
+  let tests = [
     new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testPause, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, engine),
-    // TODO: ONEM-26268 Fix Rate tests
-    new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, false),
+    new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, new Unstable("ONEM-26268")),
     new MvtMediaTest(testSubtitles, MS.HSS.FMP4_AVC_AAC_VTT, engine),
   ];
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("HSS html5", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();
 
-// HSS dashjs
 (function () {
+  const testSuite = "HSS dashjs";
   let engine = new DashjsEngine();
 
-  let mvtTests = [
+  let tests = [
     new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testPlayback, MS.HSS.PLAYREADY_2_0, engine),
     new MvtMediaTest(testPause, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testPause, MS.HSS.PLAYREADY_2_0, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.PLAYREADY_2_0, engine),
-    // TODO: ONEM-26268 Fix Rate tests
-    new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, false),
-    new MvtMediaTest(testPlayRate, MS.HSS.PLAYREADY_2_0, engine, false),
+    new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, new Unstable("ONEM-26268")),
+    new MvtMediaTest(testPlayRate, MS.HSS.PLAYREADY_2_0, engine, new Unstable("ONEM-26268")),
   ];
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("HSS dashjs", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();
 
-// Progressive html5
 (function () {
+  const testSuite = "Progressive html5";
   let engine = new Html5Engine();
 
-  let mvtTests = makeMvtMediaTests(testPlayback, engine, StreamSets.Progressive.Common);
-  // TODO: ONEM-????? Fix progressive pause tests
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPause, engine, StreamSets.Progressive.Common, false));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.Progressive.Common));
-  // TODO: ONEM-26268 Fix Rate tests
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.Progressive.Video, false));
-  mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.Progressive.Subtitles));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.Progressive.Common);
+  tests.push(new MvtMediaTest(testPlayback, MS.PROG.MKV_EAC3, engine));
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.Progressive.Common, new Unstable("ONEM-?????")));
+  tests.push(new MvtMediaTest(testPause, MS.PROG.MKV_EAC3, engine, new Unstable("ONEM-?????")));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.Progressive.Common));
+  tests.push(new MvtMediaTest(testSetPosition, MS.PROG.MKV_EAC3, engine, new Unstable("ONEM-26126")));
+  tests = tests.concat(
+    makeMvtMediaTests(testPlayRate, engine, StreamSets.Progressive.Video, new Unstable("ONEM-26268"))
+  );
+  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.Progressive.Subtitles));
 
-  mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
 
-  registerTestSuite("Progressive html5", makeTests(mvtTests));
+  registerTestSuite(testSuite, makeTests(tests));
 })();

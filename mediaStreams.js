@@ -209,6 +209,7 @@ var MS = {
       audio: {
         codec: "aac",
       },
+      unstable: new Unstable("ONEM-26036"),
     },
     CMAF_AVC_AC3: {
       variant: "dash",
@@ -726,7 +727,6 @@ const StreamSets = {
       MS.PROG.MP4_MPEG4PART2_AAC,
       MS.PROG.MKV_MPEG4PART2_AAC,
       MS.PROG.MP4_EAC3,
-      MS.PROG.MKV_EAC3,
       MS.PROG.MP4_AVC,
       MS.PROG.MKV_AVC,
       MS.PROG.MP3_MP3,
