@@ -19,71 +19,45 @@
 
 "use strict";
 
-function CountContent(engine, containerName, variantName, variant) {
-  var codecs = {};
-  for (const key in MvtMedia) {
-    var type = MvtMedia[key];
-    type.forEach((media) => {
-      if (media.container != containerName || media.variant != variantName) {
-        return;
-      }
+/*
+ * Generates table with media coverage - number of available tests for each codec.
+ * Please note this does not verify, if the test actually passes on the active platform. It only presents the number
+ * of available tests.
+ * Coverage tables are generated dynamically and depend on selected profile.
+ *
+ * TODO: Present user which tests cover a given codec (not just the number of test cases).
+ */
 
-      var formats = FormatSupported(engine, variant, media);
-      if (formats) {
-        formats.forEach((format) => {
-          if (format in codecs) {
-            codecs[format] += 1;
-          } else {
-            codecs[format] = 1;
-          }
-        });
-      }
-    });
-  }
-  return codecs;
-}
+const STREAMING_TYPES = {
+  dash: { containers: ["cmaf", "fmp4", "webm"], codecs: Profiles.all.codecs },
+  hls: { containers: ["cmaf", "fmp4", "mpeg2ts"], codecs: ["avc", "hevc", "aac", "ac3", "eac3", "mp3"] },
+  hss: { containers: ["fmp4"], codecs: ["avc", "hevc", "aac", "mp3"] },
+  progressive: { containers: ["mp4", "mp3", "mkv"], codecs: Profiles.all.codecs },
+};
 
-var unsupportedColor = "#fffae5";
-var noContentColor = "#ffebe5";
-var someContentColor = "#e3fcef";
+// Containers that support specific subset of codecs
+const CUSTOM_CONTAINERS = {
+  webm: ["vp9", "opus", "com.microsoft.playready"],
+  mp3: ["mp3"],
+};
 
-function CodecSupport(count, engine, variant, codec) {
-  var td = document.createElement("td");
-  if (
-    !engine ||
-    (!(variant.video && variant.video.includes(codec)) &&
-      !variant.audio.includes(codec) &&
-      !(engine.drm && engine.drm.includes(codec)) &&
-      !(engine.subtitles && engine.subtitles.includes(codec)))
-  ) {
-    td.style["background-color"] = unsupportedColor;
-    return td;
-  }
-
-  if (!count) {
-    td.style["background-color"] = noContentColor;
-    count = 0;
-  } else {
-    td.style["background-color"] = someContentColor;
-  }
-  td.innerText = count;
-  return td;
-}
+const unsupportedColor = "#fffae5";
+const noContentColor = "#ffebe5";
+const someContentColor = "#e3fcef";
 
 function createAndAdd(parent, tag, content) {
-  var child = document.createElement(tag);
+  let child = document.createElement(tag);
   if (content) {
-    var text = document.createTextNode(content);
+    let text = document.createTextNode(content);
     child.appendChild(text);
   }
   parent.appendChild(child);
   return child;
 }
 
-var GenerateCoverage = function () {
-  var coverage = document.getElementById("coverage");
-  coverage.innerHTML =
-    "<p>Coverage Report for " +
+function setCoverageHeader(coverageDiv) {
+  coverageDiv.innerHTML =
+    "<p>Coverage report for profile: " +
     SelectedProfile.note +
     '</p>\
   <p>This lists how many pieces of test content exist, not if the content pass or fail.</p>\
@@ -96,10 +70,13 @@ var GenerateCoverage = function () {
     '">Supported, No Content</td>\
   <td style="background-color:' +
     someContentColor +
-    '">Supported and number of content in Test Suite</td>\
+    '">Supported and number of tests</td>\
   </tr></table>';
+}
+
+function addProfileSelector(coverageDiv) {
   let profilesSpan = util.createElement("span", "profilesSpan", "rightmargin20", "Profile: ");
-  coverage.appendChild(profilesSpan);
+  coverageDiv.appendChild(profilesSpan);
   Object.keys(Profiles).forEach((profileId) => {
     let span = util.createElement("span", profileId, "rightmargin20", profileId);
     span.setAttribute("tabindex", "0");
@@ -115,138 +92,109 @@ var GenerateCoverage = function () {
     }
     profilesSpan.appendChild(span);
   });
+}
 
-  var coverage = createAndAdd(coverage, "div");
-  coverage.classList.add("coverage");
-  for (const container_ in SelectedProfile.containers) {
-    var container = SelectedProfile.containers[container_];
-    var top = createAndAdd(coverage, "div");
-    top.appendChild(util.createElement("h1", container_, "focusable", container_));
-    var table = util.createElement("table", container_ + "_table", "coverage_table");
-    top.appendChild(table);
-    var audioCodecs = [];
-    var videoCodecs = [];
-    var drm = [];
-    var subtitles = [];
-    var note = false;
-    for (const variant_ in container) {
-      if (variant_ == "engine") {
-        continue;
-      }
-      var variant = container[variant_];
-      if (variant.video) {
-        videoCodecs = videoCodecs.concat(variant.video);
-      }
-      audioCodecs = audioCodecs.concat(variant.audio);
-      var engines = GetEngines(container_, variant_);
-      for (var engine_ in engines) {
-        if (engines[engine_].drm) {
-          drm = drm.concat(engines[engine_].drm);
-        }
-      }
-      for (var engine_ in engines) {
-        if (engines[engine_].subtitles) {
-          subtitles = subtitles.concat(engines[engine_].subtitles);
-        }
-      }
-      if (variant.note) {
-        note = true;
-      }
+function getVariantTests(variant) {
+  let tests = [];
+  for (let suiteName in window.testSuiteDescriptions) {
+    if (!window.testSuiteDescriptions[suiteName].tests) continue;
+    let suiteTests = window.testSuiteDescriptions[suiteName].tests(false).tests;
+    for (let test of suiteTests) {
+      if (test.prototype.content && test.prototype.content.variant === variant) tests.push(test);
     }
-    var firstCodecs = [audioCodecs[0], videoCodecs[0], drm[0], subtitles[0]];
-    // Remove duplicates
-    audioCodecs = new Set(audioCodecs);
-    videoCodecs = new Set(videoCodecs);
-    drm = new Set(drm);
-    subtitles = new Set(subtitles);
-    var codecs = new Set([...videoCodecs, ...audioCodecs, ...drm, ...subtitles]);
+  }
+  return tests;
+}
 
-    var firstHeader = createAndAdd(table, "tr");
-    var secondHeader = createAndAdd(table, "tr");
+function countTests(attribute, tests, container, engine) {
+  let numOfTests = 0;
+  if (
+    CUSTOM_CONTAINERS[container] &&
+    !SUBTITLES_TYPES.includes(attribute) &&
+    !CUSTOM_CONTAINERS[container].includes(attribute)
+  )
+    return -1;
+
+  for (let test of tests) {
+    const content = test.prototype.content;
+    if (content.container !== container || test.prototype.engine !== engine) continue;
+    else if (content.video && content.video.codec === attribute) numOfTests += 1;
+    else if (content.audio && content.audio.codec === attribute) numOfTests += 1;
+    else if (content.drm && content.drm.servers[attribute]) numOfTests += 1;
+    else if (content.subtitles && content.subtitles.format === attribute) numOfTests += 1;
+  }
+  return numOfTests;
+}
+
+function generateCoverage() {
+  let coverageDiv = document.getElementById("coverage");
+  setCoverageHeader(coverageDiv);
+  addProfileSelector(coverageDiv);
+
+  let coverage = createAndAdd(coverageDiv, "div");
+  coverage.classList.add("coverage");
+  for (const streamingName in STREAMING_TYPES) {
+    const streamingType = STREAMING_TYPES[streamingName];
+
+    let top = createAndAdd(coverage, "div");
+    top.appendChild(util.createElement("h1", streamingName, "focusable", streamingName));
+    let table = util.createElement("table", streamingName + "_table", "coverage_table");
+    top.appendChild(table);
+    let firstHeader = createAndAdd(table, "tr");
+    let secondHeader = createAndAdd(table, "tr");
 
     createAndAdd(firstHeader, "th", "Container");
     createAndAdd(secondHeader, "th", "");
     createAndAdd(firstHeader, "th", "Player");
     createAndAdd(secondHeader, "th", "");
 
-    function addCodec(name, codecs) {
-      if (codecs.size != 0) {
-        var col = createAndAdd(firstHeader, "th", name);
-        col.colSpan = codecs.size;
-        col.style.borderLeftWidth = "2px";
+    function addColumn(name, codecs) {
+      if (codecs.length != 0) {
+        let col = createAndAdd(firstHeader, "th", name);
+        col.colSpan = codecs.length;
       }
     }
-    addCodec("Video", videoCodecs);
-    addCodec("Audio", audioCodecs);
-    addCodec("DRM", drm);
-    addCodec("Subtitles", subtitles);
+    const codecs = SelectedProfile.codecs.filter((codec) => streamingType.codecs.includes(codec));
+    const drms = streamingName === "progressive" ? [] : SelectedProfile.drm;
+    addColumn("Codecs", codecs);
+    addColumn("DRM", drms);
+    addColumn("Subtitles", SUBTITLES_TYPES);
 
-    var niceNames = {
-      avc1: "H264",
-      "com.microsoft.playready": "PlayReady",
-      "com.widevine.alpha": "Widevine",
-      webvtt: "In-band WebVTT",
-      "track-tag-webvtt": "Out-of-band WebVTT",
-      ttml: "TTML",
-    };
-
-    codecs.forEach((codec) => {
-      var transform = "uppercase";
-      var name = codec;
-      if (codec in niceNames) {
-        name = niceNames[codec];
-        transform = "none";
+    const attributes = [...codecs, ...drms, ...SUBTITLES_TYPES];
+    attributes.forEach((attribute) => {
+      let element = createAndAdd(secondHeader, "th", "");
+      if (NICE_NAMES[attribute]) {
+        element.innerText = NICE_NAMES[attribute];
+      } else {
+        element.innerText = attribute;
+        element.style["text-transform"] = "uppercase";
       }
-      var element = createAndAdd(secondHeader, "th", name);
-      if (firstCodecs.includes(codec)) {
-        element.style.borderLeftWidth = "2px";
-      }
-      element.style["text-transform"] = transform;
     });
 
-    if (note) {
-      createAndAdd(firstHeader, "th", "Note");
-      createAndAdd(secondHeader, "th", "");
-    }
+    for (const container of streamingType.containers) {
+      for (const engineName in EngineProperties) {
+        const engine = EngineProperties[engineName];
+        if (!engine.variants.includes(streamingName)) continue;
+        let row = createAndAdd(table, "tr");
+        createAndAdd(row, "td", container);
+        createAndAdd(row, "td", engineName);
 
-    for (const variantName in container) {
-      if (variantName == "engine") {
-        continue;
-      }
-      var variant = container[variantName];
-
-      var engines = GetEngines(container_, variantName);
-
-      for (const engine in DefaultEngines) {
-        var defEngine = DefaultEngines[engine];
-        if (defEngine.exclude && (defEngine.exclude.includes(container_) || defEngine.exclude.includes(variantName))) {
-          continue;
-        }
-        var count = CountContent(engines[engine], container_, variantName, variant);
-
-        var row = createAndAdd(table, "tr");
-
-        createAndAdd(row, "td", variantName);
-        createAndAdd(row, "td", engine);
-
-        codecs.forEach((codec) => {
-          var element = CodecSupport(count[codec], engines[engine], variant, codec);
-          if (firstCodecs.includes(codec)) {
-            element.style.borderLeftWidth = "2px";
+        let variantTets = getVariantTests(streamingName);
+        attributes.forEach((attribute) => {
+          let count = countTests(attribute, variantTets, container, engineName);
+          let td = document.createElement("td");
+          if (count === -1) {
+            td.style["background-color"] = unsupportedColor;
+            count = 0;
+          } else if (count === 0) {
+            td.style["background-color"] = noContentColor;
+          } else {
+            td.style["background-color"] = someContentColor;
           }
-          row.appendChild(element);
+          td.innerText = count;
+          row.appendChild(td);
         });
-        if (note) {
-          createAndAdd(row, "td", variant.note ? variant.note : "");
-        }
       }
     }
   }
-};
-
-try {
-  exports.getTest = GenerateCoverage;
-} catch (e) {
-  // do nothing, this function is not supposed to work for browser, but it's for
-  // Node js to generate json file instead.
 }

@@ -46,35 +46,30 @@ const TimeCountdownSubtitlesLongLangCodes = {
   fra: TimeCountdownSubtitles["fr"],
 };
 
-// Define content
-var MvtMedia = {
-  DASH: [
-    {
-      testBase: "1.1.1",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-AVC1-AAC",
+// Media Streams
+var MS = {
+  DASH: {
+    FMP4_AVC_AAC: {
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_h264_aac/manifest.mpd",
       video: {
-        codec: "avc1.42C01E",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
+    FMP4_AVC_AAC_TTML: {
       testBase: "1.1.2",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-AVC1-AAC-TTML",
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
       video: {
-        codec: "avc1.42C01E",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "ttml",
@@ -82,85 +77,67 @@ var MvtMedia = {
         expectedText: TimeCountdownSubtitles,
       },
     },
-    {
-      testBase: "1.1.3",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-AVC1-AC3",
+    FMP4_AVC_AC3: {
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_h264_ac3/manifest.mpd",
       video: {
-        codec: "avc1.42C01E",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "1.1.4",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-HEVC-EAC3",
+    FMP4_HEVC_EAC3: {
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_hevc_eac3/manifest.mpd",
       video: {
-        codec: "hvc1.1.6.L120.80",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "1.1.5",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-MPEG2V-MP3",
+    FMP4_MPEG2_MP3: {
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_mpeg2_mp3/manifest.mpd",
       video: {
-        codec: "mp2",
+        codec: "mpeg2",
       },
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "mp3",
       },
     },
-    {
-      testBase: "1.1.6",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-MP3",
+    FMP4_MP3: {
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/fmp4_mp3/manifest.mpd",
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "mp3",
       },
     },
-    {
-      testBase: "1.1.7",
-      container: "dash",
-      variant: "webm",
-      name: "DASH-WEBM-VP9-OPUS",
+    WEBM_VP9_OPUS: {
+      variant: "dash",
+      container: "webm",
       src: "test-materials/dash/webm_vp9_opus/manifest.mpd",
       video: {
         codec: "vp9",
       },
       audio: {
         codec: "opus",
-        channels: "2",
       },
     },
-    {
-      testBase: "1.1.8",
-      container: "dash",
-      variant: "webm",
-      name: "DASH-WEBM-VP9-OPUS-VTT",
+    WEBM_VP9_OPUS_VTT: {
+      variant: "dash",
+      container: "webm",
       src: "test-materials/dash/webm_vp9_opus/manifest_vtt.mpd",
       video: {
         codec: "vp9",
       },
       audio: {
         codec: "opus",
-        channels: "2",
       },
       subtitles: {
         format: "webvtt",
@@ -168,49 +145,39 @@ var MvtMedia = {
         expectedText: TimeCountdownSubtitles,
       },
     },
-    {
-      testBase: "1.1.9",
-      container: "dash",
-      variant: "cmaf",
-      name: "DASH-CMAF-HEVC-AAC",
+    CMAF_HEVC_AAC: {
+      variant: "dash",
+      container: "cmaf",
       src: "https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_AAC_Eng_WebVTT.mpd",
       video: {
-        codec: "hvc1.1.6.L120.80",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "1.1.10",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-FMP4-MULTIAUDIO",
+    MULTIAUDIO: {
+      variant: "dash",
+      container: "fmp4",
       note: "video: vid1, audio en: vid1, audio pl: vid2",
       src: "test-materials/dash/fmp4_multiaudio/manifest.mpd",
       video: {
-        codec: "avc1.42C00D",
-        resolution: [224, 100],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
         languages: ["en", "pl"],
       },
     },
-    {
-      testBase: "1.1.11",
-      container: "dash",
-      variant: "fragmentedmp4",
+    PLAYREADY_2_0: {
+      variant: "dash",
+      container: "fmp4",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
-      name: "DASH-PLAYREADY-2.0",
       video: {
-        codec: "avc1.42C01E",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
       drm: {
@@ -220,76 +187,62 @@ var MvtMedia = {
         },
       },
     },
-    {
-      testBase: "1.1.12",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-DYNAMIC",
+    DYNAMIC: {
+      variant: "dash",
+      container: "fmp4",
       src: "https://livesim.dashif.org/livesim/mup_300/tsbd_500/testpic_2s/Manifest.mpd",
       dynamic: true,
       video: {
-        codec: "avc1.64001e",
-        resolution: [360, 640],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "1.1.13",
-      container: "dash",
-      variant: "fragmentedmp4",
-      name: "DASH-MULTIPERIOD",
+    MULTIPERIOD: {
+      variant: "dash",
+      container: "fmp4",
       src: "test-materials/dash/multiperiod/manifest.mpd",
       video: {
-        codec: "avc1.42C01E",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
+      unstable: new Unstable("ONEM-26036"),
     },
-    {
-      testBase: "1.2.1",
-      container: "dash",
-      variant: "cmaf",
-      name: "DASH-CMAF-AVC1-AC3",
+    CMAF_AVC_AC3: {
+      variant: "dash",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_ac3/manifest.mpd",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "1.2.2",
-      container: "dash",
-      variant: "cmaf",
+    CMAF_HEVC_EAC3: {
+      variant: "dash",
+      container: "cmaf",
       name: "DASH-CMAF-HEVC-EAC3",
       src: "test-materials/cmaf/hevc_eac3/manifest.mpd",
       video: {
-        codec: "hvc1.1.6.L150.90",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "1.2.3",
-      container: "dash",
-      variant: "cmaf",
-      name: "DASH-CMAF-AVC1-MP3-VTT",
+    CMAF_AVC_MP3_VTT: {
+      variant: "dash",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_mp3/manifest_vtt.mpd",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "mp3",
       },
       subtitles: {
         format: "webvtt",
@@ -297,89 +250,71 @@ var MvtMedia = {
         expectedText: TimeCountdownSubtitles,
       },
     },
-  ],
-  HLS: [
-    {
-      testBase: "2.1.1",
-      container: "hls",
-      variant: "mpeg2ts",
-      name: "HLS-MP2TS-AVC1-AAC",
+  },
+  HLS: {
+    MP2TS_AVC_AAC: {
+      variant: "hls",
+      container: "mpeg2ts",
       src: "test-materials/hls/mpegts_h264_aac/main.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "2.2.1",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-AVC1-EAC3",
+    FMP4_AVC_EAC3: {
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_h264_eac3/main.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "2.2.2",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-HEVC-AC3",
+    FMP4_HEVC_AC3: {
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_hevc_ac3/main.m3u8",
       video: {
-        codec: "hvc1.1.6.L150.90",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "2.2.3",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-MP3",
+    FMP4_MP3: {
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_mp3/main.m3u8",
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "mp3",
       },
     },
-    {
-      testBase: "2.2.4",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-MULTIAUDIO",
+    FMP4_MULTIAUDIO: {
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_multiaudio/main.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
         languages: ["en", "pl"],
       },
     },
-    {
-      testBase: "2.2.4",
-      container: "hls",
-      variant: "fragmentedmp4",
-      name: "HLS-FMP4-AVC1-AAC-VTT",
+    FMP4_AVC_AAC_VTT: {
+      variant: "hls",
+      container: "fmp4",
       src: "test-materials/hls/fmp4_h264_aac_vtt/main.m3u8",
       note: "TODO: Prepare stream with multiple subtitles tracks (hard to achieve with ffmpeg)",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "webvtt",
@@ -388,93 +323,77 @@ var MvtMedia = {
         expectedText: TimeCountdownSubtitles,
       },
     },
-    {
-      testBase: "2.3.1",
-      container: "hls",
-      variant: "cmaf",
-      name: "HLS-CMAF-AVC1-AAC",
+    CMAF_AVC_AAC: {
+      variant: "hls",
+      container: "cmaf",
       note: "Source: https://testassets.dashif.org/",
       src: "https://media.axprod.net/TestVectors/v9-MultiFormat/Clear/Manifest_1080p.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "2.3.2",
-      container: "hls",
-      variant: "cmaf",
-      name: "HLS-CMAF-HEVC-AAC",
+    CMAF_HEVC_AAC: {
+      variant: "hls",
+      container: "cmaf",
       note: "Source: https://testassets.dashif.org/",
       src: "https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_IFrame_AAC_WebVTT.m3u8",
       video: {
-        codec: "hvc1.1.6.L150.90",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "2.3.3",
-      container: "hls",
-      variant: "cmaf",
-      name: "HLS-CMAF-AVC1-AC3",
+    CMAF_AVC_AC3: {
+      variant: "hls",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_ac3/master.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "2.3.4",
-      container: "hls",
-      variant: "cmaf",
-      name: "HLS-CMAF-HEVC-EAC3",
+    CMAF_HEVC_EAC3: {
+      variant: "hls",
+      container: "cmaf",
       src: "test-materials/cmaf/hevc_eac3/master.m3u8",
       video: {
-        codec: "hvc1.1.6.L150.90",
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "2.3.5",
-      container: "hls",
-      variant: "cmaf",
-      name: "HLS-CMAF-AVC1-MP3",
+    CMAF_AVC_MP3: {
+      variant: "hls",
+      container: "cmaf",
       src: "test-materials/cmaf/h264_mp3/master.m3u8",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.69",
+        codec: "mp3",
         channels: "2",
       },
     },
-  ],
-  HSS: [
-    {
-      testBase: "3.1.1",
-      container: "hss",
-      variant: "fragmentedmp4",
+  },
+  HSS: {
+    FMP4_AVC_AAC_VTT: {
+      variant: "hss",
+      container: "fmp4",
       name: "HSS-AVC1-AAC",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://amssamples.streaming.mediaservices.windows.net/683f7e47-bd83-4427-b0a3-26a6c4547782/BigBuckBunny.ism/manifest(format=mpd-time-csf)",
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "track-tag-webvtt",
@@ -488,11 +407,9 @@ var MvtMedia = {
         ],
       },
     },
-    {
-      testBase: "3.1.2",
-      container: "hss",
-      variant: "fragmentedmp4",
-      name: "HSS-AVC1-AAC-PLAYREADY-2.0",
+    PLAYREADY_2_0: {
+      variant: "hss",
+      container: "fmp4",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest",
       drm: {
@@ -502,28 +419,23 @@ var MvtMedia = {
         },
       },
       video: {
-        codec: "avc1.42C00D",
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-  ],
-  Progressive: [
-    {
-      testBase: "4.1.1",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-AVC1-AAC-WEBVTT",
+  },
+  PROG: {
+    MP4_AVC_AAC_VTT: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid2_h264_aac.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "track-tag-webvtt",
@@ -537,19 +449,15 @@ var MvtMedia = {
         ],
       },
     },
-    {
-      testBase: "4.1.1",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-AVC1-AAC-WEBVTT",
+    MKV_AVC_AAC_VTT: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid2_h264_aac.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
       subtitles: {
         format: "track-tag-webvtt",
@@ -563,270 +471,273 @@ var MvtMedia = {
         ],
       },
     },
-    {
-      testBase: "4.1.2",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-AVC1-AC3",
+    MP4_AVC_AC3: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_h264_ac3.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "4.1.2",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-AVC1-AC3",
+    MKV_AVC_AC3: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_h264_ac3.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a5",
-        channels: "2",
+        codec: "ac3",
       },
     },
-    {
-      testBase: "4.1.3",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-AVC1-EAC3",
+    MP4_AVC_EAC3: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_h264_eac3.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "4.1.3",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-AVC1-EAC3",
+    MKV_AVC_EAC3: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_h264_eac3.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "4.1.4",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-AVC1-MP3",
+    MP4_AVC_MP3: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_h264_mp3.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "mp3",
       },
     },
-    {
-      testBase: "4.1.4",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-AVC1-MP3",
+    MKV_AVC_MP3: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_h264_mp3.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "mp3",
       },
     },
-    {
-      testBase: "4.1.5",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-HEVC-AAC",
+    MP4_HEVC_AAC: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_hevc_aac.mp4",
       video: {
-        codec: "hvc1.1.6.L120.80",
-        resolution: [1920, 800],
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.5",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-HEVC-AAC",
+    MKV_HEVC_AAC: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_hevc_aac.mkv",
       video: {
-        codec: "hvc1.1.6.L120.80",
-        resolution: [1920, 800],
+        codec: "hevc",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.6",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-MPEG2V-AAC",
+    MP4_MPEG2V_AAC: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
-        codec: "mp2",
-        resolution: [1280, 720],
+        codec: "mpeg2",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.6",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-MPEG2V-AAC",
+    MKV_MPEG2V_AAC: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
-        codec: "mp2",
-        resolution: [1280, 720],
+        codec: "mpeg2",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.7",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-VP9-AAC",
+    MP4_VP9_AAC: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_vp9_aac.mp4",
       video: {
-        codec: "vp09.00.20.08.00.02.02.02.00",
-        resolution: [1280, 720],
+        codec: "vp9",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
+    MKV_VP9_AAC: {
       testBase: "4.1.7",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-VP9-AAC",
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_vp9_aac.mkv",
       video: {
-        codec: "vp09.00.20.08.00.02.02.02.00",
-        resolution: [1280, 720],
+        codec: "vp9",
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.8",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-MPEG4PART2-AAC",
+    MP4_MPEG4PART2_AAC: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mp4",
       video: {
         codec: "mpeg4part2",
-        resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.8",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-MPEG4PART2-AAC",
+    MKV_MPEG4PART2_AAC: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid1_mpeg2video_aac.mkv",
       video: {
         codec: "mpeg4part2",
-        resolution: [1280, 720],
       },
       audio: {
-        codec: "mp4a.40.2",
-        channels: "2",
+        codec: "aac",
       },
     },
-    {
-      testBase: "4.1.8",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-EAC3",
+    MP4_EAC3: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid2_eac3.mp4",
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "4.1.8",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-EAC3",
+    MKV_EAC3: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid2_eac3.mkv",
       audio: {
-        codec: "mp4a.a6",
-        channels: "2",
+        codec: "eac3",
       },
     },
-    {
-      testBase: "4.1.8",
-      container: "progressive",
-      variant: "mp4",
-      name: "PROG-MP4-AVC1",
+    MP4_AVC: {
+      variant: "progressive",
+      container: "mp4",
       src: "test-materials/progressive/vid2_h264.mp4",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
     },
-    {
-      testBase: "4.1.8",
-      container: "progressive",
-      variant: "mkv",
-      name: "PROG-MKV-AVC1",
+    MKV_AVC: {
+      variant: "progressive",
+      container: "mkv",
       src: "test-materials/progressive/vid2_h264.mkv",
       video: {
-        codec: "avc1.42C01E",
-        resolution: [1280, 720],
+        codec: "avc",
       },
     },
-    {
-      testBase: "4.1.9",
-      container: "progressive",
-      variant: "mp3",
-      name: "PROG-MP3-MP3",
+    MP3_MP3: {
+      variant: "progressive",
+      container: "mp3",
       src: "test-materials/progressive/vid2_mp3.mp3",
       audio: {
-        codec: "mp4a.69",
-        channels: "2",
+        codec: "mp3",
       },
     },
-  ],
+  },
 };
+
+(function setMediaStreamNames() {
+  Object.keys(MS).forEach((category) => {
+    Object.keys(MS[category]).forEach((streamName) => {
+      MS[category][streamName].name = `${category}_${streamName}`.toUpperCase();
+    });
+  });
+})();
+
+const StreamSets = {
+  DASH: {
+    Common: [
+      MS.DASH.FMP4_AVC_AAC,
+      MS.DASH.FMP4_AVC_AC3,
+      MS.DASH.FMP4_HEVC_EAC3,
+      MS.DASH.FMP4_MPEG2_MP3,
+      MS.DASH.FMP4_MP3,
+      MS.DASH.WEBM_VP9_OPUS,
+      MS.DASH.MULTIPERIOD,
+      MS.DASH.CMAF_HEVC_AAC,
+      MS.DASH.DYNAMIC,
+      MS.DASH.CMAF_AVC_AC3,
+      MS.DASH.CMAF_HEVC_EAC3,
+      MS.DASH.CMAF_AVC_MP3_VTT,
+    ],
+    DRM: [MS.DASH.PLAYREADY_2_0],
+    Subtitles: [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT],
+  },
+  HLS: {
+    Common: [
+      MS.HLS.MP2TS_AVC_AAC,
+      MS.HLS.FMP4_AVC_EAC3,
+      MS.HLS.FMP4_HEVC_AC3,
+      MS.HLS.FMP4_MP3,
+      MS.HLS.CMAF_AVC_AAC,
+      MS.HLS.CMAF_HEVC_AAC,
+      MS.HLS.CMAF_AVC_AC3,
+      MS.HLS.CMAF_HEVC_EAC3,
+      MS.HLS.CMAF_AVC_MP3,
+    ],
+    Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT],
+  },
+  Progressive: {
+    Common: [
+      MS.PROG.MP4_AVC_AC3,
+      MS.PROG.MKV_AVC_AC3,
+      MS.PROG.MP4_AVC_EAC3,
+      MS.PROG.MKV_AVC_EAC3,
+      MS.PROG.MP4_AVC_MP3,
+      MS.PROG.MKV_AVC_MP3,
+      MS.PROG.MP4_HEVC_AAC,
+      MS.PROG.MKV_HEVC_AAC,
+      MS.PROG.MP4_MPEG2V_AAC,
+      MS.PROG.MKV_MPEG2V_AAC,
+      MS.PROG.MP4_VP9_AAC,
+      MS.PROG.MKV_VP9_AAC,
+      MS.PROG.MP4_MPEG4PART2_AAC,
+      MS.PROG.MKV_MPEG4PART2_AAC,
+      MS.PROG.MP4_EAC3,
+      MS.PROG.MP4_AVC,
+      MS.PROG.MKV_AVC,
+      MS.PROG.MP3_MP3,
+    ],
+    Subtitles: [MS.PROG.MP4_AVC_AAC_VTT, MS.PROG.MKV_AVC_AAC_VTT],
+  },
+};
+
+(function () {
+  StreamSets.DASH.Video = StreamSets.DASH.Common.filter((stream) => stream.video);
+  StreamSets.DASH.CommonAndDRM = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM);
+  StreamSets.HLS.Video = StreamSets.HLS.Common.filter((stream) => stream.video);
+  StreamSets.Progressive.Video = StreamSets.Progressive.Common.filter((stream) => stream.video);
+})();

@@ -24,3 +24,10 @@ var parseParam = function (param, defaultValue) {
   var value = regex.exec(document.URL);
   return value ? value[2] : defaultValue;
 };
+
+// TODO: Extend with |profile|, so it would be possible to filter tests depending on active profile
+class Unstable {
+  constructor(reason) {
+    this.reason = reason;
+  }
+}
