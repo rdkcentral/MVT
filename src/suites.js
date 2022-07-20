@@ -39,17 +39,13 @@ function makeMvtMediaTests(testTemplate, engine, streams, Unstable = null, timeo
 
   for (let codec of SelectedProfile.codecs) {
     for (let container of CONTAINER_MAPPING[codec]) {
-      tests.push(
-        new MvtTest(makeVideoCanPlayTest(codec, container, MIME_TYPE_MAPPING[codec]), `CanPlay ${container} ${codec}`)
-      );
-    }
-  }
-  for (let codec of SelectedProfile.codecs) {
-    for (let container of CONTAINER_MAPPING[codec]) {
       let unstable = undefined;
       if (container === V_MP2T || container === V_MKV) {
         unstable = new Unstable(`IsTypeSupported returns incorrect value for container ${container}`);
       }
+      tests.push(
+        new MvtTest(makeVideoCanPlayTest(codec, container, MIME_TYPE_MAPPING[codec]), `CanPlay ${container} ${codec}`)
+      );
       tests.push(
         new MvtTest(
           makeIsTypeSupportedTest(codec, container, MIME_TYPE_MAPPING[codec]),
@@ -59,6 +55,8 @@ function makeMvtMediaTests(testTemplate, engine, streams, Unstable = null, timeo
       );
     }
   }
+  // Group tests by category (CanPlay/IsTypeSupported)
+  tests.sort((a, b) => a.testTemplate.name.localeCompare(b.testTemplate.name));
   registerTestSuite(testSuite, makeTests(tests));
 })();
 
