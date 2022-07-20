@@ -32,6 +32,30 @@ function makeMvtMediaTests(testTemplate, engine, streams, mandatory = true, time
   return tests;
 }
 
+class UnstableTest {
+  constructor(testTemplate, stream, reason) {
+    this.testTemplate = testTemplate;
+    this.stream = stream;
+    this.reason = reason;
+  }
+}
+
+function markUnstable(mvtTests, unstableList) {
+  for (let unstable of unstableList) {
+    let test = mvtTests.find(
+      (test) =>
+        (!unstable.testTemplate || test.testTemplate === unstable.testTemplate) && test.stream === unstable.stream
+    );
+    let testName = `${test.stream.name} ${test.testTemplate.testName}`;
+    if (!test) {
+      console.warn(`Failed to find unstable test '${testName}'`);
+      continue;
+    }
+    test.mandatory = false;
+    console.info(`Test '${testName}' is optional due to: ${unstable.reason}`);
+  }
+}
+
 // DASH Shaka
 (function () {
   let engine = new ShakaEngine();
@@ -45,6 +69,8 @@ function makeMvtMediaTests(testTemplate, engine, streams, mandatory = true, time
   mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  markUnstable(mvtTests, [new UnstableTest(null, MS.DASH.MULTIPERIOD, "ONEM-26036"),
+  new UnstableTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, "ONEM-26279")]);
 
   registerTestSuite("DASH Shaka", makeTests(mvtTests));
 })();
@@ -62,6 +88,7 @@ function makeMvtMediaTests(testTemplate, engine, streams, mandatory = true, time
   mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  markUnstable(mvtTests, [new UnstableTest(null, MS.DASH.MULTIPERIOD, "ONEM-26036")]);
 
   registerTestSuite("DASH dashjs", makeTests(mvtTests));
 })();
@@ -79,6 +106,7 @@ function makeMvtMediaTests(testTemplate, engine, streams, mandatory = true, time
   mvtTests = mvtTests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
   mvtTests = filterUnsupportedOnProfile(SelectedProfile, mvtTests);
+  markUnstable(mvtTests, [new UnstableTest(null, MS.DASH.MULTIPERIOD, "ONEM-26036")]);
 
   registerTestSuite("DASH html5", makeTests(mvtTests));
 })();

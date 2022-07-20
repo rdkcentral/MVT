@@ -31,10 +31,6 @@ const BlockStateEnum = {
 };
 
 var TestsBlockList = {
-  "DASH-MULTIPERIOD Playback": BlockStateEnum.OPTIONAL, // TODO(ONEM-26036)
-  "DASH-MULTIPERIOD Pause": BlockStateEnum.OPTIONAL, // TODO(ONEM-26036)
-  "DASH-MULTIPERIOD Position": BlockStateEnum.OPTIONAL, // TODO(ONEM-26036)
-  "DASH-FMP4-MULTIAUDIO AudioTracks": BlockStateEnum.OPTIONAL, // TODO(ONEM-26279)
   "PROG-MKV-EAC3 Position": BlockStateEnum.OPTIONAL,
   'audio/mp2t; codecs="mp4a.40.29"(aac)': BlockStateEnum.HIDDEN,
   'audio/mp2t; codecs="mp4a.69"(mp3)': BlockStateEnum.HIDDEN,
