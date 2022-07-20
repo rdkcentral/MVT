@@ -734,3 +734,10 @@ const StreamSets = {
     Subtitles: [MS.PROG.MP4_AVC_AAC_VTT, MS.PROG.MKV_AVC_AAC_VTT],
   },
 };
+
+(function () {
+  StreamSets.DASH.Video = StreamSets.DASH.Common.filter((stream) => stream.video);
+  StreamSets.DASH.CommonAndDRM = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM);
+  StreamSets.HLS.Video = StreamSets.HLS.Common.filter((stream) => stream.video);
+  StreamSets.Progressive.Video = StreamSets.Progressive.Common.filter((stream) => stream.video);
+})();

@@ -87,43 +87,44 @@ class TestTemplate {
 }
 
 class MvtTest {
-  constructor(testTemplate, timeout = TestBase.timeout) {
+  constructor(testTemplate, mandatory = true, timeout = TestBase.timeout) {
     this.testTemplate = testTemplate;
+    this.mandatory = mandatory;
     this.timeout = timeout;
   }
 }
 
 class MvtMediaTest extends MvtTest {
-  constructor(testTemplate, stream, engine, timeout = TestBase.timeout) {
-    super(testTemplate, timeout);
+  constructor(testTemplate, stream, engine, mandatory = true, timeout = TestBase.timeout) {
+    super(testTemplate, mandatory, timeout);
     this.stream = stream;
     this.engine = engine;
   }
 }
 
-function makeBasicTest(testTemplate, timeout = TestBase.timeout, mandatory = true) {
-  let test = createTest(testTemplate.name, testTemplate.name, mandatory);
-  test.prototype.timeout = timeout;
+function makeBasicTest(mvtTest) {
+  let test = createTest(mvtTest.testTemplate.name, mvtTest.testTemplate.name, mvtTest.mandatory);
+  test.prototype.timeout = mvtTest.timeout;
   test.prototype.onload = () => {
-    testTemplate.code();
+    mvtTest.testTemplate.code();
   };
   return test;
 }
 
-function makeMediaTest(testTemplate, stream, engine, timeout = TestBase.timeout, mandatory = true) {
-  let testName = stream.name + " " + testTemplate.testName;
-  let test = createTest(testName, testTemplate.testName, mandatory);
-  test.prototype.timeout = timeout;
+function makeMediaTest(mvtMediaTest) {
+  let testName = mvtMediaTest.stream.name + " " + mvtMediaTest.testTemplate.testName;
+  let test = createTest(testName, mvtMediaTest.testTemplate.testName, mvtMediaTest.mandatory);
+  test.prototype.timeout = mvtMediaTest.timeout;
   test.prototype.onload = function (runner, video) {
     if (!test.prototype.playing) {
       test.prototype.playing = true;
       video.playbackRate = 1;
       video.play();
-      testTemplate.code.bind(this)(video, runner);
+      mvtMediaTest.testTemplate.code.bind(this)(video, runner);
     }
   };
-  test.prototype.content = stream;
-  engine.setup(test, stream);
+  test.prototype.content = mvtMediaTest.stream;
+  mvtMediaTest.engine.setup(test, mvtMediaTest.stream);
   return test;
 }
 
@@ -131,9 +132,9 @@ function makeTests(mvtTests) {
   let tests = [];
   mvtTests.forEach((t) => {
     if (t instanceof MvtMediaTest) {
-      tests.push(makeMediaTest(t.testTemplate, t.stream, t.engine, t.timeout));
+      tests.push(makeMediaTest(t));
     } else {
-      tests.push(makeBasicTest(t.testTemplate, t.timeout));
+      tests.push(makeBasicTest(t));
     }
   });
   return tests;

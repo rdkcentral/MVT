@@ -59,8 +59,8 @@ const Profiles = {
   },
 };
 
-const SelectedConfig = parseParam("profile", null) || window.localStorage["profile"] || "default";
-const SelectedProfile = Profiles[SelectedConfig];
+window.ConfigString = parseParam("profile", null) || window.localStorage["profile"] || "default";
+const SelectedProfile = Profiles[window.ConfigString];
 
 const EngineProperties = {
   shaka: { variants: ["dash", "hls"], subtitles: ["ttml", "vtt"] },
