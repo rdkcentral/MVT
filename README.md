@@ -32,7 +32,7 @@ Test streams use different audio/video/subtitles codecs and media containers. Fo
 
 ## Source
 
-    git clone git@github.com:rdkcentral/mvt.git
+    git clone git@github.com:rdkcentral/MVT.git
     ./prepare_submodule.sh
 
 ### Relation to js_mse_eme
@@ -116,8 +116,8 @@ There are six media test templates:
 
 - `Playback` verifies basic playback and media position progress on the span of 10 seconds
 - `Pause` verifies if browser is capable of pausing a stream
-- `Rate` verifies playback with various playback rates
-- `Position` executes seek operation
+- `PlayRate` verifies playback with various playback rates
+- `Seek` executes seek operation
 - `AudioTracks` changes audio track
 - `Subtitles` activates text tracks and verifies its content
 
@@ -129,7 +129,7 @@ All interactive elements are navigable via arrow keys and can be selected throug
 
 Test execution can be controlled through URL parameters, e.g. to run `DASH Shaka` tests 1,2,3 on Shaka Player version 2.5.20 use:
 
-    http://MVT_INSTANCE_ADDRESS?test_type=dash-shaka-test&tests=1-3&engine_shaka=2.5.20
+    http://MVT_INSTANCE_ADDRESS/?test_type=dash-shaka-test&tests=1-3&engine_shaka=2.5.20
 
 Most of the URL parameters can be combined. Here's a full list of supported queries:
 
@@ -215,7 +215,7 @@ It is still supported, but it uses different output format and does not include 
 docker run -v $PWD/:/usr/local/apache2/htdocs -v $TEST_MATERIALS_SRC:/usr/local/apache2/htdocs/test-materials -p 8080:80 --rm -d -it --name mvt-app mvt-app-img:latest
 ```
 
-Now you can modify MVT source code and observe changes on: http://localhost:8080
+Now you can modify MVT source code and observe changes on: http://localhost:8080/
 
 ### General
 
@@ -229,7 +229,7 @@ start `js_mse_eme` submodule and to render the UI.
 MVT test cases are a product of test templates (`src/mediaTests.js`) and media streams (`mediaStreams.js`).
 Test templates provide the actual test implementation, which can be parametrized with a given media stream.
 It means that e.g. `DASH_FMP4_AVC_AAC Playback` and `DASH_FMP4_MPEG2_MP3 Playback` load different media content,
-but the test code is exactly the same(`src/mediaTests.js::testPlayback`). Such approach allows us for verification
+but the test code is exactly the same (`src/mediaTests.js::testPlayback`). Such approach allows us for verification
 of browser behavior depending on the media stream properties.
 Furthermore, tests are splitted into suites (`suites.js`). Suites differ in type of streaming (e.g. DASH, progressive)
 and player (e.g. Shaka, native).
@@ -339,7 +339,7 @@ CI job which setups DUT, starts test suites and gathers results.
 In example, to execute `DASH shaka` test suite the test runner should:
 
 1. Start `WebBrowser` and connect to `WebDriver`
-2. Start test suite by setting URL to `http://MVT_INSTANCE_ADDRESS?test_type=dash-shaka-test&command=run`
+2. Start test suite by setting URL to `http://MVT_INSTANCE_ADDRESS/?test_type=dash-shaka-test&command=run`
 3. Wait till tests finishes i.e. till `WebDriver`'s:
 
    `return globalRunner.currentTestIdx == globalRunner.testList.length`

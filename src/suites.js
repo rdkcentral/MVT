@@ -74,7 +74,7 @@ function filterSkipTests(skipTests, tests) {
 window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-support-test";
 
 (function () {
-  const testSuite = "DASH Shaka";
+  const testSuite = "DASH shaka";
   let engine = new ShakaEngine();
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
@@ -82,7 +82,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRM));
-  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
+  // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine, new Unstable("ONEM-26279")));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
@@ -101,7 +101,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRM));
-  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
+  // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
@@ -120,7 +120,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.Common);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.Common));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.Common));
-  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
+  // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
@@ -131,7 +131,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 })();
 
 (function () {
-  const testSuite = "HLS Shaka";
+  const testSuite = "HLS shaka";
   let engine = new ShakaEngine();
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
@@ -139,7 +139,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
-  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
+  // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
 
@@ -159,7 +159,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
   // TODO: ONEM-26268 Fix Rate tests
-  tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
+  // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
 
@@ -179,7 +179,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
     new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testPause, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, engine),
-    new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, new Unstable("ONEM-26268")),
+    // new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, new Unstable("ONEM-26268")),
     new MvtMediaTest(testSubtitles, MS.HSS.FMP4_AVC_AAC_VTT, engine),
   ];
 
@@ -202,8 +202,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
     new MvtMediaTest(testPause, MS.HSS.PLAYREADY_2_0, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.PLAYREADY_2_0, engine),
-    new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, new Unstable("ONEM-26268")),
-    new MvtMediaTest(testPlayRate, MS.HSS.PLAYREADY_2_0, engine, new Unstable("ONEM-26268")),
+    // new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine, new Unstable("ONEM-26268")),
+    // new MvtMediaTest(testPlayRate, MS.HSS.PLAYREADY_2_0, engine, new Unstable("ONEM-26268")),
   ];
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
@@ -220,13 +220,13 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.Progressive.Common);
   tests.push(new MvtMediaTest(testPlayback, MS.PROG.MKV_EAC3, engine));
-  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.Progressive.Common, new Unstable("ONEM-?????")));
-  tests.push(new MvtMediaTest(testPause, MS.PROG.MKV_EAC3, engine, new Unstable("ONEM-?????")));
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.Progressive.Common, new Unstable("ARRISEOS-42467")));
+  tests.push(new MvtMediaTest(testPause, MS.PROG.MKV_EAC3, engine, new Unstable("ARRISEOS-42467")));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.Progressive.Common));
   tests.push(new MvtMediaTest(testSetPosition, MS.PROG.MKV_EAC3, engine, new Unstable("ONEM-26126")));
-  tests = tests.concat(
-    makeMvtMediaTests(testPlayRate, engine, StreamSets.Progressive.Video, new Unstable("ONEM-26268"))
-  );
+  // tests = tests.concat(
+  //   makeMvtMediaTests(testPlayRate, engine, StreamSets.Progressive.Video, new Unstable("ONEM-26268"))
+  // );
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.Progressive.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
