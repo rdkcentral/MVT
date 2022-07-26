@@ -32,6 +32,18 @@ function makeMvtMediaTests(testTemplate, engine, streams, Unstable = null, timeo
   return tests;
 }
 
+function filterSkipTests(skipTests, tests) {
+  if (Object.keys(skipTests).length > 0) {
+    for (var test in tests) {
+      if (tests[test]["testCaseName"] in skipTests) {
+        console.log(`'${tests[test]["testCaseName"]}' is hidden due to: '${skipTests[tests[test]["testCaseName"]]}'`);
+        delete tests[test];
+      }
+    }
+  }
+  return tests;
+}
+
 (function () {
   const testSuite = "Codec Support";
 
@@ -64,6 +76,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "DASH Shaka";
   let engine = new ShakaEngine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
@@ -73,6 +87,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
@@ -80,6 +95,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "DASH dashjs";
   let engine = new DashjsEngine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
@@ -89,6 +106,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
@@ -96,6 +114,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "DASH html5";
   let engine = new Html5Engine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.Common);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.Common));
@@ -105,6 +125,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
@@ -112,6 +133,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "HLS Shaka";
   let engine = new ShakaEngine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
@@ -121,6 +144,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
@@ -128,6 +152,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "HLS hlsjs";
   let engine = new HlsjsEngine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
@@ -138,6 +164,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
@@ -145,6 +172,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "HSS html5";
   let engine = new Html5Engine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = [
     new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, engine),
@@ -155,6 +184,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   ];
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
@@ -162,6 +192,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "HSS dashjs";
   let engine = new DashjsEngine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = [
     new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, engine),
@@ -175,6 +207,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   ];
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
@@ -182,6 +215,8 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 (function () {
   const testSuite = "Progressive html5";
   let engine = new Html5Engine();
+  // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
+  let skipTests = {};
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.Progressive.Common);
   tests.push(new MvtMediaTest(testPlayback, MS.PROG.MKV_EAC3, engine));
@@ -195,6 +230,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.Progressive.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
 
   registerTestSuite(testSuite, makeTests(tests));
 })();

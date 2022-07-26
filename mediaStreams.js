@@ -61,7 +61,6 @@ var MS = {
       },
     },
     FMP4_AVC_AAC_TTML: {
-      testBase: "1.1.2",
       variant: "dash",
       container: "fmp4",
       src: "test-materials/dash/fmp4_h264_aac_ttml/manifest_ttml.mpd",
@@ -593,7 +592,6 @@ var MS = {
       },
     },
     MKV_VP9_AAC: {
-      testBase: "4.1.7",
       variant: "progressive",
       container: "mkv",
       src: "test-materials/progressive/vid1_vp9_aac.mkv",
