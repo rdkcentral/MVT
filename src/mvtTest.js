@@ -18,146 +18,10 @@
  */
 
 /**
- * This file overrides or redeclares stuff from js_mse_eme/harness/test.js
  * Implements tests generation and results gathering.
  */
 
 "use strict";
-
-function createMvtTest(tests, testId, category, categorySort, name, mandatory = true) {
-  if (isTestOptional(name)) {
-    mandatory = false;
-    console.log("Test " + name + " is not mandatory");
-  }
-  var t = createTest(name, category, mandatory, testId, category + " Tests");
-  t.prototype.index = tests.length;
-  if (!(categorySort in tests)) {
-    tests[categorySort] = [];
-  }
-  if (isTestHidden(name)) {
-    console.log("Test " + name + " has been hidden");
-  } else {
-    tests[categorySort].push(t);
-  }
-  return t;
-};
-
-function finalizeTests(tests) {
-  var tests_ = [];
-  Object.keys(tests)
-    .sort()
-    .forEach((category) => {
-      tests_ = tests_.concat(tests[category]);
-    });
-
-  for (let index = 0; index < tests_.length; ++index) {
-    tests_[index].prototype.index = index;
-  }
-  return tests_;
-};
-
-function createBaselineTest(tests, engine, media, sortorder, name, func, timeout) {
-  var testId = media.testBase + "." + sortorder;
-  var testname = media.name + " " + name;
-  var categorySort = sortorder + engine.order + name;
-  var test = createMvtTest(tests, testId, engine.name + " " + name, categorySort, testname);
-  test.prototype.timeout = timeout;
-  test.prototype.title = "Test playback of content " + media.name + " using " + engine.name + " " + name;
-  test.prototype.onload = function (runner, video) {
-    if (!test.prototype.playing) {
-      test.prototype.playing = true;
-      video.playbackRate = 1;
-      video.play();
-      func.bind(this)(video, runner);
-    }
-  };
-  test.prototype.content = media;
-  engine.setup(test, media);
-};
-
-function makeBaselineTests(medialist) {
-  var tests = {};
-  medialist.forEach((media) => {
-    getEnginesForMedia(media, function (engine) {
-      createTestsForMedia(media, tests, engine);
-    });
-  });
-  return finalizeTestSuite(tests);
-};
-
-function finalizeTestSuite(tests) {
-  return function () {
-    var info = "Default Timeout: " + TestBase.timeout + "ms";
-
-    var fields = ["passes", "failures", "timeouts"];
-
-    return { tests: finalizeTests(tests), info: info, fields: fields, viewType: "default" };
-  };
-};
-
-function createTestsForMedia(media, tests, engine) {
-  createBaselineTest(tests, engine, media, 1, "Playback", testPlayback, TestBase.timeout);
-  // TODO: ONEM-26308 Fix Pause tests
-  // createBaselineTest(tests, engine, media, 2, "Pause", testPause, TestBase.timeout);
-  if (media.duration == undefined || media.duration > 120) {
-    // TODO: ONEM-26268 Fix Rate tests
-    // if (media.video) {
-    // createBaselineTest(tests, engine, media, 3, "Rate", testPlayRate, TestBase.timeout * 3);
-    // }
-    createBaselineTest(tests, engine, media, 4, "Position", testSetPosition, TestBase.timeout * 2);
-  }
-  if (media.audio && media.audio.languages) {
-    createBaselineTest(tests, engine, media, 5, "AudioTracks", testChangeAudioTracks, TestBase.timeout);
-  }
-  if (media.subtitles && engine.config.subtitles && engine.config.subtitles.includes(media.subtitles.format)) {
-    createBaselineTest(tests, engine, media, 6, "Subtitles", testSubtitles, TestBase.timeout);
-  }
-}
-
-var makeTests = function (medialist, category) {
-  var niceNames = {
-    dash: "DASH",
-    hls: "HLS",
-    progressive: "Progressive",
-    hss: "HSS",
-    playready: "PlayReady",
-    custom: "Custom",
-  };
-
-  if (medialist.length != 0) {
-    var tests = {};
-    medialist.forEach((media) => {
-      getEnginesForMedia(media, function (engine) {
-        if (!(engine.name in tests)) {
-          tests[engine.name] = {};
-        }
-        createTestsForMedia(media, tests[engine.name], engine);
-      });
-    });
-
-    for (var engine in tests) {
-      var testlist = tests[engine];
-      if (testlist.length != 0) {
-        var category_engine = category.slice();
-        category_engine.push(engine);
-
-        var category_key = category_engine.join("-") + "-test";
-        var nice_category = category_engine.map((name) => (niceNames[name] ? niceNames[name] : name));
-        var category_name = nice_category.join(" ");
-        var testsuite = finalizeTestSuite(testlist);
-
-        var test_desc = {
-          name: category_name + " Tests",
-          title: category_name + " Tests",
-          heading: category_name + " Tests",
-          tests: testsuite,
-        };
-        window.testSuiteDescriptions[category_key] = test_desc;
-        window.testSuiteVersions[testVersion].testSuites.push(category_key);
-      }
-    }
-  }
-};
 
 var TestOutcome = {
   UNKNOWN: 0,
@@ -213,3 +77,104 @@ window.testSuiteVersions = {
     },
   },
 };
+
+class TestTemplate {
+  constructor(name, code) {
+    this.name = name;
+    this.code = code;
+  }
+}
+
+class MvtTest {
+  constructor(testTemplate, testCaseName, unstable = null, timeout = TestBase.timeout) {
+    this.testTemplate = testTemplate;
+    this.testCaseName = testCaseName;
+    this.unstable = unstable;
+    this.mandatory = !Boolean(unstable);
+    this.timeout = timeout;
+  }
+}
+
+class MvtMediaTest extends MvtTest {
+  constructor(testTemplate, stream, engine, unstable = null, timeout = TestBase.timeout) {
+    let testCaseName = stream.name + " " + testTemplate.name;
+    super(testTemplate, testCaseName, unstable ? unstable : stream.unstable, timeout);
+    this.stream = stream;
+    this.engine = engine;
+  }
+}
+
+function createFrameworkTest(mvtTest) {
+  let test = createTest(mvtTest.testCaseName, mvtTest.testTemplate.name, mvtTest.mandatory);
+  test.prototype.timeout = mvtTest.timeout;
+  test.prototype.unstable = mvtTest.unstable;
+  return test;
+}
+
+function makeBasicTest(mvtTest) {
+  let test = createFrameworkTest(mvtTest);
+  test.prototype.start = function (runner, video) {
+    mvtTest.testTemplate.code.bind(this)(runner, video);
+  };
+  return test;
+}
+
+function makeMediaTest(mvtMediaTest) {
+  let test = createFrameworkTest(mvtMediaTest);
+  test.prototype.onload = function (runner, video) {
+    if (!test.prototype.playing) {
+      test.prototype.playing = true;
+      video.playbackRate = 1;
+      video.play();
+      mvtMediaTest.testTemplate.code.bind(this)(video, runner);
+    }
+  };
+  test.prototype.content = mvtMediaTest.stream;
+  mvtMediaTest.engine.setup(test, mvtMediaTest.stream);
+  return test;
+}
+
+function makeTests(mvtTests) {
+  let tests = [];
+  mvtTests.forEach((t) => {
+    if (t instanceof MvtMediaTest) {
+      tests.push(makeMediaTest(t));
+    } else {
+      tests.push(makeBasicTest(t));
+    }
+  });
+  return tests;
+}
+
+function startTestSuite(name, testSet) {
+  return (verbose = true) => {
+    if (verbose) {
+      console.log(`Loaded MVT test suite: ${name}`);
+      for (let test of testSet.tests) {
+        if (test.prototype.unstable)
+          console.log(`'${test.prototype.name}' is optional due to: '${test.prototype.unstable.reason}'`);
+      }
+    }
+    return testSet;
+  };
+}
+
+function registerTestSuite(name, tests) {
+  if (tests.length === 0) return;
+  let suiteKey = name.replace(" ", "-").toLowerCase() + "-test";
+  let info = "Default Timeout: " + TestBase.timeout + "ms";
+  let fields = ["passes", "failures", "timeouts"];
+  tests.forEach((test, index) => {
+    test.prototype.index = index;
+  });
+  let testSet = { tests: tests, info: info, fields: fields, viewType: "default" };
+
+  var testSuiteDescription = {
+    name: name + " Tests",
+    title: name + " Tests",
+    heading: name + " Tests",
+    tests: startTestSuite(name, testSet),
+  };
+  window.testSuiteDescriptions[suiteKey] = testSuiteDescription;
+  window.testSuiteVersions[testVersion].testSuites.push(suiteKey);
+}

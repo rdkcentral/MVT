@@ -32,7 +32,7 @@ Test streams use different audio/video/subtitles codecs and media containers. Fo
 
 ## Source
 
-    git clone git@github.com:rdkcentral/mvt.git
+    git clone git@github.com:rdkcentral/MVT.git
     ./prepare_submodule.sh
 
 ### Relation to js_mse_eme
@@ -100,24 +100,6 @@ A list of of all external media assets used by a deployed instance of MVT:
 | HSS-AVC1-AAC       | [Microsoft PlayReady](https://testweb.playready.microsoft.com/Content/Content2X) | http://amssamples.streaming.mediaservices.windows.net/683f7e47-bd83-4427-b0a3-26a6c4547782/BigBuckBunny.ism/manifest(format=mpd-time-csf)     | Not distributed by MVT, used for playback during test execution                                                                             |
 | HSS-AVC1-AAC       | [Microsoft PlayReady](https://testweb.playready.microsoft.com/Content/Content2X) | http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest                      | Not distributed by MVT, used for playback during test execution                                                                             |
 
-## Development
-
-1. [Deploy](#deployment) the application
-2. [Stop the container](#stop-mvt) - it works on build-time static copy of source files
-3. Start development container with:
-
-```
-docker run -v $PWD/:/usr/local/apache2/htdocs -v $TEST_MATERIALS_SRC:/usr/local/apache2/htdocs/test-materials -p 8080:80 --rm -d -it --name mvt-app mvt-app-img:latest
-```
-
-Now you can modify MVT source code and observe changes on: http://localhost:8080
-
-### Prettier
-
-Source files are auto formatted by [prettier](https://prettier.io/), which should be used before committing any changes:
-
-    prettier -w .
-
 ## User Interface
 
 ![alt text](docs/main_view.png "Main view")
@@ -134,8 +116,8 @@ There are six media test templates:
 
 - `Playback` verifies basic playback and media position progress on the span of 10 seconds
 - `Pause` verifies if browser is capable of pausing a stream
-- `Rate` verifies playback with various playback rates
-- `Position` executes seek operation
+- `PlayRate` verifies playback with various playback rates
+- `Seek` executes seek operation
 - `AudioTracks` changes audio track
 - `Subtitles` activates text tracks and verifies its content
 
@@ -147,12 +129,12 @@ All interactive elements are navigable via arrow keys and can be selected throug
 
 Test execution can be controlled through URL parameters, e.g. to run `DASH Shaka` tests 1,2,3 on Shaka Player version 2.5.20 use:
 
-    http://MVT_INSTANCE_ADDRESS?test_type=dash-shaka-test&tests=1-3&engine_shaka=2.5.20
+    http://MVT_INSTANCE_ADDRESS/?test_type=dash-shaka-test&tests=1-3&engine_shaka=2.5.20
 
 Most of the URL parameters can be combined. Here's a full list of supported queries:
 
 - `test_type=SUITE_NAME` - test suite selection. Expected values:
-  - codecsupport-test
+  - codec-support-test
   - dash-html5-test
   - dash-shaka-test
   - dash-dashjs-test
@@ -181,26 +163,26 @@ It produces a JSON-like object, which should be easy to read by any automated te
 
 ```
 {
-    "name": "codecsupport-test",
+    "name": "codec-support-test",
     "setup_log": "",
     "suites": [],
     "teardown_log": "",
     "tests": [
         {
-            "log": "[2022-05-04T12:27:02.799Z] TestExecutor:  Test 1:video/mp4; codecs=\"avc1.64002a\"(avc1) STARTED with timeout 30000 \n[2022-05-04T12:27:02.800Z] TestExecutor:  checking video/mp4; codecs=\"avc1.64002a\" \n[2022-05-04T12:27:02.800Z] TestExecutor:  Test 1:video/mp4; codecs=\"avc1.64002a\"(avc1) PASSED. \n",
-            "name": "video/mp4; codecs=\"avc1.64002a\"(avc1)",
+            "log": "[2022-07-20T14:05:17.007Z] TestExecutor:  Test 1:IsTypeSupported video/mp4 avc STARTED with timeout 30000 \n[2022-07-20T14:05:17.010Z] TestExecutor:  Executing IsTypeSupported test for avc (video/mp4; codecs=\"avc1.4d002a\") \n[2022-07-20T14:05:17.014Z] TestExecutor:  Test 1:IsTypeSupported video/mp4 avc PASSED. \n",
+            "name": "IsTypeSupported video/mp4 avc",
             "status": "passed",
-            "suites_chain": "MVT_SUITE.codecsupport-test",
-            "time_ms": 2,
+            "suites_chain": "MVT_SUITE.codec-support-test",
+            "time_ms": 7,
             "type": "test_result",
             "ver": "1.0"
-        },
+        }
         {
-            "log": "[2022-05-04T12:27:02.804Z] TestExecutor:  Test 2:video/mp4; codecs=\"hvc1.2.4.L153.00\"(hevc) STARTED with timeout 30000 \n[2022-05-04T12:27:02.805Z] TestExecutor:  checking video/mp4; codecs=\"hvc1.2.4.L153.00\" \n[2022-05-04T12:27:02.805Z] TestExecutor:  Test 2:video/mp4; codecs=\"hvc1.2.4.L153.00\"(hevc) FAILED \n[2022-05-04T12:27:02.807Z] TestExecutor:  Test 0.0.0.1:video/mp4; codecs=\"hvc1.2.4.L153.00\"(hevc) threw an error: Assert failed: canPlayType should be probably for video/mp4; codecs=\"hvc1.2.4.L153.00\" \n",
-            "name": "video/mp4; codecs=\"hvc1.2.4.L153.00\"(hevc)",
-            "status": "failed",
-            "suites_chain": "MVT_SUITE.codecsupport-test",
-            "time_ms": 4,
+            "log": "[2022-07-20T14:05:17.020Z] TestExecutor:  Test 2:IsTypeSupported video/mp2t avc STARTED with timeout 30000 \n[2022-07-20T14:05:17.023Z] TestExecutor:  Executing IsTypeSupported test for avc (video/mp2t; codecs=\"avc1.4d002a\") \n[2022-07-20T14:05:17.027Z] TestExecutor:  Test 2:IsTypeSupported video/mp2t avc FAILED \n[2022-07-20T14:05:17.032Z] TestExecutor:  Test :IsTypeSupported video/mp2t avc threw an error: Assert failed: MediaSource.isTypeSupported should be true for video/mp2t; codecs=\"avc1.4d002a\" \n",
+            "name": "IsTypeSupported video/mp2t avc",
+            "status": "skipped",
+            "suites_chain": "MVT_SUITE.codec-support-test",
+            "time_ms": 13,
             "type": "test_result",
             "ver": "1.0"
         }
@@ -219,9 +201,99 @@ It is still supported, but it uses different output format and does not include 
 
 - <span style="color:yellow">Unsupported</span> - case is unsupported, either by container, player or WPEWebKit.
 - <span style="color:red">Supported, no content</span> - case is not covered by MVT test suite.
-- <span style="color:green">Supported</span> - case is represented by `x` media streams. Please note that it does not mean that related tests pass on the active device - it is just a coverage view which does not verify test results.
+- <span style="color:green">Supported</span> - case is represented by `x` tests. Please note that it does not mean that related tests pass on the active device - it is just a coverage view which does not verify test results.
 
 ![alt text](docs/coverage.png "Coverage")
+
+## Development
+
+1. [Deploy](#deployment) the application
+2. [Stop the container](#stop-mvt) - it works on build-time static copy of source files
+3. Start development container with:
+
+```
+docker run -v $PWD/:/usr/local/apache2/htdocs -v $TEST_MATERIALS_SRC:/usr/local/apache2/htdocs/test-materials -p 8080:80 --rm -d -it --name mvt-app mvt-app-img:latest
+```
+
+Now you can modify MVT source code and observe changes on: http://localhost:8080/
+
+### General
+
+`index.html` is the entrypoint to the application.
+It loads all required scripts in a specific sequence, most importantly, `suites.js`,
+where all MVT tests are declared. Once all files are loaded, `startMseTest` function is triggered in order to
+start `js_mse_eme` submodule and to render the UI.
+
+### Adding new tests
+
+MVT test cases are a product of test templates (`src/mediaTests.js`) and media streams (`mediaStreams.js`).
+Test templates provide the actual test implementation, which can be parametrized with a given media stream.
+It means that e.g. `DASH_FMP4_AVC_AAC Playback` and `DASH_FMP4_MPEG2_MP3 Playback` load different media content,
+but the test code is exactly the same (`src/mediaTests.js::testPlayback`). Such approach allows us for verification
+of browser behavior depending on the media stream properties.
+Furthermore, tests are splitted into suites (`suites.js`). Suites differ in type of streaming (e.g. DASH, progressive)
+and player (e.g. Shaka, native).
+
+With that in mind, if you wish to extend MVT with a media stream, then its enough to simply declare it in
+`mediaStreams.js` e.g.
+
+```
+// Media Streams
+var MS = {
+  DASH: {
+....
+PLAYREADY_3_0: {
+    variant: "dash",
+    container: "fmp4",
+    video: {
+        codec: "avc",
+    },
+    audio: {
+        codec: "aac",
+    },
+    src: "MANIFEST URL",
+    drm: {
+        servers: {
+            "com.microsoft.playready":
+            "LICENSE SERVER URL",
+        },
+    },
+},
+```
+
+Then the stream has to be added to some test suites in `suites.js`
+
+Hoverer, if you wish to implement a new test template, then you have to create `TestTemplate` object:
+
+```
+let complicatedTest = new TestTemplate(`complicatedTest`, function (runner, video) {
+    // Test code
+    // |video| refers to active HTML5 video node
+    // |runner| can be used for interactions with the test framework:
+    runner.log(`Executing complicatedTest...`);
+    // Failed assertion breaks test execution
+    runner.assert(video.currentTime >= 0, `message on assertion failure`);
+    // Call |runner.succeed| function to mark test as passed
+    runner.succeed();
+  });
+```
+
+The new template has be binded with media stream and added into a test suite (see `suites.js`):
+
+```
+(function () {
+  const testSuite = "DASH dashjs";
+....
+  tests.push(new MvtMediaTest(complicatedTest, MS.DASH.PLAYREADY_3_0, engine));
+```
+
+Now test case 'DASH_PLAYREADY_3_0 complicatedTest` should appear under 'DASH dashjs' test suite.
+
+### Prettier
+
+Source files are auto formatted by [prettier](https://prettier.io/), which should be used before committing any changes:
+
+    prettier -w .
 
 ## Continuous Integration
 
@@ -267,7 +339,7 @@ CI job which setups DUT, starts test suites and gathers results.
 In example, to execute `DASH shaka` test suite the test runner should:
 
 1. Start `WebBrowser` and connect to `WebDriver`
-2. Start test suite by setting URL to `http://MVT_INSTANCE_ADDRESS?test_type=dash-shaka-test&command=run`
+2. Start test suite by setting URL to `http://MVT_INSTANCE_ADDRESS/?test_type=dash-shaka-test&command=run`
 3. Wait till tests finishes i.e. till `WebDriver`'s:
 
    `return globalRunner.currentTestIdx == globalRunner.testList.length`
