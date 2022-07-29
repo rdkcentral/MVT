@@ -22,7 +22,7 @@ var player_type = getQueryVariable("player");
 var player_ver = getQueryVariable("player_ver");
 var media_url = getQueryVariable("url");
 if (!media_url) {
-  media_url = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
+  media_url = "/test-materials/dash/fmp4_h264_aac/manifest.mpd";
 }
 
 let div_player = document.getElementById("players_list");
