@@ -229,41 +229,42 @@ start `js_mse_eme` submodule and to render the UI.
 MVT test cases are a product of test templates (`src/mediaTests.js`) and media streams (`mediaStreams.js`).
 Test templates provide the actual test implementation, which can be parametrized with a given media stream.
 It means that e.g. `DASH_FMP4_AVC_AAC Playback` and `DASH_FMP4_MPEG2_MP3 Playback` load different media content,
-but the test code is exactly the same (`src/mediaTests.js::testPlayback`). Such approach allows us for verification
-of browser behavior depending on the media stream properties.
+but the test code is exactly the same (`src/mediaTests.js::testPlayback`). Such approach allows us to verify
+browser behavior depending on the media stream properties.
 Furthermore, tests are splitted into suites (`suites.js`). Suites differ in type of streaming (e.g. DASH, progressive)
 and player (e.g. Shaka, native).
 
-With that in mind, if you wish to extend MVT with a media stream, then its enough to simply declare it in
+With that in mind, if you wish to extend MVT with a media stream, then it's enough to simply declare it in
 `mediaStreams.js` e.g.
 
 ```
 // Media Streams
 var MS = {
-  DASH: {
-....
-PLAYREADY_3_0: {
-    variant: "dash",
-    container: "fmp4",
-    video: {
-        codec: "avc",
-    },
-    audio: {
-        codec: "aac",
-    },
-    src: "MANIFEST URL",
-    drm: {
-        servers: {
-            "com.microsoft.playready":
-            "LICENSE SERVER URL",
+    DASH: {
+        ...
+        PLAYREADY_3_0: {
+            variant: "dash",
+            container: "fmp4",
+            video: {
+                codec: "avc",
+            },
+            audio: {
+                codec: "aac",
+            },
+            src: "MANIFEST URL",
+            drm: {
+                servers: {
+                    "com.microsoft.playready":
+                    "LICENSE SERVER URL",
+                },
+            },
         },
-    },
-},
+        ...
 ```
 
 Then the stream has to be added to some test suites in `suites.js`
 
-Hoverer, if you wish to implement a new test template, then you have to create `TestTemplate` object:
+However, if you wish to implement a new test template, then you have to create `TestTemplate` object:
 
 ```
 let complicatedTest = new TestTemplate(`complicatedTest`, function (runner, video) {
@@ -278,12 +279,12 @@ let complicatedTest = new TestTemplate(`complicatedTest`, function (runner, vide
   });
 ```
 
-The new template has be binded with media stream and added into a test suite (see `suites.js`):
+The new template has to be binded with media stream and added into a test suite (see `suites.js`):
 
 ```
 (function () {
   const testSuite = "DASH dashjs";
-....
+  ...
   tests.push(new MvtMediaTest(complicatedTest, MS.DASH.PLAYREADY_3_0, engine));
 ```
 
@@ -292,8 +293,7 @@ Now test case 'DASH_PLAYREADY_3_0 complicatedTest` should appear under 'DASH das
 ### Prettier
 
 Source files are auto formatted by [prettier](https://prettier.io/), which should be used before committing any changes:
-
-    prettier -w .
+`prettier -w .`
 
 ## Continuous Integration
 
@@ -340,12 +340,8 @@ In example, to execute `DASH shaka` test suite the test runner should:
 
 1. Start `WebBrowser` and connect to `WebDriver`
 2. Start test suite by setting URL to `http://MVT_INSTANCE_ADDRESS/?test_type=dash-shaka-test&command=run`
-3. Wait till tests finishes i.e. till `WebDriver`'s:
-
+3. Wait till tests finishes i.e. till `WebDriver` command evaluates to true:
    `return globalRunner.currentTestIdx == globalRunner.testList.length`
-
-   command evaluates to true.
-
 4. Fetch test results through `WebDriver` with `return getMvtTestResults()`
 5. Parse JSON test results to adjust it for the format expected by CI system.
 
