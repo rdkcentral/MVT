@@ -33,6 +33,7 @@ var TestOutcome = {
 function getTestStatus(test) {
   if (test.prototype.outcome == TestOutcome.PASSED) return "passed";
   else if (test.prototype.outcome == TestOutcome.FAILED) return "failed";
+  else if (test.prototype.outcome == TestOutcome.UNKNOWN) return "not_started";
   else return "skipped";
 }
 
