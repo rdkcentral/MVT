@@ -17,6 +17,13 @@
  * limitations under the License.
  */
 
+/**
+ * Implements media tests.
+ * All |test*| functions represent a media test - a sequence of actions and expectations, which can be executed on
+ * a given media stream. Same test code is used multiple times on various streams. Binding between test code
+ * and media stream is implemented in |src/suites.js|.
+ */
+
 "use strict";
 
 function waitForEvent(video, runner, event, predicate = null, maxWaitTimeMs = 10000, times = 1) {
@@ -75,7 +82,27 @@ function checkVideoFramesIncreasing(video, runner, hasVideoTrack) {
   });
 }
 
-var testPlayback = function (video, runner) {
+function makeVideoCanPlayTest(codec, container, mimeType) {
+  return new TestTemplate(`VideoCanPlayType`, function (runner, video) {
+    const fullMime = `${container}; codecs="${mimeType}"`;
+    runner.log(`Executing canPlayType test for ${codec} (${fullMime})`);
+    const canPlayType = video.canPlayType(fullMime);
+    runner.assert(canPlayType === "probably", `canPlayType should be 'probably' for ${fullMime}`);
+    runner.succeed();
+  });
+}
+
+function makeIsTypeSupportedTest(codec, container, mimeType) {
+  return new TestTemplate(`IsTypeSupported`, function (runner, video) {
+    const fullMime = `${container}; codecs="${mimeType}"`;
+    runner.log(`Executing IsTypeSupported test for ${codec} (${fullMime})`);
+    const isTypeSupported = MediaSource.isTypeSupported(fullMime);
+    runner.assert(isTypeSupported, `MediaSource.isTypeSupported should be true for ${fullMime}`);
+    runner.succeed();
+  });
+}
+
+var testPlayback = new TestTemplate("Playback", function (video, runner) {
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
   const playbackTime = 10;
@@ -94,9 +121,9 @@ var testPlayback = function (video, runner) {
     promise = promise.then(makePlaybackTestStep(initialPosition + i));
   }
   promise.then(() => runner.succeed());
-};
+});
 
-var testPlayRate = function (video, runner) {
+var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
   const rates = [0.5, 2, 0.75, 1.5, 0];
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
@@ -156,9 +183,9 @@ var testPlayRate = function (video, runner) {
     promise = promise.then(makePlayRateTest(rate));
   });
   promise.then(() => runner.succeed());
-};
+});
 
-var testPause = function (video, runner) {
+var testPause = new TestTemplate("Pause", function (video, runner) {
   const hasVideoTrack = this.content.video;
   var pauseTimes = [1.5, 5];
   if (this.content.dynamic) {
@@ -187,9 +214,9 @@ var testPause = function (video, runner) {
   var promise = Promise.resolve();
   pauseTimes.forEach((pauseTime) => (promise = promise.then(makePauseTest(pauseTime))));
   promise.then(() => runner.succeed());
-};
+});
 
-var testSetPosition = function (video, runner) {
+var testSetPosition = new TestTemplate("Seek", function (video, runner) {
   const initialPosition = 2;
   const hasVideoTrack = this.content.video;
   var positions = [0, 20, 45];
@@ -218,7 +245,7 @@ var testSetPosition = function (video, runner) {
     promise = promise.then(makeSeekTest(position));
   });
   promise.then(() => runner.succeed());
-};
+});
 
 function arraysEqual(a, b) {
   if (a === b) return true;
@@ -231,7 +258,7 @@ function arraysEqual(a, b) {
   return true;
 }
 
-var testChangeAudioTracks = function (video, runner) {
+var testChangeAudioTracks = new TestTemplate("AudioTracks", function (video, runner) {
   const initialPosition = 1;
   const trackPlaybackTime = 7;
   const positionInaccuracyThreshold = 2;
@@ -266,9 +293,9 @@ var testChangeAudioTracks = function (video, runner) {
     promise = promise.then(makeChangeAudioTrackTest(lang));
   });
   promise.then(() => runner.succeed());
-};
+});
 
-var testSubtitles = function (video, runner) {
+var testSubtitles = new TestTemplate("Subtitles", function (video, runner) {
   const initialPosition = this.content.subtitles.startOffset || 1;
 
   if (this.content.subtitles.tracks) {
@@ -324,4 +351,4 @@ var testSubtitles = function (video, runner) {
     promise = promise.then(makeChangeSubtitlesTest(language));
   });
   promise.then(() => runner.succeed());
-};
+});

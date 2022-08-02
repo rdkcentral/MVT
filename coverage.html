@@ -40,17 +40,18 @@ limitations under the License.
         "js_mse_eme/harness/test.js",
         "js_mse_eme/lib/mse/msutil.js",
         "js_mse_eme/lib/mse/mediaSourcePortability.js",
+        "test-materials/js/countdown-de.js",
+        "test-materials/js/countdown-en.js",
+        "test-materials/js/countdown-fr.js",
+        "test-materials/js/countdown-es.js",
+        "src/constants.js",
+        "src/common.js",
         "mediaStreams.js",
         "src/mvtTest.js",
-        "src/common.js",
         "src/engineChange.js",
-        "src/filterTest.js",
-        "src/baseConfig.js",
         "src/profiles.js",
         "src/engines.js",
-        "src/codecSupport.js",
-        "src/commonTests.js",
-        "src/codecSupportTests.js",
+        "src/mediaTests.js",
         "src/suites.js",
         "src/coverage.js",
         "js_mse_eme/harness/main.js",
@@ -71,7 +72,7 @@ limitations under the License.
           };
           document.head.appendChild(script);
         } else {
-          GenerateCoverage();
+          generateCoverage();
         }
       })();
     </script>

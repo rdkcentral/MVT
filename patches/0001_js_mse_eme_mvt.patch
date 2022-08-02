@@ -133,19 +133,21 @@ index c722460..21c0512 100644
    config.muted = util.stringToBoolean(parseParam('muted', false));
    config.novp9 = util.stringToBoolean(parseParam('novp9', false));
    config.tests = parseParam('tests');
-@@ -143,7 +149,10 @@ var createLogger = function() {
+@@ -143,7 +149,12 @@ var createLogger = function() {
        text += arguments[i].toString() + ' ';
  
      console.log(text);
 -    output.innerHTML = text + '\n' + output.innerHTML;
-+    const separator = output.innerHTML.length === 0 ? '' : '\n';
-+    output.innerHTML = output.innerHTML + separator + text;
++    var textBlock = output.innerHTML;
++    textBlock = textBlock.split('\n').slice(-100).join('\n');
++    const separator = textBlock.length === 0 ? '' : '\n';
++    output.innerHTML = textBlock + separator + text;
 +    output.scrollTop = output.scrollHeight
 +    return text;
    };
  };
  
-@@ -196,7 +205,7 @@ window.startMseTest = function(testSuiteVer) {
+@@ -196,7 +207,7 @@ window.startMseTest = function(testSuiteVer) {
    window.harnessConfig = parseParams(testSuiteVersion.config);
    window.harnessConfig.testSuite = testSuiteVer;
  
