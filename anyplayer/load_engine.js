@@ -18,6 +18,18 @@
  */
 "use strict";
 
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (decodeURIComponent(pair[0]) == variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  return false;
+}
+
 var player_type = getQueryVariable("player");
 var player_ver = getQueryVariable("player_ver");
 var media_url = getQueryVariable("url");

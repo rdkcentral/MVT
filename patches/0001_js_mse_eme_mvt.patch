@@ -1,6 +1,6 @@
-From 3a680d834af901766c20a80c5cc3361536a7b63e Mon Sep 17 00:00:00 2001
-From: Maciej Kolanski <maciej.kolanski@consult.red>
-Date: Mon, 11 Jul 2022 12:54:50 +0200
+From 8b25bd91c96b851b38dd4d37f0fbfae02920ced3 Mon Sep 17 00:00:00 2001
+From: Lukasz Rutkowski <lukasz.rutkowski@consult.red>
+Date: Tue, 2 Aug 2022 09:11:18 +0200
 Subject: [PATCH] MVT changes
 
 * Load MVT tests instead of the upstream tests
@@ -12,14 +12,14 @@ Subject: [PATCH] MVT changes
 * Remove some unsupported links
 * Add links to YouTube test suite and Media Coverage
 ---
- harness/compactTestView.js | 33 +++++++++++------------------
+ harness/compactTestView.js | 33 +++++++++++-----------------
  harness/constants.js       |  3 ++-
- harness/main.js            | 13 ++++++++++--
- harness/test.js            | 43 ++++++++++++--------------------------
- harness/testView.js        | 39 +++++++++++++++++++++-------------
+ harness/main.js            | 13 +++++++++--
+ harness/test.js            | 43 +++++++++++--------------------------
+ harness/testView.js        | 44 +++++++++++++++++++++++++-------------
  harness/timeout.js         |  9 ++++++++
  style.css                  |  6 +++++-
- 7 files changed, 76 insertions(+), 70 deletions(-)
+ 7 files changed, 81 insertions(+), 70 deletions(-)
 
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 77f7b68..9bc41a7 100644
@@ -270,7 +270,7 @@ index b781e31..a0de08b 100644
  
    this.timeouts.clearAll();
 diff --git a/harness/testView.js b/harness/testView.js
-index c040757..640ba1b 100644
+index c040757..96a2dbe 100644
 --- a/harness/testView.js
 +++ b/harness/testView.js
 @@ -1,6 +1,7 @@
@@ -303,7 +303,7 @@ index c040757..640ba1b 100644
      })
    };
  
-@@ -103,7 +100,7 @@ function TestView(testSuiteVer) {
+@@ -103,15 +100,23 @@ function TestView(testSuiteVer) {
  
    this.generate = function() {
      var heading = '[' + this.testSuiteVer + '] ' +
@@ -312,17 +312,23 @@ index c040757..640ba1b 100644
      try {
        document.title = testSuiteDescriptions[harnessConfig.testType].title;
      } catch (e) {
-@@ -112,6 +109,9 @@ function TestView(testSuiteVer) {
+       // Use default html title if UA can't control document.title.
+     }
++    var anyplayer = document.getElementById('anyplayer');
++    var any_link = createElement('a', null, 'focusable', 'Test any player');
++    any_link.href = '/anyplayer';
++    anyplayer.appendChild(any_link);
++
      document.body.appendChild(createElement('span', 'title', null, heading));
      document.body.appendChild(createElement('span', 'info', 'h4'));
      document.body.appendChild(createElement('span', 'usage', 'h4'));
 +    var config = createElement('span', 'configure', 'h4')
-+    config.innerHTML = "Configuration:" + window.ConfigString;
++    config.innerHTML = "Configuration: " + window.ConfigString;
 +    document.body.appendChild(config);
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -149,14 +149,23 @@ function TestView(testSuiteVer) {
+@@ -149,14 +154,23 @@ function TestView(testSuiteVer) {
        switchDiv.lastChild.exec = switchDiv.lastChild.onclick;
      }
      for (var i = 0; i < selectors.length; ++i) {
@@ -408,4 +414,3 @@ index 79f5cb1..8fbf2cb 100644
  #login-pop-up {
 -- 
 2.25.1
-

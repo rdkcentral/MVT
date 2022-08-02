@@ -1,10 +1,10 @@
 body {
   font-family: Verdana, sans-serif;
-  background-color: #fff;
+  background-color: #191a20;
   text-align: center;
   margin: 15px auto;
   font-size: 1em;
-  color: #000;
+  color: #eee;
   line-height: 1.7em;
 }
 
@@ -46,15 +46,15 @@ button:hover {
 }
 
 .orange {
-  color: #ec5700 !important;
+  color: #f60 !important;
 }
 
 .green {
-  color: #288b00 !important;
+  color: #6bc900 !important;
 }
 
 .focusable {
-  color: #00e;
+  color: #ffda35;
   cursor: pointer;
   text-decoration: none;
   padding: 3px 10px;
@@ -76,10 +76,9 @@ button:hover {
 }
 
 .info_box {
-  background-color: #ffebd3;
-  color: #000;
+  background-color: #111;
   border-radius: 10px;
-  padding: 4px 10px;
+  padding: 8px 15px;
   font-size: 0.9em;
   line-height: 1.5em;
   width: max-content;
