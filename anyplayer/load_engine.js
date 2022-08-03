@@ -30,49 +30,55 @@ function getQueryVariable(variable) {
   return false;
 }
 
-var player_type = getQueryVariable("player");
-if (!player_type) {
-  player_type = "dashjs";
+var playerType = getQueryVariable("player");
+if (!playerType) {
+  console.warn("var 'player' not provided, setting default: 'dashjs'");
+  playerType = "dashjs";
 }
-var player_ver = getQueryVariable("player_ver");
-if (!player_ver) {
-  player_ver = Players[player_type]["default"];
+var playerVer = getQueryVariable("player_ver");
+if (!playerVer) {
+  console.warn(`var 'player_ver' not provided, setting default: '${Players[playerType]["default"]}'`);
+  playerVer = Players[playerType]["default"];
 }
-var media_url = getQueryVariable("url");
-if (!media_url) {
-  media_url = "/test-materials/dash/fmp4_h264_aac/manifest.mpd";
+var mediaUrl = getQueryVariable("url");
+if (!mediaUrl) {
+  console.warn("var 'url' not provided, setting default: '/test-materials/dash/fmp4_h264_aac/manifest.mpd'");
+  mediaUrl = "/test-materials/dash/fmp4_h264_aac/manifest.mpd";
 }
 
-let div_player = document.getElementById("players_list");
+let divPlayer = document.getElementById("players_list");
 let curr = document.createElement("div");
-curr.innerHTML = `Current player: &nbsp;<span class='orange'>"${player_type}" &nbsp; { ver: ${player_ver} }</span>`;
-curr.innerHTML += `<br>Stream URL: &nbsp; <input id='url_input' style='width: 600px;' value='${media_url}'>`;
-curr.innerHTML += `</input>&nbsp; <button id="set_url" onclick="set_source_url()">SET</button>`;
+curr.innerHTML = `Current player: &nbsp;<span class='orange'>"${playerType}" &nbsp; { ver: ${playerVer} }</span>`;
+curr.innerHTML += `<br>Stream URL: &nbsp; <input id='url_input' style='width: 600px;' value='${mediaUrl}'>`;
+curr.innerHTML += `</input>&nbsp; <button id="set_url" onclick="setSourceUrl()">SET</button>`;
 curr.style = "margin: 20px 5px;";
-div_player.appendChild(curr);
+divPlayer.appendChild(curr);
 
+var playerList = [];
 for (var _player in Players) {
+  playerList.push(_player);
   var div = document.createElement("div");
   div.innerHTML = `${_player}: `;
   for (var ver in Players[_player]["versions"]) {
-    var same_ver = Players[_player]["versions"][ver] == player_ver;
-    var ver_link = document.createElement("span");
-    ver_link.classList.add("leftmargin15");
-    if ((!same_ver && _player == player_type) || player_type != _player) {
-      ver_link.classList.add("focusable");
-      ver_link.setAttribute("tabindex", "0");
-      ver_link.setAttribute(
+    var sameVer = Players[_player]["versions"][ver] == playerVer;
+    var verLink = document.createElement("span");
+    verLink.classList.add("leftmargin15");
+    if ((!sameVer && _player == playerType) || playerType != _player) {
+      verLink.classList.add("focusable");
+      verLink.setAttribute("tabindex", "0");
+      verLink.setAttribute(
         "data-href",
-        `?player=${_player}&player_ver=${Players[_player]["versions"][ver]}&url=${media_url}`
+        `?player=${_player}&player_ver=${Players[_player]["versions"][ver]}&url=${mediaUrl}`
       );
-      ver_link.onclick = window.navigate;
+      verLink.onclick = window.navigate;
     } else {
-      ver_link.classList.add("orange");
+      verLink.classList.add("orange");
     }
-    ver_link.innerHTML = Players[_player]["versions"][ver];
-    div.appendChild(ver_link);
+    verLink.innerHTML = Players[_player]["versions"][ver];
+    div.appendChild(verLink);
   }
-  div_player.appendChild(div);
+  divPlayer.appendChild(div);
 }
 
-init_player(player_type);
+updatePlayer(playerType, playerVer);
+window.onload = initPlayer;

@@ -18,32 +18,28 @@
  */
 "use strict";
 
-function set_source_url() {
-  let url_input = document.getElementById("url_input").value;
-  window.location.replace(`?player=${player_type}&player_ver=${player_ver}&url=${url_input}`);
+function setSourceUrl() {
+  let urlInput = document.getElementById("url_input").value;
+  window.location.replace(`?player=${playerType}&player_ver=${playerVer}&url=${urlInput}`);
 }
 
-function update_player(player, version) {
-  if (player in Players) {
-    let script_url = "";
-    version = player == "dashjs" ? `v${version}` : version;
-    if (version.includes("latest")) {
-      script_url = `${Players[player]["url_pref"]}/latest/${Players[player]["url_suff"]}`;
-    } else {
-      script_url = `${Players[player]["url_pref"]}/${version}/${Players[player]["url_suff"]}`;
+function updatePlayer(playerType, playerVer) {
+  if (playerType in Players) {
+    let scriptUrl = "";
+    playerVer = playerType == "dashjs" ? `v${playerVer}` : playerVer;
+    if (playerVer.includes("latest")) {
+      playerVer = "latest"
     }
-    addScript(script_url, function () {});
-  } else {
-    console.error(`Player '${player_type}' is not available.`);
+    scriptUrl = `${Players[playerType]["url_pref"]}/${playerVer}/${Players[playerType]["url_suff"]}`;
+    addScript(scriptUrl);
   }
 }
 
-function addScript(src, callback) {
+function addScript(src) {
   var head = document.getElementsByTagName("head")[0];
-  var s = document.createElement("script");
-  s.src = src;
-  s.onload = callback;
-  head.appendChild(s);
+  var script = document.createElement("script");
+  script.src = src;
+  head.appendChild(script);
 }
 
 function initShaka() {
@@ -60,7 +56,7 @@ async function initShakaPlayer() {
   window.player = player;
   player.addEventListener("error", onErrorEvent);
   try {
-    await player.load(media_url);
+    await player.load(mediaUrl);
   } catch (e) {
     onError(e);
   }
@@ -75,23 +71,20 @@ function onError(error) {
 }
 
 function initDash() {
-  var player = dashjs.MediaPlayer().create();
-  var video = document.querySelector("video");
+  const video = document.querySelector("video");
+  const player = dashjs.MediaPlayer().create();
+  window.player = player;
   player.initialize();
   player.attachView(video);
-  player.attachSource(media_url);
+  player.attachSource(mediaUrl);
 }
 
-async function init_player(player_type) {
-  if (player_type && player_ver && media_url) {
-    update_player(player_type, player_ver);
-    await new Promise((r) => setTimeout(r, 2000));
-    if (player_type == "shaka") {
-      initShaka();
-    } else if (player_type == "dashjs") {
-      initDash();
-    }
+function initPlayer() {
+  if (playerType == "shaka") {
+    initShaka();
+  } else if (playerType == "dashjs") {
+    initDash();
   } else {
-    console.error('Missing some of the parameters: "player", "player_ver" or "url".');
+    console.error(`Player '${playerType}' is not available. Choose one from the list: ${playerList}`);
   }
 }
