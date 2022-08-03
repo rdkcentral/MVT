@@ -31,7 +31,13 @@ function getQueryVariable(variable) {
 }
 
 var player_type = getQueryVariable("player");
+if (!player_type) {
+  player_type = "dashjs";
+}
 var player_ver = getQueryVariable("player_ver");
+if (!player_ver) {
+  player_ver = Players[player_type]["default"];
+}
 var media_url = getQueryVariable("url");
 if (!media_url) {
   media_url = "/test-materials/dash/fmp4_h264_aac/manifest.mpd";
