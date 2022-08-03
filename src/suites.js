@@ -220,7 +220,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.Progressive.Common);
   tests.push(new MvtMediaTest(testPlayback, MS.PROG.MKV_EAC3, engine));
-  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.Progressive.Common, new Unstable("ARRISEOS-42467")));
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.Progressive.Common));
   tests.push(new MvtMediaTest(testPause, MS.PROG.MKV_EAC3, engine, new Unstable("ARRISEOS-42467")));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.Progressive.Common));
   tests.push(new MvtMediaTest(testSetPosition, MS.PROG.MKV_EAC3, engine, new Unstable("ONEM-26126")));
