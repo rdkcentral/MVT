@@ -1,0 +1,105 @@
+/*
+ * If not stated otherwise in this file or this component's LICENSE file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2022 Liberty Global B.V.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+body {
+  font-family: Verdana, sans-serif;
+  background-color: #191a20;
+  text-align: center;
+  margin: 15px auto;
+  font-size: 1em;
+  color: #eee;
+  line-height: 1.7em;
+}
+
+video {
+  width: 800px;
+  border-radius: 10px;
+  margin: 25px 10px;
+}
+
+input {
+  background-color: #222;
+  color: #f60;
+  font-style: italic;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 3px 10px;
+  font-size: 0.85em;
+}
+
+button {
+  background-color: #00005a;
+  border: 1px solid #444 !important;
+  color: #eee;
+  font-weight: bold;
+  border: none;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #000;
+  color: #ff0;
+}
+
+.leftmargin15 {
+  margin-left: 15px;
+}
+
+.orange {
+  color: #f60 !important;
+}
+
+.green {
+  color: #6bc900 !important;
+}
+
+.focusable {
+  color: #ffda35;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+
+.focusable:hover {
+  color: #f00;
+  text-decoration: underline;
+  background-color: #000;
+}
+
+.focusable:focus {
+  color: #f00;
+  background-color: #000;
+  border: 1px solid #333;
+  outline: none;
+  text-decoration: underline;
+}
+
+.info_box {
+  background-color: #111;
+  border-radius: 10px;
+  padding: 8px 15px;
+  font-size: 0.9em;
+  line-height: 1.5em;
+  width: max-content;
+  margin: 5px 0 0 5px;
+}

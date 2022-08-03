@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+Copyright 2022 Liberty Global BV
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css" type="text/css" />
+  <script src="../js_mse_eme/harness/key.js"></script>
+  <script src="../js_mse_eme/harness/focusManager.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mux.js/5.10.0/mux.min.js"></script>
+  <script src="players.js"></script>
+  <script src="functions.js"></script>
+  <title>Anyplayer</title>
+</head>
+<body>
+
+  <div style="margin: 0 auto; text-align: left; width: 900px;">
+    <a class="focusable" href="/">Back to MVT</a>
+    <p>
+      Test 'any' player and stream here... ;)
+      <span style="margin-left: 20px; color: #316d24">// "Dash.JS", "Shaka" ("HLS.js" planned)</span>
+    </p>
+    <span style="color: #00442d;">Instruction for testing streams on the Set Top Box:</span>
+    <div class="info_box">
+      You can set the player version via remote controller from the versions listed below with provided default stream URL,<br>
+      or you can specify all the parameters ("player", "player_ver", "url"), setting them at the end of the URL:<br>
+      <div style="text-align: center;">
+        /?<span class="green">player</span>=<span class="orange">dashjs</span>&<span class="green">player_ver</span>=<span class="orange">4.2.0</span>&<span class="green">url</span>=<span class="orange">https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd</span>
+      </div>
+    </div>
+    <div id="players_list"></div>
+    <video id="video" controls="true" autoplay="true"></video>
+  </div>
+
+  <script src="load_engine.js"></script>
+
+</body>
+</html>

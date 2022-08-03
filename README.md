@@ -169,7 +169,7 @@ It produces a JSON-like object, which should be easy to read by any automated te
     "teardown_log": "",
     "tests": [
         {
-            "log": "[2022-07-20T14:05:17.007Z] TestExecutor:  Test 1:IsTypeSupported video/mp4 avc STARTED with timeout 30000 \n[2022-07-20T14:05:17.010Z] TestExecutor:  Executing IsTypeSupported test for avc (video/mp4; codecs=\"avc1.4d002a\") \n[2022-07-20T14:05:17.014Z] TestExecutor:  Test 1:IsTypeSupported video/mp4 avc PASSED. \n",
+            "log": "[2022-07-20T14:05:17.007Z] Test 1:IsTypeSupported video/mp4 avc STARTED with timeout 30000 \n[2022-07-20T14:05:17.010Z] Executing IsTypeSupported test for avc (video/mp4; codecs=\"avc1.4d002a\") \n[2022-07-20T14:05:17.014Z] Test 1:IsTypeSupported video/mp4 avc PASSED. \n",
             "name": "IsTypeSupported video/mp4 avc",
             "status": "passed",
             "suites_chain": "MVT_SUITE.codec-support-test",
@@ -178,7 +178,7 @@ It produces a JSON-like object, which should be easy to read by any automated te
             "ver": "1.0"
         }
         {
-            "log": "[2022-07-20T14:05:17.020Z] TestExecutor:  Test 2:IsTypeSupported video/mp2t avc STARTED with timeout 30000 \n[2022-07-20T14:05:17.023Z] TestExecutor:  Executing IsTypeSupported test for avc (video/mp2t; codecs=\"avc1.4d002a\") \n[2022-07-20T14:05:17.027Z] TestExecutor:  Test 2:IsTypeSupported video/mp2t avc FAILED \n[2022-07-20T14:05:17.032Z] TestExecutor:  Test :IsTypeSupported video/mp2t avc threw an error: Assert failed: MediaSource.isTypeSupported should be true for video/mp2t; codecs=\"avc1.4d002a\" \n",
+            "log": "[2022-07-20T14:05:17.020Z] Test 2:IsTypeSupported video/mp2t avc STARTED with timeout 30000 \n[2022-07-20T14:05:17.023Z] Executing IsTypeSupported test for avc (video/mp2t; codecs=\"avc1.4d002a\") \n[2022-07-20T14:05:17.027Z] Test 2:IsTypeSupported video/mp2t avc FAILED \n[2022-07-20T14:05:17.032Z] Test :IsTypeSupported video/mp2t avc threw an error: Assert failed: MediaSource.isTypeSupported should be true for video/mp2t; codecs=\"avc1.4d002a\" \n",
             "name": "IsTypeSupported video/mp2t avc",
             "status": "skipped",
             "suites_chain": "MVT_SUITE.codec-support-test",
