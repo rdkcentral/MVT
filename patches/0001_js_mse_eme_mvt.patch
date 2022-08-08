@@ -1,6 +1,6 @@
-From 8f0034325b4fb91bbf11e733377d48db97885d14 Mon Sep 17 00:00:00 2001
+From 784ef302d0398a92ab14804745de479d8e6de852 Mon Sep 17 00:00:00 2001
 From: Lukasz Rutkowski <lukasz.rutkowski@consult.red>
-Date: Tue, 2 Aug 2022 12:58:15 +0200
+Date: Mon, 8 Aug 2022 13:29:59 +0200
 Subject: [PATCH] MVT changes
 
 * Load MVT tests instead of the upstream tests
@@ -14,12 +14,12 @@ Subject: [PATCH] MVT changes
 ---
  harness/compactTestView.js | 34 ++++++++++++------------------
  harness/constants.js       |  3 ++-
- harness/main.js            | 15 +++++++++++--
+ harness/main.js            | 29 +++++++++++++++++++++----
  harness/test.js            | 43 ++++++++++++--------------------------
  harness/testView.js        | 39 +++++++++++++++++++++-------------
  harness/timeout.js         |  9 ++++++++
  style.css                  | 22 +++++++++++--------
- 7 files changed, 87 insertions(+), 78 deletions(-)
+ 7 files changed, 99 insertions(+), 80 deletions(-)
 
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 77f7b68..2689de9 100644
@@ -104,7 +104,7 @@ index ef553c5..1964af0 100644
 -var testVersion = '2020';
 +var testVersion = 'MVT';
 diff --git a/harness/main.js b/harness/main.js
-index c722460..123c56a 100644
+index c722460..af1fec6 100644
 --- a/harness/main.js
 +++ b/harness/main.js
 @@ -1,6 +1,7 @@
@@ -157,6 +157,30 @@ index c722460..123c56a 100644
  
    if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
      alert('Cannot find test type ' + harnessConfig.testType);
+@@ -210,11 +221,21 @@ window.startMseTest = function(testSuiteVer) {
+ 
+   configureHarness(testSuiteVersion.config);
+   createLogger();
+-
++  const waitForScriptLoad = (sec) => {
++    return new Promise((resolve, reject) => {
++      setTimeout(() => {
++        resolve()
++      }, sec * 1000)
++    })
++  }
+   var testSuite = loadTests(harnessConfig.testType);
+   var runner = createRunner(testSuite, testSuiteVer, harnessConfig.testsMask);
+-  if (harnessConfig.command === 'run')
++  function runTest() {
+     runner.startTest(0, runner.testList.length);
++  }
++  if (harnessConfig.command === 'run') {
++    waitForScriptLoad(2).then(runTest)
++  }
+ };
+ 
+ })();
 diff --git a/harness/test.js b/harness/test.js
 index b781e31..8c9147f 100644
 --- a/harness/test.js
@@ -386,7 +410,7 @@ index 7c373c1..b4167ca 100644
      var interval = getUniqueItem(intervals);
      interval.func = func;
 diff --git a/style.css b/style.css
-index 79f5cb1..3aa3f91 100644
+index 79f5cb1..973d8da 100644
 --- a/style.css
 +++ b/style.css
 @@ -23,6 +23,9 @@ body {
