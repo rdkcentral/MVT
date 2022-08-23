@@ -60,7 +60,7 @@ const Profiles = {
 };
 
 window.ConfigString = parseParam("profile", null) || window.localStorage["profile"] || "default";
-const SelectedProfile = Profiles[window.ConfigString];
+const SelectedProfile = Profiles[window.ConfigString] == undefined ? Profiles["default"] : Profiles[window.ConfigString];
 
 const EngineProperties = {
   shaka: { variants: ["dash", "hls"], subtitles: ["ttml", "vtt"] },
