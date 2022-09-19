@@ -233,6 +233,17 @@ var MS = {
         codec: "eac3",
       },
     },
+    CMAF_AVC_MP3: {
+      variant: "dash",
+      container: "cmaf",
+      src: "test-materials/cmaf/h264_mp3/manifest.mpd",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "mp3",
+      },
+    },
     CMAF_AVC_MP3_VTT: {
       variant: "dash",
       container: "cmaf",
@@ -689,7 +700,7 @@ const StreamSets = {
       MS.DASH.DYNAMIC,
       MS.DASH.CMAF_AVC_AC3,
       MS.DASH.CMAF_HEVC_EAC3,
-      MS.DASH.CMAF_AVC_MP3_VTT,
+      MS.DASH.CMAF_AVC_MP3,
     ],
     DRM: [MS.DASH.PLAYREADY_2_0],
     Subtitles: [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT],

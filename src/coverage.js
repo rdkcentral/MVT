@@ -56,22 +56,16 @@ function createAndAdd(parent, tag, content) {
 }
 
 function setCoverageHeader(coverageDiv) {
-  coverageDiv.innerHTML =
-    "<p>Coverage report for profile: " +
-    SelectedProfile.note +
-    '</p>\
-  <p>This lists how many pieces of test content exist, not if the content pass or fail.</p>\
-  <table><tr>\
-  <td style="background-color:' +
-    unsupportedColor +
-    '">Unsupported</td>\
-  <td style="background-color:' +
-    noContentColor +
-    '">Supported, No Content</td>\
-  <td style="background-color:' +
-    someContentColor +
-    '">Supported and number of tests</td>\
-  </tr></table>';
+  coverageDiv.innerHTML = `
+    <p>Coverage report for profile: <b>${SelectedProfile.note}</b></p>
+    <p>This lists how many pieces of test content exist, not if the content pass or fail.</p>
+    <table>
+      <tr>
+        <td style="background-color: ${unsupportedColor}">Unsupported</td>
+        <td style="background-color: ${noContentColor}">Supported, No Content</td>
+        <td style="background-color: ${someContentColor}">Supported and number of tests</td>
+      </tr>
+    </table>`;
 }
 
 function addProfileSelector(coverageDiv) {
