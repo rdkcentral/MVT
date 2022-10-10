@@ -26,7 +26,7 @@ Supports four streaming formats and four different players:
 - Progressive (native)
 - DASH (native, Shaka Player, dash.js)
 - HLS (Shaka Player, hls.js)
-- Smooth Streaming (native, dash.js)
+- HSS (native, dash.js)
 
 Test streams use different audio/video/subtitles codecs and media containers. For details, see [coverage](#coverage) section.
 
@@ -57,7 +57,7 @@ MVT introduces new tests, integration of MSE players and various media assets.
     # Existing assets won't be overridden.
     # If you want to use your own videos, you need to change URL's in media/media_urls.config,
     # movies needs to be longer than 2 minutes and can be in any video format.
-    # Runs withing running container (mvt-app) and takes ~30 minutes on decent PC.
+    # Executes in running container (mvt-app) and takes ~30 minutes on decent PC.
     ./docker_prepare_assets.sh
 
 Up and running MVT instance: http://localhost:8080
@@ -78,7 +78,6 @@ then repeat [deployment](#deployment) steps.
 ### Refresh media assets
 
 Media assets are stored on host file system and are not overridden by default.
-
 In order to regenerate all media assets simply remove the test-materials directory:
 
     rm -rf $TEST_MATERIALS_SRC
@@ -106,23 +105,23 @@ A list of of all external media assets used by a deployed instance of MVT:
 
 Tests are grouped into test suites, which differ in streaming type (DASH, HLS, HSS, progressive) and player (Shaka Player, dash.js, hls.js, native).
 
-The test list is generated dynamically based on available streams (`mediaStreams.js`), test templates
-(`src/mediaTests.js`) and selected profile configuration (e.g. `src/profiles.js`).
-Each test is actually an instantiation of a test template e.g. `DASH-FMP4-AVC1-AAC Playback` and
-`DASH-DYNAMIC Playback` share the same test code (`src/mediaTests.js::testPlayback`),
+The test list is generated dynamically based on available streams (`mediaStreams.js`),
+test templates (`src/mediaTests.js`) and selected profile configuration (e.g. `src/profiles.js`).
+Each test is actually an instantiation of a test template, e.g. `DASH-FMP4-AVC1-AAC Playback`
+and `DASH-DYNAMIC Playback` share the same test code (`src/mediaTests.js::testPlayback`),
 but use different media stream.
 
 There are six media test templates:
 
-- `Playback` verifies basic playback and media position progress on the span of 10 seconds
-- `Pause` verifies if browser is capable of pausing a stream
-- `PlayRate` verifies playback with various playback rates
-- `Seek` executes seek operation
-- `AudioTracks` changes audio track
-- `Subtitles` activates text tracks and verifies its content
+- `Playback` - verifies basic playback and media position progress on the span of 10 seconds,
+- `Pause` - verifies if browser is capable of pausing a stream,
+- `PlayRate` - verifies playback with various playback rates,
+- `Seek` - executes seek operation,
+- `AudioTracks` -  changes audio track,
+- `Subtitles` -  activates text tracks and verifies its content.
 
-During test execution test runner logs are printed into JavaScript console and into a div below tests list. The video under test can be observed on the right-hand side of main view.
-
+During test execution, test runner logs are printed into JavaScript console and into a div below tests list.
+The video under test can be observed on the right-hand side of main view.
 All interactive elements are navigable via arrow keys and can be selected through [URL parameters](#url-parameters).
 
 ### URL parameters
@@ -148,18 +147,20 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
   - Single test id e.g. `tests=1`
   - Multiple test ids e.g. `tests=1,5,13`
   - Test ids range e.g. `tests=1-10`
-- `exclude=ID[,ID]|ID-ID2` - exclude subsets of tests
-- `checkframes=false|true` - enable verification of video frames progress based on `video.getVideoPlaybackQuality().totalVideoFrames`
-- `loop=false|true`
-- `stoponfailure=false|true`
-- `disable_log=false|true`
+- `exclude=ID[,ID]|ID-ID2` - exclude subsets of tests.
+- `checkframes=false|true` - enable verification of video frames progress based on `video.getVideoPlaybackQuality().totalVideoFrames`.
+- `loop=false|true` - enable testing selected tests continuosly in a loop.
+- `stoponfailure=false|true` - tests execution will stop on the first failed test.
+- `disable_log=false|true` - enable/disable logging.
 - `engine_shaka=2.5.20|3.0.1|3.2.1` - select Shaka Player version. Please note it will only affect Shaka test suites.
 - `engine_dashjs=2.9.3|3.0.1|latest` - select dash.js version. Please note it will only affect dash.js test suites.
 
 ### JavaScript API
 
-`getMvtTestResults()` is a globally available JavaScript function, which can be run from console or via WebDriver to gather the results.
-It produces a JSON-like object, which should be easy to read by any automated test runner. Sample output:
+`getMvtTestResults()` is a globally available JavaScript function, which can be run from the browser's console
+or via WebDriver to gather the results.
+It produces a JSON-like object, which should be easy to read by any automated test runner,
+sample output:
 
 ```
 {
@@ -176,7 +177,7 @@ It produces a JSON-like object, which should be easy to read by any automated te
             "time_ms": 7,
             "type": "test_result",
             "ver": "1.0"
-        }
+        },
         {
             "log": "[2022-07-20T14:05:17.020Z] Test 2:IsTypeSupported video/mp2t avc STARTED with timeout 30000 \n[2022-07-20T14:05:17.023Z] Executing IsTypeSupported test for avc (video/mp2t; codecs=\"avc1.4d002a\") \n[2022-07-20T14:05:17.027Z] Test 2:IsTypeSupported video/mp2t avc FAILED \n[2022-07-20T14:05:17.032Z] Test :IsTypeSupported video/mp2t avc threw an error: Assert failed: MediaSource.isTypeSupported should be true for video/mp2t; codecs=\"avc1.4d002a\" \n",
             "name": "IsTypeSupported video/mp2t avc",
@@ -221,8 +222,8 @@ Now you can modify MVT source code and observe changes on: http://localhost:8080
 
 `index.html` is the entrypoint to the application.
 It loads all required scripts in a specific sequence, most importantly, `suites.js`,
-where all MVT tests are declared. Once all files are loaded, `startMseTest` function is triggered in order to
-start `js_mse_eme` submodule and to render the UI.
+where all MVT tests are declared. Once all files are loaded, `startMseTest` function is triggered
+in order to start `js_mse_eme` submodule and to render the UI.
 
 ### Adding new tests
 

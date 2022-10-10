@@ -131,6 +131,7 @@ function generateCoverage() {
     const streamingType = STREAMING_TYPES[streamingName];
 
     let top = createAndAdd(coverage, "div");
+    top.setAttribute("style", "width: 100%")
     top.appendChild(util.createElement("h1", streamingName, "focusable", streamingName));
     let table = util.createElement("table", streamingName + "_table", "coverage_table");
     top.appendChild(table);
