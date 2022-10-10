@@ -116,13 +116,29 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let engine = new Html5Engine();
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
+  StreamSets.DASH.html5 = StreamSets.DASH.Common.filter((stream) => {
+    return stream != MS.DASH.WEBM_VP9_OPUS && stream != MS.DASH.DYNAMIC && stream != MS.DASH.FMP4_HEVC_EAC3 // ONEM-27782
+  })
 
-  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.Common);
-  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.Common));
-  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.Common));
-  // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.html5);
+  tests.push(new MvtMediaTest(testPlayback, MS.DASH.WEBM_VP9_OPUS, engine, new Unstable("ONEM-27782")));
+  tests.push(new MvtMediaTest(testPlayback, MS.DASH.DYNAMIC, engine, new Unstable("ONEM-27782")));
+  tests.push(new MvtMediaTest(testPlayback, MS.DASH.FMP4_HEVC_EAC3, engine));
+
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.html5));
+  tests.push(new MvtMediaTest(testPause, MS.DASH.WEBM_VP9_OPUS, engine, new Unstable("ONEM-27782")));
+  tests.push(new MvtMediaTest(testPause, MS.DASH.DYNAMIC, engine, new Unstable("ONEM-27782")));
+  tests.push(new MvtMediaTest(testPause, MS.DASH.FMP4_HEVC_EAC3, engine, new Unstable("ONEM-27782")));
+
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.html5));
+  tests.push(new MvtMediaTest(testSetPosition, MS.DASH.WEBM_VP9_OPUS, engine, new Unstable("ONEM-27782")));
+  tests.push(new MvtMediaTest(testSetPosition, MS.DASH.DYNAMIC, engine, new Unstable("ONEM-27782")));
+  tests.push(new MvtMediaTest(testSetPosition, MS.DASH.FMP4_HEVC_EAC3, engine));
+
+  // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.html5, new Unstable("ONEM-26268")));
+  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles, new Unstable("ONEM-27782")));
+
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
-  tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);

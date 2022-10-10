@@ -49,7 +49,7 @@ const Profiles = {
     note: "Default",
     drm: ["com.microsoft.playready"],
     codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
-    native_support: ["hss", "progressive"],
+    native_support: ["dash", "hss", "progressive"],
   },
   desktop: {
     note: "For desktop browsers",
@@ -68,6 +68,6 @@ const EngineProperties = {
   hlsjs: { variants: ["hls"], subtitles: ["vtt"] },
   html5: {
     variants: SelectedProfile.native_support,
-    subtitles: [],
+    subtitles: ["ttml", "vtt"],
   },
 };
