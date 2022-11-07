@@ -16,6 +16,7 @@
 # limitations under the License.
 
 FROM httpd:latest
+RUN sed -i 's/Options Indexes FollowSymLinks/Options FollowSymLinks/' /usr/local/apache2/conf/httpd.conf
 
 ARG MVT_PATH=/usr/local/apache2/htdocs
 ENV MVT_PATH=$MVT_PATH
