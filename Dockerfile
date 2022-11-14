@@ -16,11 +16,12 @@
 # limitations under the License.
 
 FROM httpd:latest
-RUN sed -i 's/Options Indexes FollowSymLinks/Options FollowSymLinks/' /usr/local/apache2/conf/httpd.conf
+COPY httpd.conf /usr/local/apache2/conf/httpd.conf
 
-ARG MVT_PATH=/usr/local/apache2/htdocs
+ARG MVT_PATH=/home/MVT
 ENV MVT_PATH=$MVT_PATH
 
+RUN mkdir -p $MVT_PATH
 COPY . $MVT_PATH
 WORKDIR $MVT_PATH
 

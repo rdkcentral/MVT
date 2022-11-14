@@ -213,7 +213,7 @@ It is still supported, but it uses different output format and does not include 
 3. Start development container with:
 
 ```
-docker run -v $PWD/:/usr/local/apache2/htdocs -v $TEST_MATERIALS_SRC:/usr/local/apache2/htdocs/test-materials -p 8080:80 --rm -d -it --name mvt-app mvt-app-img:latest
+docker run -v $PWD/:/home/MVT -v $TEST_MATERIALS_SRC:/home/MVT/test-materials -p 8080:80 --rm -d -it --name mvt-app mvt-app-img:latest
 ```
 
 Now you can modify MVT source code and observe changes on: http://localhost:8080/
