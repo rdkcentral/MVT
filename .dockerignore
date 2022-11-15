@@ -1,0 +1,7 @@
+.git*
+*.md
+docs
+.cache
+env
+venv
+Dockerfile

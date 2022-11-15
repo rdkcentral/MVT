@@ -18,4 +18,4 @@
 # limitations under the License.
 
 mkdir -p ${TEST_MATERIALS_SRC:-/data/test-materials}
-docker run -v ${TEST_MATERIALS_SRC:-/data/test-materials}:/usr/local/apache2/htdocs/test-materials --rm -d -it --name mvt-app -p ${PORT:-80}:80 mvt-app-img
+docker run -v ${TEST_MATERIALS_SRC:-/data/test-materials}:/home/MVT/test-materials --rm -d -it --name mvt-app -p ${PORT:-80}:80 mvt-app-img
