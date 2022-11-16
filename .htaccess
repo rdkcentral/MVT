@@ -1,3 +1,0 @@
-RewriteEngine on
-RewriteCond %{HTTP_HOST}@@%{HTTP_REFERER} !^([^@]*)@@https?://\1/.*
-RewriteRule \.(js|ts|py|sh|conf|config|patch|m4s|mp3|mp4|mkv|mpd|m3u8|webm|vtt|ttml)$ - [F]
