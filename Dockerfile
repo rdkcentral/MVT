@@ -16,7 +16,6 @@
 # limitations under the License.
 
 FROM httpd:latest
-COPY httpd.conf /usr/local/apache2/conf/httpd.conf
 
 ARG MVT_PATH=/home/MVT
 ENV MVT_PATH=$MVT_PATH
@@ -24,6 +23,7 @@ ENV MVT_PATH=$MVT_PATH
 RUN mkdir -p $MVT_PATH
 COPY . $MVT_PATH
 WORKDIR $MVT_PATH
+RUN mv httpd.conf /usr/local/apache2/conf/httpd.conf
 
 RUN apt-get update
 RUN apt-get install -y ffmpeg wget python3
