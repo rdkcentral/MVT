@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
 
 "use strict";
 
@@ -24,7 +24,7 @@ var EngineVersions = {
     versions: {
       "2.5.20": ["https://ajax.googleapis.com/ajax/libs/shaka-player/2.5.20/shaka-player.compiled.js"],
       "3.0.1": ["https://ajax.googleapis.com/ajax/libs/shaka-player/3.0.1/shaka-player.compiled.js"],
-      "3.2.1": ["https://ajax.googleapis.com/ajax/libs/shaka-player/3.2.1/shaka-player.compiled.js"],
+      "3.2.1": ["src/shaka_player/shaka_3.2.1_debug.js"],
     },
     name: "Shaka Player",
     defaultVersion: "3.2.1",
@@ -33,10 +33,11 @@ var EngineVersions = {
     versions: {
       "2.9.3": ["https://cdn.dashjs.org/v2.9.3/dash.all.min.js", "https://cdn.dashjs.org/v2.9.3/dash.mss.min.js"],
       "3.1.1": ["https://cdn.dashjs.org/v3.1.1/dash.all.min.js", "https://cdn.dashjs.org/v3.1.1/dash.mss.min.js"],
+      "4.4.0": ["src/dash_player/dash_4.4.0_all.js", "src/dash_player/dash_4.4.0_mss.js"],
       latest: ["https://cdn.dashjs.org/latest/dash.all.min.js", "https://cdn.dashjs.org/latest/dash.mss.min.js"],
     },
     name: "Dash.JS",
-    defaultVersion: "latest",
+    defaultVersion: "4.4.0",
   },
 };
 
