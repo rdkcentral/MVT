@@ -39,6 +39,18 @@ var EngineVersions = {
     name: "Dash.JS",
     defaultVersion: "4.4.0",
   },
+  hlsjs: {
+    versions: {
+      "1.0.0": ["https://cdn.jsdelivr.net/npm/hls.js@1.0.0"],
+      "1.0.6": ["src/hls_player/hls_1.0.6.min.js"],
+      "1.1.0": ["https://cdn.jsdelivr.net/npm/hls.js@1.1.0"],
+      "1.1.5": ["src/hls_player/hls_1.1.5.min.js"],
+      "1.2.1": ["https://cdn.jsdelivr.net/npm/hls.js@1.2.1"],
+      "1.2.9": ["https://cdn.jsdelivr.net/npm/hls.js@1.2.9"],
+    },
+    name: "HLS.js",
+    defaultVersion: "1.1.5",
+  },
 };
 
 function getQueryVariable(variable) {
