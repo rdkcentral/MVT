@@ -153,7 +153,8 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 - `stoponfailure=false|true` - tests execution will stop on the first failed test.
 - `disable_log=false|true` - enable/disable logging.
 - `engine_shaka=2.5.20|3.0.1|3.2.1` - select Shaka Player version. Please note it will only affect Shaka test suites.
-- `engine_dashjs=2.9.3|3.0.1|latest` - select dash.js version. Please note it will only affect dash.js test suites.
+- `engine_dashjs=2.9.3|3.1.1|4.4.0|latest` - select dash.js version. Please note it will only affect dash.js test suites.
+- `engine_hlsjs=1.0.0|1.1.5|1.2.1|1.2.9|1.3.0` - select hls.js version. Please note it will only affect hls.js test suites.
 
 ### JavaScript API
 

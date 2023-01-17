@@ -33,10 +33,22 @@ var EngineVersions = {
     versions: {
       "2.9.3": ["https://cdn.dashjs.org/v2.9.3/dash.all.min.js", "https://cdn.dashjs.org/v2.9.3/dash.mss.min.js"],
       "3.1.1": ["https://cdn.dashjs.org/v3.1.1/dash.all.min.js", "https://cdn.dashjs.org/v3.1.1/dash.mss.min.js"],
+      "4.4.0": ["https://cdn.dashjs.org/v4.4.0/dash.all.min.js", "https://cdn.dashjs.org/v4.4.0/dash.mss.min.js"],
       latest: ["https://cdn.dashjs.org/latest/dash.all.min.js", "https://cdn.dashjs.org/latest/dash.mss.min.js"],
     },
     name: "Dash.JS",
-    defaultVersion: "latest",
+    defaultVersion: "4.4.0",
+  },
+  hlsjs: {
+    versions: {
+      "1.0.0": ["https://cdn.jsdelivr.net/npm/hls.js@1.0.0"],
+      "1.1.5": ["https://cdn.jsdelivr.net/npm/hls.js@1.1.5"],
+      "1.2.1": ["https://cdn.jsdelivr.net/npm/hls.js@1.2.1"],
+      "1.2.9": ["https://cdn.jsdelivr.net/npm/hls.js@1.2.9"],
+      "1.3.0": ["https://cdn.jsdelivr.net/npm/hls.js@1.3.0"],
+    },
+    name: "HLS.js",
+    defaultVersion: "1.3.0",
   },
 };
 
@@ -54,38 +66,40 @@ function getQueryVariable(variable) {
 
 function loadStoredEngine() {
   for (var engineId in EngineVersions) {
-    var engine = EngineVersions[engineId];
-    var queryVariable = getQueryVariable("engine_" + engineId);
+    if (window.location.search.includes(engineId)) {
+      var engine = EngineVersions[engineId];
+      var queryVariable = getQueryVariable("engine_" + engineId);
 
-    if (queryVariable) {
-      // if engine version is provided but it does not exist in 'EngineVersions', replace it to the default value:
-      if (engine.versions[queryVariable] === undefined) {
-        console.warn(
-          `${engineId} player version '${queryVariable}' is not available, it has been set to default: '${engine.defaultVersion}'`
-        );
-        window.history.pushState("", "", window.location.search.replace(`&engine_${engineId}=${queryVariable}`, ""));
-        // remove version parameter from the url if the provided version is the default one:
-      } else if (queryVariable === engine.defaultVersion) {
-        window.history.pushState("", "", window.location.search.replace(`&engine_${engineId}=${queryVariable}`, ""));
-      } else {
-        engine.defaultVersion = queryVariable;
+      if (queryVariable) {
+        // if engine version is provided but it does not exist in 'EngineVersions', replace it to the default value:
+        if (engine.versions[queryVariable] === undefined) {
+          console.warn(
+            `${engineId} player version '${queryVariable}' is not available, it has been set to default: '${engine.defaultVersion}'`
+          );
+          window.history.pushState("", "", window.location.search.replace(`&engine_${engineId}=${queryVariable}`, ""));
+          // remove version parameter from the url if the provided version is the default one:
+        } else if (queryVariable === engine.defaultVersion) {
+          window.history.pushState("", "", window.location.search.replace(`&engine_${engineId}=${queryVariable}`, ""));
+        } else {
+          engine.defaultVersion = queryVariable;
+        }
       }
+      console.log("Engine : " + engine.name + " : " + engine.defaultVersion);
+
+      var scriptSources = engine.versions[engine.defaultVersion];
+      (function loadNextScript() {
+        if (scriptSources.length) {
+          var script = document.createElement("script");
+          script.src = scriptSources[0];
+          script.async = script.defer = true;
+          script.onload = function () {
+            scriptSources.shift();
+            loadNextScript();
+          };
+          document.head.appendChild(script);
+        }
+      })();
     }
-    console.log("Engine : " + engine.name + " : " + engine.defaultVersion);
-
-    var scriptSources = engine.versions[engine.defaultVersion];
-    (function loadNextScript() {
-      if (scriptSources.length) {
-        var script = document.createElement("script");
-        script.src = scriptSources[0];
-        script.async = script.defer = true;
-        script.onload = function () {
-          scriptSources.shift();
-          loadNextScript();
-        };
-        document.head.appendChild(script);
-      }
-    })();
   }
 }
 

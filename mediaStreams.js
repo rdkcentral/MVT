@@ -272,6 +272,7 @@ var MS = {
       audio: {
         codec: "aac",
       },
+      unstable: new Unstable("ONEM-28049"),
     },
     FMP4_AVC_EAC3: {
       variant: "hls",
