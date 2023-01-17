@@ -117,7 +117,12 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
   StreamSets.DASH.html5 = StreamSets.DASH.Common.filter((stream) => {
-    return stream != MS.DASH.WEBM_VP9_OPUS && stream != MS.DASH.DYNAMIC && stream != MS.DASH.FMP4_HEVC_EAC3; // ONEM-27782
+    return (
+      stream != MS.DASH.WEBM_VP9_OPUS &&
+      stream != MS.DASH.DYNAMIC &&
+      stream != MS.DASH.FMP4_HEVC_EAC3 &&
+      stream != MS.DASH.CMAF_HEVC_AAC
+    ); // ONEM-27782
   });
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.html5);
