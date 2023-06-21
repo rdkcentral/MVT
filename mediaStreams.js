@@ -208,7 +208,6 @@ var MS = {
         }
       },
       cbcs: true,
-      unstable: new Unstable("PlayReady 4.0 CBCS in implementation state"),
     },
     DYNAMIC: {
       variant: "dash",
