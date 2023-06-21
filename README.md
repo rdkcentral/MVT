@@ -96,6 +96,7 @@ A list of of all external media assets used by a deployed instance of MVT:
 | HLS-CMAF-AVC1-AAC  | [DASH IF](https://testassets.dashif.org/)                                        | https://media.axprod.net/TestVectors/v9-MultiFormat/Clear/Manifest_1080p.m3u8                                                                 | Not distributed by MVT, used for playback during test execution                                                                             |
 | HLS-CMAF-HEVC-AAC  | [DASH IF](https://testassets.dashif.org/)                                        | https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_IFrame_AAC_WebVTT.m3u8                    | Not distributed by MVT, used for playback during test execution                                                                             |
 | DASH-PLAYREADY-2.0 | [Microsoft PlayReady](https://testweb.playready.microsoft.com/Content/Content2X) | http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf) | Not distributed by MVT, used for playback during test execution                                                                             |
+| DASH-PLAYREADY-4.0 | [DASH IF](https://testassets.dashif.org/)                                        | https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd                                                              | Not distributed by MVT, used for playback during test execution                                                                             |
 | HSS-AVC1-AAC       | [Microsoft PlayReady](https://testweb.playready.microsoft.com/Content/Content2X) | http://amssamples.streaming.mediaservices.windows.net/683f7e47-bd83-4427-b0a3-26a6c4547782/BigBuckBunny.ism/manifest(format=mpd-time-csf)     | Not distributed by MVT, used for playback during test execution                                                                             |
 | HSS-AVC1-AAC       | [Microsoft PlayReady](https://testweb.playready.microsoft.com/Content/Content2X) | http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest                      | Not distributed by MVT, used for playback during test execution                                                                             |
 
@@ -152,9 +153,9 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 - `loop=false|true` - enable testing selected tests continuosly in a loop.
 - `stoponfailure=false|true` - tests execution will stop on the first failed test.
 - `disable_log=false|true` - enable/disable logging.
-- `engine_shaka=2.5.20|3.0.1|3.2.1` - select Shaka Player version. Please note it will only affect Shaka test suites.
-- `engine_dashjs=2.9.3|3.1.1|4.4.0|latest` - select dash.js version. Please note it will only affect dash.js test suites.
-- `engine_hlsjs=1.0.0|1.1.5|1.2.1|1.2.9|1.3.0` - select hls.js version. Please note it will only affect hls.js test suites.
+- `engine_shaka=3.0.1|3.2.1|4.3.6` - select Shaka Player version. Please note it will only affect Shaka test suites.
+- `engine_dashjs=3.1.1|4.4.0|4.7.0|latest` - select dash.js version. Please note it will only affect dash.js test suites.
+- `engine_hlsjs=1.0.0|1.2.1|1.3.0|1.4.5` - select hls.js version. Please note it will only affect hls.js test suites.
 - `profile=all|default|desktop|VIP7002W` - depends of tested unit.
 - `debug=true|false` - adding additional timestamps to the output log.
 
