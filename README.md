@@ -155,6 +155,8 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 - `engine_shaka=2.5.20|3.0.1|3.2.1` - select Shaka Player version. Please note it will only affect Shaka test suites.
 - `engine_dashjs=2.9.3|3.1.1|4.4.0|latest` - select dash.js version. Please note it will only affect dash.js test suites.
 - `engine_hlsjs=1.0.0|1.1.5|1.2.1|1.2.9|1.3.0` - select hls.js version. Please note it will only affect hls.js test suites.
+- `profile=all|default|desktop|VIP7002W` - depends of tested unit.
+- `debug=true|false` - adding additional timestamps to the output log.
 
 ### JavaScript API
 

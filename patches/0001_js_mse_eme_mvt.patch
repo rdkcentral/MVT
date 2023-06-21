@@ -126,11 +126,12 @@ index c722460..af1fec6 100644
      testName = util.MakeCapitalName(testName) + 'Test';
      return window[testName]();
    }
-@@ -51,6 +56,7 @@ var parseParams = function(testSuiteConfig) {
+@@ -51,6 +56,8 @@ var parseParams = function(testSuiteConfig) {
        parseParam('stoponfailure', false));
    config.enablewebm = util.stringToBoolean(
        parseParam('enablewebm', testSuiteConfig.enablewebm));
 +  config.checkframes = util.stringToBoolean(parseParam('checkframes', false));
++  config.debug = util.stringToBoolean(parseParam('debug', false));
    config.muted = util.stringToBoolean(parseParam('muted', false));
    config.novp9 = util.stringToBoolean(parseParam('novp9', false));
    config.tests = parseParam('tests');
@@ -176,7 +177,7 @@ index c722460..af1fec6 100644
      runner.startTest(0, runner.testList.length);
 +  }
 +  if (harnessConfig.command === 'run') {
-+    waitForScriptLoad(2).then(runTest)
++    waitForScriptLoad(3).then(runTest)
 +  }
  };
  

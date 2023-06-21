@@ -34,13 +34,14 @@ function filterUnsupportedOnProfile(profile, tests) {
     let videoSupported = !stream.video || profile.codecs.includes(stream.video.codec);
     let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
     let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
-    return variantSupported && videoSupported && audioSupported && drmSupported;
+    let cbcsSupported = stream.cbcs ? profile.note.includes("CBCS") : true;
+    return variantSupported && videoSupported && audioSupported && drmSupported && cbcsSupported;
   });
 }
 
 const Profiles = {
   all: {
-    note: "Everything enabled",
+    note: "Everything enabled, CBCS included",
     drm: ["com.microsoft.playready"],
     codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
     native_support: ["dash", "hls", "hss", "progressive"],
@@ -57,15 +58,31 @@ const Profiles = {
     codecs: ["avc", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
     native_support: ["progressive"],
   },
+  VIP7002W: {
+    note: "Default with CBCS support",
+    drm: ["com.microsoft.playready"],
+    codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
+    native_support: ["dash", "hss", "progressive"],
+  },
 };
 
-window.ConfigString = parseParam("profile", null) || window.localStorage["profile"] || "default";
-const SelectedProfile = Profiles[window.ConfigString] == undefined ? Profiles["default"] : Profiles[window.ConfigString];
+let getProfile = parseParam("profile", null) || window.localStorage["profile"] || "default";
+const SelectedProfile = Profiles[getProfile] == undefined ? Profiles["default"] : Profiles[getProfile];
+window.ConfigString = Profiles[getProfile] == undefined ? "default" : getProfile;
 
 const EngineProperties = {
-  shaka: { variants: ["dash", "hls"], subtitles: ["ttml", "vtt"] },
-  dashjs: { variants: ["dash", "hss"], subtitles: ["ttml", "vtt"] },
-  hlsjs: { variants: ["hls"], subtitles: ["vtt"] },
+  shaka: {
+    variants: ["dash", "hls"],
+    subtitles: ["ttml", "vtt"],
+  },
+  dashjs: {
+    variants: ["dash", "hss"],
+    subtitles: ["ttml", "vtt"],
+  },
+  hlsjs: {
+    variants: ["hls"],
+    subtitles: ["vtt"],
+  },
   html5: {
     variants: SelectedProfile.native_support,
     subtitles: ["ttml", "vtt"],

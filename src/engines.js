@@ -198,14 +198,11 @@ class DashjsEngine extends Engine {
         that.onload(runner, video);
       });
 
-      if (media.drm) {
-        var protection = {};
-        for (var key in media.drm) {
-          protection[key] = { serverURL: media.drm[key] };
-        }
-        this.dashjsPlayer.setProtectionData(protection);
-      }
       this.dashjsPlayer.initialize(video, media.src, false);
+
+      if (media.drm) {
+        this.dashjsPlayer.setProtectionData(media.drm.servers);
+      }
 
       // Add subtitles div
       var subtitleDiv = document.createElement("div");

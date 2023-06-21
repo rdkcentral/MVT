@@ -22,33 +22,32 @@
 var EngineVersions = {
   shaka: {
     versions: {
-      "2.5.20": ["https://ajax.googleapis.com/ajax/libs/shaka-player/2.5.20/shaka-player.compiled.js"],
       "3.0.1": ["https://ajax.googleapis.com/ajax/libs/shaka-player/3.0.1/shaka-player.compiled.js"],
       "3.2.1": ["https://ajax.googleapis.com/ajax/libs/shaka-player/3.2.1/shaka-player.compiled.js"],
+      "4.3.6": ["https://ajax.googleapis.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js"],
     },
     name: "Shaka Player",
     defaultVersion: "3.2.1",
   },
   dashjs: {
     versions: {
-      "2.9.3": ["https://cdn.dashjs.org/v2.9.3/dash.all.min.js", "https://cdn.dashjs.org/v2.9.3/dash.mss.min.js"],
       "3.1.1": ["https://cdn.dashjs.org/v3.1.1/dash.all.min.js", "https://cdn.dashjs.org/v3.1.1/dash.mss.min.js"],
       "4.4.0": ["https://cdn.dashjs.org/v4.4.0/dash.all.min.js", "https://cdn.dashjs.org/v4.4.0/dash.mss.min.js"],
+      "4.7.0": ["https://cdn.dashjs.org/v4.7.0/dash.all.min.js", "https://cdn.dashjs.org/v4.7.0/dash.mss.min.js"],
       latest: ["https://cdn.dashjs.org/latest/dash.all.min.js", "https://cdn.dashjs.org/latest/dash.mss.min.js"],
     },
     name: "Dash.JS",
-    defaultVersion: "4.4.0",
+    defaultVersion: "4.7.0",
   },
   hlsjs: {
     versions: {
       "1.0.0": ["https://cdn.jsdelivr.net/npm/hls.js@1.0.0"],
-      "1.1.5": ["https://cdn.jsdelivr.net/npm/hls.js@1.1.5"],
       "1.2.1": ["https://cdn.jsdelivr.net/npm/hls.js@1.2.1"],
-      "1.2.9": ["https://cdn.jsdelivr.net/npm/hls.js@1.2.9"],
       "1.3.0": ["https://cdn.jsdelivr.net/npm/hls.js@1.3.0"],
+      "1.4.5": ["https://cdn.jsdelivr.net/npm/hls.js@1.4.5"],
     },
     name: "HLS.js",
-    defaultVersion: "1.3.0",
+    defaultVersion: "1.4.5",
   },
 };
 
@@ -91,7 +90,7 @@ function loadStoredEngine() {
         if (scriptSources.length) {
           var script = document.createElement("script");
           script.src = scriptSources[0];
-          script.async = script.defer = true;
+          script.defer = true;
           script.onload = function () {
             scriptSources.shift();
             loadNextScript();

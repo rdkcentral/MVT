@@ -37,6 +37,9 @@ function waitForEvent(video, runner, event, predicate = null, maxWaitTimeMs = 10
     }, maxWaitTimeMs);
 
     function eventHandler() {
+      if (harnessConfig.debug) {
+        runner.log("current time: " + video.currentTime)
+      }
       if (!predicate || predicate(video)) {
         receivedEvents += 1;
         if (receivedEvents >= times) {
