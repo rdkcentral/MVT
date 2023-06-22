@@ -7,7 +7,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+  http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,67 +20,38 @@ limitations under the License.
     <title>Media Validation Tool</title>
     <link rel="stylesheet" href="js_mse_eme/style.css" type="text/css" />
     <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.2.0/mux.min.js" defer></script>
+    <!-- Do NOT Change order of script sources! -->
+    <script src="src/engineChange.js" defer></script>
+    <script src="test-materials/js/countdown-de.js" defer></script>
+    <script src="test-materials/js/countdown-en.js" defer></script>
+    <script src="test-materials/js/countdown-fr.js" defer></script>
+    <script src="test-materials/js/countdown-es.js" defer></script>
+    <script src="src/constants.js" defer></script>
+    <script src="src/common.js" defer></script>
+    <script src="mediaStreams.js" defer></script>
+    <script src="js_mse_eme/harness/util.js" defer></script>
+    <script src="js_mse_eme/harness/constants.js" defer></script>
+    <script src="js_mse_eme/harness/key.js" defer></script>
+    <script src="js_mse_eme/harness/focusManager.js" defer></script>
+    <script src="js_mse_eme/harness/logger.js" defer></script>
+    <script src="js_mse_eme/harness/xhr.js" defer></script>
+    <script src="js_mse_eme/harness/timeout.js" defer></script>
+    <script src="js_mse_eme/harness/testView.js" defer></script>
+    <script src="js_mse_eme/harness/compactTestList.js" defer></script>
+    <script src="js_mse_eme/harness/compactTestView.js" defer></script>
+    <script src="js_mse_eme/harness/test.js" defer></script>
+    <script src="js_mse_eme/lib/mse/msutil.js" defer></script>
+    <script src="js_mse_eme/lib/mse/mediaSourcePortability.js" defer></script>
+    <script src="src/mvtTest.js" defer></script>
+    <script src="src/profiles.js" defer></script>
+    <script src="src/engines.js" defer></script>
+    <script src="src/mediaTests.js" defer></script>
+    <script src="src/suites.js" defer></script>
+    <script src="js_mse_eme/harness/main.js" defer></script>
   </head>
   <body>
     <div id="testArea" style="display: none"></div>
-    <script type="text/javascript" async defer>
-      // Do NOT Change order of script sources!
-      var scriptSources = [
-        // Required by Shaka Player to support MPEG-2 TS
-        "https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.2.0/mux.min.js",
-        "src/engineChange.js",
-        "js_mse_eme/harness/util.js",
-        "js_mse_eme/harness/constants.js",
-        "js_mse_eme/harness/key.js",
-        "js_mse_eme/harness/focusManager.js",
-        "js_mse_eme/harness/logger.js",
-        "js_mse_eme/harness/xhr.js",
-        "js_mse_eme/harness/timeout.js",
-        "js_mse_eme/harness/testView.js",
-        "js_mse_eme/harness/compactTestList.js",
-        "js_mse_eme/harness/compactTestView.js",
-        "js_mse_eme/harness/test.js",
-        "js_mse_eme/lib/mse/msutil.js",
-        "js_mse_eme/lib/mse/mediaSourcePortability.js",
-        "test-materials/js/countdown-de.js",
-        "test-materials/js/countdown-en.js",
-        "test-materials/js/countdown-fr.js",
-        "test-materials/js/countdown-es.js",
-        "src/constants.js",
-        "src/common.js",
-        "mediaStreams.js",
-        "src/mvtTest.js",
-        "src/profiles.js",
-        "src/engines.js",
-        "src/mediaTests.js",
-        "src/suites.js",
-        "js_mse_eme/harness/main.js",
-      ];
-      /*
-       * Load each script sequentially but marked as async so cobalt is able to pause/suspend
-       * the loading of YTS scripts and return later to finish executing
-       */
-      (function loadNextScript() {
-        if (scriptSources.length) {
-          var script = document.createElement("script");
-          script.src = scriptSources[0];
-          script.async = true;
-          script.defer = true;
-          script.onload = function () {
-            scriptSources.shift();
-            loadNextScript();
-          };
-          script.onerror = function () {
-            console.error("Failed to load ", scriptSources[0]);
-            scriptSources.shift();
-            loadNextScript();
-          };
-          document.head.appendChild(script);
-        } else {
-          startMseTest(testVersion);
-        }
-      })();
-    </script>
     <div id="login-pop-up" style="display: none">
       <div id="client-id-div">
         <p class="step">1) On your phone or computer, go to youtube.com/activate</p>
@@ -90,5 +61,10 @@ limitations under the License.
         <p class="step">3) Sign in with your Google account</p>
       </div>
     </div>
+    <script type="text/javascript">
+      window.addEventListener('load', function() {
+        startMseTest(testVersion);
+      })
+    </script>
   </body>
 </html>

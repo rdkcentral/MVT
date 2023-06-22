@@ -186,6 +186,29 @@ var MS = {
         },
       },
     },
+    PLAYREADY_4_0_CBCS: {
+      variant: "dash",
+      container: "fmp4",
+      note: "PLayReady 4.0 with CBCS encryption",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+      src: "https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd",
+      drm: {
+        servers: {
+          "com.microsoft.playready": {
+            "serverURL": "https://drm-playready-licensing.axprod.net/AcquireLicense",
+            "httpRequestHeaders": {
+                "X-AxDRM-Message": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ2ZXJzaW9uIjogMSwKICAiY29tX2tleV9pZCI6ICI2OWU1NDA4OC1lOWUwLTQ1MzAtOGMxYS0xZWI2ZGNkMGQxNGUiLAogICJtZXNzYWdlIjogewogICAgInR5cGUiOiAiZW50aXRsZW1lbnRfbWVzc2FnZSIsCiAgICAidmVyc2lvbiI6IDIsCiAgICAibGljZW5zZSI6IHsKICAgICAgImFsbG93X3BlcnNpc3RlbmNlIjogdHJ1ZQogICAgfSwKICAgICJjb250ZW50X2tleXNfc291cmNlIjogewogICAgICAiaW5saW5lIjogWwogICAgICAgIHsKICAgICAgICAgICJpZCI6ICIzMDJmODBkZC00MTFlLTQ4ODYtYmNhNS1iYjFmODAxOGEwMjQiLAogICAgICAgICAgImVuY3J5cHRlZF9rZXkiOiAicm9LQWcwdDdKaTFpNDNmd3YremZ0UT09IiwKICAgICAgICAgICJ1c2FnZV9wb2xpY3kiOiAiUG9saWN5IEEiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgImNvbnRlbnRfa2V5X3VzYWdlX3BvbGljaWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAiUG9saWN5IEEiLAogICAgICAgICJwbGF5cmVhZHkiOiB7CiAgICAgICAgICAibWluX2RldmljZV9zZWN1cml0eV9sZXZlbCI6IDE1MCwKICAgICAgICAgICJwbGF5X2VuYWJsZXJzIjogWwogICAgICAgICAgICAiNzg2NjI3RDgtQzJBNi00NEJFLThGODgtMDhBRTI1NUIwMUE3IgogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQ._NfhLVY7S6k8TJDWPeMPhUawhympnrk6WAZHOVjER6M"
+            }
+          }
+        }
+      },
+      cbcs: true,
+    },
     DYNAMIC: {
       variant: "dash",
       container: "fmp4",
@@ -703,6 +726,7 @@ const StreamSets = {
       MS.DASH.CMAF_AVC_MP3,
     ],
     DRM: [MS.DASH.PLAYREADY_2_0],
+    DRM_CBCS: [MS.DASH.PLAYREADY_4_0_CBCS],
     Subtitles: [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT],
   },
   HLS: {
@@ -747,6 +771,7 @@ const StreamSets = {
 (function () {
   StreamSets.DASH.Video = StreamSets.DASH.Common.filter((stream) => stream.video);
   StreamSets.DASH.CommonAndDRM = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM);
+  StreamSets.DASH.CommonAndDRMCBCS = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM).concat(StreamSets.DASH.DRM_CBCS);
   StreamSets.HLS.Video = StreamSets.HLS.Common.filter((stream) => stream.video);
   StreamSets.Progressive.Video = StreamSets.Progressive.Common.filter((stream) => stream.video);
 })();
