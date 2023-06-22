@@ -58,7 +58,7 @@ const Profiles = {
     codecs: ["avc", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
     native_support: ["progressive"],
   },
-  VIP7002W: {
+  extended_drm: {
     note: "Default with CBCS support",
     drm: ["com.microsoft.playready"],
     codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
