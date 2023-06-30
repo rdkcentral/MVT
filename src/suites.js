@@ -79,13 +79,17 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
   StreamSets.DASH.shaka = StreamSets.DASH.CommonAndDRM.filter((stream) => {
-    return stream != MS.DASH.FMP4_MP3; // ONEM-29179
+    return (
+      stream != MS.DASH.FMP4_MP3 && // ONEM-29179
+      stream != MS.DASH.DYNAMIC // ONEM-28228
+    );
   });
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.shaka));
   tests.push(new MvtMediaTest(testSetPosition, MS.DASH.FMP4_MP3, engine, new Unstable("ONEM-29179")));
+  tests.push(new MvtMediaTest(testSetPosition, MS.DASH.DYNAMIC, engine, new Unstable("ONEM-28228")));
   // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine, new Unstable("ONEM-26279")));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
