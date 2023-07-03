@@ -35,14 +35,15 @@ function filterUnsupportedOnProfile(profile, tests) {
     let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
     let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
     let cbcsSupported = stream.cbcs ? profile.note.includes("CBCS") : true;
-    return variantSupported && videoSupported && audioSupported && drmSupported && cbcsSupported;
+    let widevineSupported = stream.widevine ? profile.note.includes("Widevine") : true;
+    return variantSupported && videoSupported && audioSupported && drmSupported && cbcsSupported && widevineSupported;
   });
 }
 
 const Profiles = {
   all: {
-    note: "Everything enabled, CBCS included",
-    drm: ["com.microsoft.playready"],
+    note: "Everything enabled, CBCS and Widevine included",
+    drm: ["com.microsoft.playready", "com.widevine.alpha"],
     codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
     native_support: ["dash", "hls", "hss", "progressive"],
   },
@@ -59,8 +60,8 @@ const Profiles = {
     native_support: ["progressive"],
   },
   extended_drm: {
-    note: "Default with CBCS support",
-    drm: ["com.microsoft.playready"],
+    note: "Default with CBCS and Widevine support",
+    drm: ["com.microsoft.playready", "com.widevine.alpha"],
     codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
     native_support: ["dash", "hss", "progressive"],
   },
@@ -69,6 +70,7 @@ const Profiles = {
 let getProfile = parseParam("profile", null) || window.localStorage["profile"] || "default";
 const SelectedProfile = Profiles[getProfile] == undefined ? Profiles["default"] : Profiles[getProfile];
 window.ConfigString = Profiles[getProfile] == undefined ? "default" : getProfile;
+window.localStorage["profile"] = window.ConfigString;
 
 const EngineProperties = {
   shaka: {

@@ -7,7 +7,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+  http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ limitations under the License.
         "test-materials/js/countdown-es.js",
         "src/constants.js",
         "src/common.js",
-        "mediaStreams.js",
+        "src/mediaStreams.js",
         "src/mvtTest.js",
         "src/profiles.js",
         "src/engines.js",
@@ -58,7 +58,7 @@ limitations under the License.
             scriptSources.shift();
             loadNextScript();
           };
-          document.head.appendChild(script);
+          document.head.append(script);
         } else {
           generateCoverage();
         }

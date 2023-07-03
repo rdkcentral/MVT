@@ -26,4 +26,4 @@ WORKDIR $MVT_PATH
 RUN mv httpd.conf /usr/local/apache2/conf/httpd.conf
 
 RUN apt-get update
-RUN apt-get install -y ffmpeg wget python3
+RUN apt-get install -y ffmpeg wget python3 nano

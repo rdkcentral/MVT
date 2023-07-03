@@ -78,12 +78,12 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let engine = new ShakaEngine();
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
-  StreamSets.DASH.shaka = StreamSets.DASH.CommonAndDRM.filter((stream) => {
+  StreamSets.DASH.shaka = StreamSets.DASH.CommonAndDRMext.filter((stream) => {
     return stream != MS.DASH.FMP4_MP3; // ONEM-29179
   });
 
-  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
-  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRMext);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRMext));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.shaka));
   tests.push(new MvtMediaTest(testSetPosition, MS.DASH.FMP4_MP3, engine, new Unstable("ONEM-29179")));
   // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
@@ -102,9 +102,9 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
 
-  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRMCBCS);
-  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRMCBCS));
-  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRMCBCS));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRMext);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRMext));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.CommonAndDRMext));
   // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));

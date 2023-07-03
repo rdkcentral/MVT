@@ -47,3 +47,8 @@ table td {
   margin-right: 10px;
   margin-left: 10px;
 }
+
+video::-webkit-media-controls-panel {
+  display: flex !important;
+  opacity: 1 !important;
+}

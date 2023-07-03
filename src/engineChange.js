@@ -22,9 +22,19 @@
 var EngineVersions = {
   shaka: {
     versions: {
-      "3.0.1": ["https://ajax.googleapis.com/ajax/libs/shaka-player/3.0.1/shaka-player.compiled.js"],
-      "3.2.1": ["https://ajax.googleapis.com/ajax/libs/shaka-player/3.2.1/shaka-player.compiled.js"],
-      "4.3.6": ["https://ajax.googleapis.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js"],
+      // mux.js is required by Shaka Player to support MPEG-2 TS
+      "3.0.1": [
+        "https://ajax.googleapis.com/ajax/libs/shaka-player/3.0.1/shaka-player.compiled.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.3.0/mux.min.js",
+      ],
+      "3.2.1": [
+        "https://ajax.googleapis.com/ajax/libs/shaka-player/3.2.1/shaka-player.compiled.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.3.0/mux.min.js",
+      ],
+      "4.3.6": [
+        "https://ajax.googleapis.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.3.0/mux.min.js",
+      ],
     },
     name: "Shaka Player",
     defaultVersion: "3.2.1",
@@ -91,11 +101,12 @@ function loadStoredEngine() {
           var script = document.createElement("script");
           script.src = scriptSources[0];
           script.defer = true;
+          script.async = true;
           script.onload = function () {
             scriptSources.shift();
             loadNextScript();
           };
-          document.head.appendChild(script);
+          document.head.append(script);
         }
       })();
     }
