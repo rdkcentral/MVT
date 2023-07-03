@@ -867,8 +867,7 @@ const StreamSets = {
       MS.DASH.CMAF_HEVC_EAC3,
       MS.DASH.CMAF_AVC_MP3,
     ],
-    DRM: [MS.DASH.PLAYREADY_2_0],
-    DRM_EXT: [
+    DRM: [
       MS.DASH.PLAYREADY_2_0,
       MS.DASH.PLAYREADY_4_0_CENC,
       MS.DASH.PLAYREADY_4_0_CBCS,
@@ -920,7 +919,6 @@ const StreamSets = {
 (function () {
   StreamSets.DASH.Video = StreamSets.DASH.Common.filter((stream) => stream.video);
   StreamSets.DASH.CommonAndDRM = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM);
-  StreamSets.DASH.CommonAndDRMext = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM_EXT);
   StreamSets.HLS.Video = StreamSets.HLS.Common.filter((stream) => stream.video);
   StreamSets.Progressive.Video = StreamSets.Progressive.Common.filter((stream) => stream.video);
 })();

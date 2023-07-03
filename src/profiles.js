@@ -35,8 +35,7 @@ function filterUnsupportedOnProfile(profile, tests) {
     let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
     let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
     let cbcsSupported = stream.cbcs ? profile.note.includes("CBCS") : true;
-    let widevineSupported = stream.widevine ? profile.note.includes("Widevine") : true;
-    return variantSupported && videoSupported && audioSupported && drmSupported && cbcsSupported && widevineSupported;
+    return variantSupported && videoSupported && audioSupported && drmSupported && cbcsSupported;
   });
 }
 
@@ -55,7 +54,7 @@ const Profiles = {
   },
   desktop: {
     note: "For desktop browsers",
-    drm: [],
+    drm: ["com.widevine.alpha"],
     codecs: ["avc", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
     native_support: ["progressive"],
   },

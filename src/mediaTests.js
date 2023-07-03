@@ -224,7 +224,8 @@ var testSetPosition = new TestTemplate("Seek", function (video, runner) {
   const hasVideoTrack = this.content.video;
   var positions = [0, 20, 45];
   if (this.content.dynamic) {
-    positions = [video.currentTime - 10, video.currentTime + 10, video.currentTime];
+    let curTime = video.currentTime;
+    positions = [curTime - 40, curTime - 20, curTime];
   }
 
   const makeSeekTest = function (position) {
@@ -232,8 +233,9 @@ var testSetPosition = new TestTemplate("Seek", function (video, runner) {
       return new Promise((resolve, _) => {
         runner.log("Changing position to " + position);
         seek(video, runner, position).then(() => {
-          runner.checkGE(video.currentTime, position, "currentTime should be greater or equal to seek point");
-          runner.checkGr(position + 10, video.currentTime, "currentTime should be less than seek point + 10s");
+          let curTime = video.currentTime;
+          runner.checkGE(curTime, position, "currentTime should be greater or equal to seek point");
+          runner.checkGr(position + 10, curTime, "currentTime should be less than seek point + 10s");
           checkVideoFramesIncreasing(video, runner, hasVideoTrack).then(resolve);
         });
       });
