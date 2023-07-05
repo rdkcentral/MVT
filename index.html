@@ -65,8 +65,10 @@ limitations under the License.
           script.async = true;
           script.defer = true;
           script.onload = function () {
-            scriptSources.shift();
-            loadNextScript();
+            setTimeout(function () {
+              scriptSources.shift();
+              loadNextScript();
+            }, 40);
           };
           script.onerror = function () {
             console.error("Failed to load ", scriptSources[0]);

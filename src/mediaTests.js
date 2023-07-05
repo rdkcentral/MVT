@@ -264,7 +264,7 @@ function arraysEqual(a, b) {
 }
 
 var testChangeAudioTracks = new TestTemplate("AudioTracks", function (video, runner) {
-  const initialPosition = 1;
+  const initialPosition = 5;
   const trackPlaybackTime = 7;
   const positionInaccuracyThreshold = 3;
 

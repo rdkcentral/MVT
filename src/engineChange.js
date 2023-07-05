@@ -102,10 +102,8 @@ function loadStoredEngine() {
           script.src = scriptSources[0];
           script.defer = true;
           script.async = true;
-          script.onload = function () {
-            scriptSources.shift();
-            loadNextScript();
-          };
+          scriptSources.shift();
+          loadNextScript();
           document.head.append(script);
         }
       })();

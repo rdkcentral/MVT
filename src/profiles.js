@@ -67,6 +67,10 @@ const Profiles = {
 };
 
 let getProfile = parseParam("profile", null) || window.localStorage["profile"] || "default";
+let getBrowser = navigator.userAgent;
+if (parseParam("profile", null) === null && getBrowser.includes("VIP7002W")) {
+  getProfile = "extended_drm";
+}
 const SelectedProfile = Profiles[getProfile] == undefined ? Profiles["default"] : Profiles[getProfile];
 window.ConfigString = Profiles[getProfile] == undefined ? "default" : getProfile;
 window.localStorage["profile"] = window.ConfigString;

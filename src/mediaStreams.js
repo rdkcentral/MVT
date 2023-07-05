@@ -165,7 +165,7 @@ var MS = {
       },
       audio: {
         codec: "aac",
-        languages: ["en", "pl"],
+        languages: ["pl", "en"],
       },
     },
     PLAYREADY_2_0: {
@@ -399,7 +399,7 @@ var MS = {
       },
       audio: {
         codec: "aac",
-        languages: ["en", "pl"],
+        languages: ["pl", "en"],
       },
     },
     FMP4_AVC_AAC_VTT: {
