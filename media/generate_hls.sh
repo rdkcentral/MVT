@@ -101,5 +101,4 @@ if [ ! -f $hls_path/fmp4_h264_aac_vtt/main.m3u8 ]; then
     -master_pl_name main.m3u8 \
     -var_stream_map "v:0,a:0,s:0,sgroup:subtitles,language:en" \
     $hls_path/fmp4_h264_aac_vtt/stream_%v/.m3u8
-
 fi

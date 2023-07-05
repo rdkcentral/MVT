@@ -69,5 +69,6 @@ $media_path/generate_progressive.sh
 $media_path/generate_dash.sh
 $media_path/generate_hls.sh
 $media_path/generate_cmaf.sh
+$media_path/generate_widevine.sh
 
 echo "All test materials downloaded!"

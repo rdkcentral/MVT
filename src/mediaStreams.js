@@ -172,13 +172,13 @@ var MS = {
       variant: "dash",
       container: "fmp4",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
+      src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
       video: {
         codec: "avc",
       },
       audio: {
         codec: "aac",
       },
-      src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
       drm: {
         servers: {
           "com.microsoft.playready": {
@@ -191,50 +191,17 @@ var MS = {
         },
       },
     },
-    PLAYREADY_4_0_CENC: {
-      variant: "dash",
-      container: "fmp4",
-      note: "PLayReady 4.0 with CENC encryption",
-      video: {
-        codec: "avc",
-      },
-      audio: {
-        codec: "aac",
-      },
-      src: "https://media.axprod.net/TestVectors/Dash/protected_dash_1080p_h264_singlekey/manifest.mpd",
-      drm: {
-        servers: {
-          "com.microsoft.playready": {
-            serverURL: "https://drm-playready-licensing.axprod.net/AcquireLicense",
-            httpRequestHeaders: {
-              "X-AxDRM-Message":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ2ZXJzaW9uIjogMSwKICAiY29tX2tleV9pZCI6ICI2OWU1NDA4OC1lOWUwLTQ1MzAtOGMxYS0xZWI2ZGNkMGQxNGUiLAogICJtZXNzYWdlIjogewogICAgInR5cGUiOiAiZW50aXRsZW1lbnRfbWVzc2FnZSIsCiAgICAidmVyc2lvbiI6IDIsCiAgICAibGljZW5zZSI6IHsKICAgICAgImFsbG93X3BlcnNpc3RlbmNlIjogdHJ1ZQogICAgfSwKICAgICJjb250ZW50X2tleXNfc291cmNlIjogewogICAgICAiaW5saW5lIjogWwogICAgICAgIHsKICAgICAgICAgICJpZCI6ICI0MDYwYTg2NS04ODc4LTQyNjctOWNiZi05MWFlNWJhZTFlNzIiLAogICAgICAgICAgImVuY3J5cHRlZF9rZXkiOiAid3QzRW51dVI1UkFybjZBRGYxNkNCQT09IiwKICAgICAgICAgICJ1c2FnZV9wb2xpY3kiOiAiUG9saWN5IEEiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgImNvbnRlbnRfa2V5X3VzYWdlX3BvbGljaWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAiUG9saWN5IEEiLAogICAgICAgICJwbGF5cmVhZHkiOiB7CiAgICAgICAgICAibWluX2RldmljZV9zZWN1cml0eV9sZXZlbCI6IDE1MCwKICAgICAgICAgICJwbGF5X2VuYWJsZXJzIjogWwogICAgICAgICAgICAiNzg2NjI3RDgtQzJBNi00NEJFLThGODgtMDhBRTI1NUIwMUE3IgogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQ.l8PnZznspJ6lnNmfAE9UQV532Ypzt1JXQkvrk8gFSRw",
-            },
-          },
-        },
-        shaka: {
-          servers: {
-            "com.microsoft.playready": "https://drm-playready-licensing.axprod.net/AcquireLicense",
-          },
-        },
-        shaka_headers: [
-          "X-AxDRM-Message",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ2ZXJzaW9uIjogMSwKICAiY29tX2tleV9pZCI6ICI2OWU1NDA4OC1lOWUwLTQ1MzAtOGMxYS0xZWI2ZGNkMGQxNGUiLAogICJtZXNzYWdlIjogewogICAgInR5cGUiOiAiZW50aXRsZW1lbnRfbWVzc2FnZSIsCiAgICAidmVyc2lvbiI6IDIsCiAgICAibGljZW5zZSI6IHsKICAgICAgImFsbG93X3BlcnNpc3RlbmNlIjogdHJ1ZQogICAgfSwKICAgICJjb250ZW50X2tleXNfc291cmNlIjogewogICAgICAiaW5saW5lIjogWwogICAgICAgIHsKICAgICAgICAgICJpZCI6ICI0MDYwYTg2NS04ODc4LTQyNjctOWNiZi05MWFlNWJhZTFlNzIiLAogICAgICAgICAgImVuY3J5cHRlZF9rZXkiOiAid3QzRW51dVI1UkFybjZBRGYxNkNCQT09IiwKICAgICAgICAgICJ1c2FnZV9wb2xpY3kiOiAiUG9saWN5IEEiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgImNvbnRlbnRfa2V5X3VzYWdlX3BvbGljaWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAiUG9saWN5IEEiLAogICAgICAgICJwbGF5cmVhZHkiOiB7CiAgICAgICAgICAibWluX2RldmljZV9zZWN1cml0eV9sZXZlbCI6IDE1MCwKICAgICAgICAgICJwbGF5X2VuYWJsZXJzIjogWwogICAgICAgICAgICAiNzg2NjI3RDgtQzJBNi00NEJFLThGODgtMDhBRTI1NUIwMUE3IgogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQ.l8PnZznspJ6lnNmfAE9UQV532Ypzt1JXQkvrk8gFSRw",
-        ],
-      },
-      cbcs: true,
-    },
     PLAYREADY_4_0_CBCS: {
       variant: "dash",
       container: "fmp4",
       note: "PLayReady 4.0 with CBCS encryption",
+      src: "https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd",
       video: {
         codec: "avc",
       },
       audio: {
         codec: "aac",
       },
-      src: "https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd",
       drm: {
         servers: {
           "com.microsoft.playready": {
@@ -261,33 +228,24 @@ var MS = {
       variant: "dash",
       container: "fmp4",
       note: "Widevine with CENC encryption",
+      src: "test-materials/dash/widevine/cenc/manifest.mpd",
       video: {
         codec: "avc",
       },
       audio: {
-        codec: "aac",
+        codec: "ac3",
       },
-      src: "https://media.axprod.net/TestVectors/v7-MultiDRM-SingleKey/Manifest_1080p.mpd",
       drm: {
         servers: {
           "com.widevine.alpha": {
-            serverURL: "https://drm-widevine-licensing.axtest.net/AcquireLicense",
-            httpRequestHeaders: {
-              "X-AxDRM-Message":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZXJzaW9uIjoxLCJjb21fa2V5X2lkIjoiYjMzNjRlYjUtNTFmNi00YWUzLThjOTgtMzNjZWQ1ZTMxYzc4IiwibWVzc2FnZSI6eyJ0eXBlIjoiZW50aXRsZW1lbnRfbWVzc2FnZSIsImZpcnN0X3BsYXlfZXhwaXJhdGlvbiI6NjAsInBsYXlyZWFkeSI6eyJyZWFsX3RpbWVfZXhwaXJhdGlvbiI6dHJ1ZX0sImtleXMiOlt7ImlkIjoiOWViNDA1MGQtZTQ0Yi00ODAyLTkzMmUtMjdkNzUwODNlMjY2IiwiZW5jcnlwdGVkX2tleSI6ImxLM09qSExZVzI0Y3Iya3RSNzRmbnc9PSJ9XX19.FAbIiPxX8BHi9RwfzD7Yn-wugU19ghrkBFKsaCPrZmU",
-            },
-            priority: 0,
+            serverURL: "https://proxy.uat.widevine.com/proxy",
           },
         },
         shaka: {
           servers: {
-            "com.widevine.alpha": "https://drm-widevine-licensing.axtest.net/AcquireLicense",
+            "com.widevine.alpha": "https://proxy.uat.widevine.com/proxy",
           },
         },
-        shaka_headers: [
-          "X-AxDRM-Message",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZXJzaW9uIjoxLCJjb21fa2V5X2lkIjoiYjMzNjRlYjUtNTFmNi00YWUzLThjOTgtMzNjZWQ1ZTMxYzc4IiwibWVzc2FnZSI6eyJ0eXBlIjoiZW50aXRsZW1lbnRfbWVzc2FnZSIsImZpcnN0X3BsYXlfZXhwaXJhdGlvbiI6NjAsInBsYXlyZWFkeSI6eyJyZWFsX3RpbWVfZXhwaXJhdGlvbiI6dHJ1ZX0sImtleXMiOlt7ImlkIjoiOWViNDA1MGQtZTQ0Yi00ODAyLTkzMmUtMjdkNzUwODNlMjY2IiwiZW5jcnlwdGVkX2tleSI6ImxLM09qSExZVzI0Y3Iya3RSNzRmbnc9PSJ9XX19.FAbIiPxX8BHi9RwfzD7Yn-wugU19ghrkBFKsaCPrZmU",
-        ],
       },
       widevine: true,
     },
@@ -295,33 +253,24 @@ var MS = {
       variant: "dash",
       container: "fmp4",
       note: "Widevine with CBCS encryption",
+      src: "test-materials/dash/widevine/cbcs/manifest.mpd",
       video: {
         codec: "avc",
       },
       audio: {
-        codec: "aac",
+        codec: "ac3",
       },
-      src: "https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd",
       drm: {
         servers: {
           "com.widevine.alpha": {
-            serverURL: "https://drm-widevine-licensing.axprod.net/AcquireLicense",
-            httpRequestHeaders: {
-              "X-AxDRM-Message":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ2ZXJzaW9uIjogMSwKICAiY29tX2tleV9pZCI6ICI2OWU1NDA4OC1lOWUwLTQ1MzAtOGMxYS0xZWI2ZGNkMGQxNGUiLAogICJtZXNzYWdlIjogewogICAgInR5cGUiOiAiZW50aXRsZW1lbnRfbWVzc2FnZSIsCiAgICAidmVyc2lvbiI6IDIsCiAgICAibGljZW5zZSI6IHsKICAgICAgImFsbG93X3BlcnNpc3RlbmNlIjogdHJ1ZQogICAgfSwKICAgICJjb250ZW50X2tleXNfc291cmNlIjogewogICAgICAiaW5saW5lIjogWwogICAgICAgIHsKICAgICAgICAgICJpZCI6ICIzMDJmODBkZC00MTFlLTQ4ODYtYmNhNS1iYjFmODAxOGEwMjQiLAogICAgICAgICAgImVuY3J5cHRlZF9rZXkiOiAicm9LQWcwdDdKaTFpNDNmd3YremZ0UT09IiwKICAgICAgICAgICJ1c2FnZV9wb2xpY3kiOiAiUG9saWN5IEEiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgImNvbnRlbnRfa2V5X3VzYWdlX3BvbGljaWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAiUG9saWN5IEEiLAogICAgICAgICJwbGF5cmVhZHkiOiB7CiAgICAgICAgICAibWluX2RldmljZV9zZWN1cml0eV9sZXZlbCI6IDE1MCwKICAgICAgICAgICJwbGF5X2VuYWJsZXJzIjogWwogICAgICAgICAgICAiNzg2NjI3RDgtQzJBNi00NEJFLThGODgtMDhBRTI1NUIwMUE3IgogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQ._NfhLVY7S6k8TJDWPeMPhUawhympnrk6WAZHOVjER6M",
-            },
-            priority: 0,
+            serverURL: "https://proxy.uat.widevine.com/proxy",
           },
         },
         shaka: {
           servers: {
-            "com.widevine.alpha": "https://drm-widevine-licensing.axprod.net/AcquireLicense",
+            "com.widevine.alpha": "https://proxy.uat.widevine.com/proxy",
           },
         },
-        shaka_headers: [
-          "X-AxDRM-Message",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ2ZXJzaW9uIjogMSwKICAiY29tX2tleV9pZCI6ICI2OWU1NDA4OC1lOWUwLTQ1MzAtOGMxYS0xZWI2ZGNkMGQxNGUiLAogICJtZXNzYWdlIjogewogICAgInR5cGUiOiAiZW50aXRsZW1lbnRfbWVzc2FnZSIsCiAgICAidmVyc2lvbiI6IDIsCiAgICAibGljZW5zZSI6IHsKICAgICAgImFsbG93X3BlcnNpc3RlbmNlIjogdHJ1ZQogICAgfSwKICAgICJjb250ZW50X2tleXNfc291cmNlIjogewogICAgICAiaW5saW5lIjogWwogICAgICAgIHsKICAgICAgICAgICJpZCI6ICIzMDJmODBkZC00MTFlLTQ4ODYtYmNhNS1iYjFmODAxOGEwMjQiLAogICAgICAgICAgImVuY3J5cHRlZF9rZXkiOiAicm9LQWcwdDdKaTFpNDNmd3YremZ0UT09IiwKICAgICAgICAgICJ1c2FnZV9wb2xpY3kiOiAiUG9saWN5IEEiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgImNvbnRlbnRfa2V5X3VzYWdlX3BvbGljaWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAiUG9saWN5IEEiLAogICAgICAgICJwbGF5cmVhZHkiOiB7CiAgICAgICAgICAibWluX2RldmljZV9zZWN1cml0eV9sZXZlbCI6IDE1MCwKICAgICAgICAgICJwbGF5X2VuYWJsZXJzIjogWwogICAgICAgICAgICAiNzg2NjI3RDgtQzJBNi00NEJFLThGODgtMDhBRTI1NUIwMUE3IgogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQ._NfhLVY7S6k8TJDWPeMPhUawhympnrk6WAZHOVjER6M",
-        ],
       },
       widevine: true,
     },
@@ -363,7 +312,6 @@ var MS = {
     CMAF_HEVC_EAC3: {
       variant: "dash",
       container: "cmaf",
-      name: "DASH-CMAF-HEVC-EAC3",
       src: "test-materials/cmaf/hevc_eac3/manifest.mpd",
       video: {
         codec: "hevc",
@@ -457,8 +405,8 @@ var MS = {
     FMP4_AVC_AAC_VTT: {
       variant: "hls",
       container: "fmp4",
-      src: "test-materials/hls/fmp4_h264_aac_vtt/main.m3u8",
       note: "TODO: Prepare stream with multiple subtitles tracks (hard to achieve with ffmpeg)",
+      src: "test-materials/hls/fmp4_h264_aac_vtt/main.m3u8",
       video: {
         codec: "avc",
       },
@@ -532,25 +480,49 @@ var MS = {
     },
     WIDEVINE_CENC: {
       variant: "hls",
-      container: "cmaf",
+      container: "fmp4",
       note: "Widevine with CENC encryption",
-      src: "https://storage.googleapis.com/shaka-demo-assets/angel-one-widevine-hls/hls.m3u8",
+      src: "test-materials/hls/widevine/cenc/manifest.m3u8",
       video: {
         codec: "avc",
       },
       audio: {
-        codec: "mp3",
-        channels: "2",
+        codec: "ac3",
       },
       drm: {
         servers: {
           "com.widevine.alpha": {
-            serverURL: "https://cwip-shaka-proxy.appspot.com/no_auth",
+            serverURL: "https://proxy.uat.widevine.com/proxy",
           },
         },
         shaka: {
           servers: {
-            "com.widevine.alpha": "https://cwip-shaka-proxy.appspot.com/no_auth",
+            "com.widevine.alpha": "https://proxy.uat.widevine.com/proxy",
+          },
+        },
+      },
+      widevine: true,
+    },
+    WIDEVINE_CBCS: {
+      variant: "hls",
+      container: "fmp4",
+      note: "Widevine with CBCS encryption",
+      src: "test-materials/hls/widevine/cbcs/manifest.m3u8",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "ac3",
+      },
+      drm: {
+        servers: {
+          "com.widevine.alpha": {
+            serverURL: "https://proxy.uat.widevine.com/proxy",
+          },
+        },
+        shaka: {
+          servers: {
+            "com.widevine.alpha": "https://proxy.uat.widevine.com/proxy",
           },
         },
       },
@@ -561,7 +533,6 @@ var MS = {
     FMP4_AVC_AAC_VTT: {
       variant: "hss",
       container: "fmp4",
-      name: "HSS-AVC1-AAC",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://amssamples.streaming.mediaservices.windows.net/683f7e47-bd83-4427-b0a3-26a6c4547782/BigBuckBunny.ism/manifest(format=mpd-time-csf)",
       video: {
@@ -587,17 +558,17 @@ var MS = {
       container: "fmp4",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
       src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest",
-      drm: {
-        servers: {
-          "com.microsoft.playready":
-            "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
-        },
-      },
       video: {
         codec: "avc",
       },
       audio: {
         codec: "aac",
+      },
+      drm: {
+        servers: {
+          "com.microsoft.playready":
+            "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
+        },
       },
     },
   },
@@ -867,13 +838,7 @@ const StreamSets = {
       MS.DASH.CMAF_HEVC_EAC3,
       MS.DASH.CMAF_AVC_MP3,
     ],
-    DRM: [
-      MS.DASH.PLAYREADY_2_0,
-      MS.DASH.PLAYREADY_4_0_CENC,
-      MS.DASH.PLAYREADY_4_0_CBCS,
-      MS.DASH.WIDEVINE_CENC,
-      MS.DASH.WIDEVINE_CBCS,
-    ],
+    DRM: [MS.DASH.PLAYREADY_2_0, MS.DASH.PLAYREADY_4_0_CBCS, MS.DASH.WIDEVINE_CENC, MS.DASH.WIDEVINE_CBCS],
     Subtitles: [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT],
   },
   HLS: {
@@ -887,8 +852,8 @@ const StreamSets = {
       MS.HLS.CMAF_AVC_AC3,
       MS.HLS.CMAF_HEVC_EAC3,
       MS.HLS.CMAF_AVC_MP3,
-      MS.HLS.WIDEVINE_CENC,
     ],
+    DRM: [MS.HLS.WIDEVINE_CENC, MS.HLS.WIDEVINE_CBCS],
     Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT],
   },
   Progressive: {
@@ -920,5 +885,6 @@ const StreamSets = {
   StreamSets.DASH.Video = StreamSets.DASH.Common.filter((stream) => stream.video);
   StreamSets.DASH.CommonAndDRM = StreamSets.DASH.Common.concat(StreamSets.DASH.DRM);
   StreamSets.HLS.Video = StreamSets.HLS.Common.filter((stream) => stream.video);
+  StreamSets.HLS.CommonAndDRM = StreamSets.HLS.Common.concat(StreamSets.HLS.DRM);
   StreamSets.Progressive.Video = StreamSets.Progressive.Common.filter((stream) => stream.video);
 })();

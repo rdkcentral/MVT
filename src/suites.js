@@ -168,9 +168,9 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
 
-  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
-  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
-  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.CommonAndDRM);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.CommonAndDRM));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.CommonAndDRM));
   // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
@@ -187,9 +187,9 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   // in 'skipTests' specify test name as key and reason as value, e.g.: "DASH_FMP4_MP3 Seek": "ONEM-12345"
   let skipTests = {};
 
-  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.Common);
-  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.Common));
-  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.Common));
+  let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.HLS.CommonAndDRM);
+  tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.HLS.CommonAndDRM));
+  tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.HLS.CommonAndDRM));
   // TODO: ONEM-26268 Fix Rate tests
   // tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video, new Unstable("ONEM-26268")));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine));
