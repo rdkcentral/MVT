@@ -172,7 +172,7 @@ class ShakaEngine extends Engine {
         that.onload(runner, video);
       });
       this.shakaPlayer.load(media.src).catch(onError);
-      if (media.drm.shaka_headers) {
+      if (media.drm && media.drm.shaka_headers) {
         this.shakaPlayer.getNetworkingEngine().registerRequestFilter(function (type, request) {
           if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
             request.headers[media.drm.shaka_headers[0]] = media.drm.shaka_headers[1];
