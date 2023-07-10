@@ -35,6 +35,10 @@ function filterUnsupportedOnProfile(profile, tests) {
     let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
     let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
     let cbcsSupported = stream.cbcs ? profile.note.includes("CBCS") : true;
+    if (test.engine.name == "hlsjs" && profile.note == "Default with CBCS and Widevine support") {
+      // disable CBCS on hlsjs player, because it is crashing WPEWebProcess [ONEM-31475]
+      return !stream.cbcs
+    }
     return variantSupported && videoSupported && audioSupported && drmSupported && cbcsSupported;
   });
 }

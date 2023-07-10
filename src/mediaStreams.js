@@ -233,7 +233,7 @@ var MS = {
         codec: "avc",
       },
       audio: {
-        codec: "ac3",
+        codec: "aac",
       },
       drm: {
         servers: {
@@ -258,7 +258,7 @@ var MS = {
         codec: "avc",
       },
       audio: {
-        codec: "ac3",
+        codec: "aac",
       },
       drm: {
         servers: {
@@ -273,6 +273,7 @@ var MS = {
         },
       },
       widevine: true,
+      cbcs: true,
     },
     DYNAMIC: {
       variant: "dash",
@@ -487,7 +488,7 @@ var MS = {
         codec: "avc",
       },
       audio: {
-        codec: "ac3",
+        codec: "aac",
       },
       drm: {
         servers: {
@@ -512,7 +513,7 @@ var MS = {
         codec: "avc",
       },
       audio: {
-        codec: "ac3",
+        codec: "aac",
       },
       drm: {
         servers: {
@@ -527,6 +528,7 @@ var MS = {
         },
       },
       widevine: true,
+      cbcs: true,
     },
   },
   HSS: {
