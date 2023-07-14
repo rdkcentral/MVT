@@ -1,106 +1,111 @@
-/*
- * If not stated otherwise in this file or this component's LICENSE file the
- * following copyright and licenses apply:
- *
- * Copyright 2022 Liberty Global B.V.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+.btn {
+    border-width: 2px !important;
+}
 
- body {
-  font-family: Verdana, sans-serif;
-  background-color: #fff;
-  text-align: center;
-  margin: 15px auto;
-  font-size: 1em;
-  color: #000;
-  line-height: 1.7em;
+.btn:hover,
+.btn:focus,
+.btn:active {
+    color: #111 !important;
+    /* font-weight: bold !important; */
+    background-color: #e5ff00 !important;
+    border: 2px solid black !important;
 }
 
 video {
-  width: 800px;
-  border-radius: 10px;
-  margin: 25px 10px;
+    height: 400px !important;
 }
 
-input {
-  background-color: #222;
-  color: #f60;
-  font-style: italic;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 3px 10px;
-  font-size: 0.85em;
+video::-webkit-media-controls-panel {
+    display: flex !important;
+    opacity: 1 !important;
 }
 
-button {
-  background-color: #00005a;
-  border: 1px solid #444 !important;
-  color: #eee;
-  font-weight: bold;
-  border: none;
-  padding: 3px 10px;
-  border-radius: 10px;
-  font-size: 0.85em;
-  cursor: pointer;
+.nav {
+    width: 400px !important;
 }
 
-button:hover {
-  background-color: #000;
-  color: #ff0;
+.nav-link {
+    padding: 3px 15px 1px 15px !important;
+    border: 1px solid #a2d4ff !important;
 }
 
-.leftmargin15 {
-  margin-left: 15px;
+.nav-link.active {
+    background-color: #f0f8ff !important;
+    border-bottom: 1px solid #f0f8ff !important;
 }
 
-.orange {
-  color: #ec5700 !important;
+.nav-tabs {
+    border-bottom: none !important;
+    width: 400px !important;
 }
 
-.green {
-  color: #288b00 !important;
+.px-10 {
+    padding-left: 7.7rem !important;
+    padding-right: 7.7rem !important;
 }
 
-.focusable {
-  color: #00e;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 3px 10px;
-  border-radius: 10px;
+.py-1px {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
 }
 
-.focusable:hover {
-  color: #f00;
-  text-decoration: underline;
-  background-color: #000;
+.nav_button {
+    border: 1px solid #96ceff !important;
+    border-bottom: 1px solid #a2d4ff !important;
+    background-color: #d2ecff !important;
+    color: black !important;
+    margin-bottom: -1px;
+    padding: 2px !important;
 }
 
-.focusable:focus {
-  color: #f00;
-  background-color: #000;
-  border: 1px solid #333;
-  outline: none;
-  text-decoration: underline;
+.nav_button.active {
+    border: 1px solid #a2d4ff !important;
+    border-bottom: 1px solid #f0f8ff !important;
+    background-color: #f0f8ff !important;
+    font-weight: 900 !important;
 }
 
-.info_box {
-  background-color: #ffebd3;
-  color: #000;
-  border-radius: 10px;
-  padding: 4px 10px;
-  font-size: 0.9em;
-  line-height: 1.5em;
-  width: max-content;
-  margin: 5px 0 0 5px;
+.nav_button:focus,
+.nav_button.active:focus {
+    border: 1px solid #2d9dff !important;
+    border-bottom: 1px solid #f0f8ff !important;
+    background-color: #f0f8ff !important;
+    color: #8a0000 !important;
 }
+
+.nav_button:hover,
+.nav_button.active:hover {
+    border: 1px solid #a2d4ff !important;
+    border-bottom: 1px solid #f0f8ff !important;
+    background-color: #fffd81 !important;
+    color: #222 !important;
+}
+
+.font-sm {
+    font-size: 14px !important;
+}
+
+.list-group-item.focusable:hover,
+.list-group-item.focusable:focus {
+    background-color: #fffd81 !important;
+    border: 1px solid #dee2e6 !important;
+    border-top-width: 0 !important;
+}
+
+.container-xxl {
+    max-width: 1500px !important;
+    border: 1px solid #a2d4ff !important;
+    background-color: #f0f8ff !important;
+}
+
+.container-sm {
+    max-width: 830px !important;
+    border: 1px solid #a2d4ff !important;
+    background-color: #f0f8ff !important;
+}
+
+.custom-switch {
+    width: 45px !important;
+    height: 25px !important;
+}
+
