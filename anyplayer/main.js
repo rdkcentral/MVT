@@ -241,14 +241,16 @@ function loadScriptsSequentially(scripts, index) {
     script.onload = function () {
       loadScriptsSequentially(scripts, index + 1);
     };
-  } else {
-    update_config_from_url();
-    initPlayer();
-    add_players();
-    waitFor(0.5).then(showConfig);
-    if (autoplay == true) {
-      waitFor(2).then(playPauseVideo);
-    }
   }
 }
 loadScriptsSequentially(scriptSources, 0);
+
+window.addEventListener("load", function () {
+  update_config_from_url();
+  add_players();
+  initPlayer();
+  if (autoplay) {
+    waitFor(1).then(playPauseVideo);
+  }
+  waitFor(0.25).then(showConfig);
+});
