@@ -20,25 +20,6 @@ video::-webkit-media-controls-panel {
     opacity: 1 !important;
 }
 
-.nav {
-    width: 400px !important;
-}
-
-.nav-link {
-    padding: 3px 15px 1px 15px !important;
-    border: 1px solid #a2d4ff !important;
-}
-
-.nav-link.active {
-    background-color: #f0f8ff !important;
-    border-bottom: 1px solid #f0f8ff !important;
-}
-
-.nav-tabs {
-    border-bottom: none !important;
-    width: 400px !important;
-}
-
 .px-10 {
     padding-left: 7.7rem !important;
     padding-right: 7.7rem !important;
@@ -108,4 +89,3 @@ video::-webkit-media-controls-panel {
     width: 45px !important;
     height: 25px !important;
 }
-
