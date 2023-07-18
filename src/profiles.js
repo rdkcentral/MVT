@@ -35,14 +35,18 @@ function filterUnsupportedOnProfile(profile, tests) {
     let audioSupported = !stream.audio || profile.codecs.includes(stream.audio.codec);
     let drmSupported = !stream.drm || Object.keys(stream.drm.servers).some((drm) => profile.drm.includes(drm));
     let cbcsSupported = stream.cbcs ? profile.note.includes("CBCS") : true;
+    if (test.engine.name == "hlsjs" && profile.note == "Default with CBCS and Widevine support") {
+      // disable CBCS on hlsjs player, because it is crashing WPEWebProcess [ONEM-31475]
+      return !stream.cbcs
+    }
     return variantSupported && videoSupported && audioSupported && drmSupported && cbcsSupported;
   });
 }
 
 const Profiles = {
   all: {
-    note: "Everything enabled, CBCS included",
-    drm: ["com.microsoft.playready"],
+    note: "Everything enabled, CBCS and Widevine included",
+    drm: ["com.microsoft.playready", "com.widevine.alpha"],
     codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
     native_support: ["dash", "hls", "hss", "progressive"],
   },
@@ -54,21 +58,26 @@ const Profiles = {
   },
   desktop: {
     note: "For desktop browsers",
-    drm: [],
+    drm: ["com.widevine.alpha"],
     codecs: ["avc", "mpeg4part2", "vp9", "aac", "mp3", "opus"],
     native_support: ["progressive"],
   },
   extended_drm: {
-    note: "Default with CBCS support",
-    drm: ["com.microsoft.playready"],
+    note: "Default with CBCS and Widevine support",
+    drm: ["com.microsoft.playready", "com.widevine.alpha"],
     codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
     native_support: ["dash", "hss", "progressive"],
   },
 };
 
 let getProfile = parseParam("profile", null) || window.localStorage["profile"] || "default";
+let getBrowser = navigator.userAgent;
+if (parseParam("profile", null) === null && getBrowser.includes("VIP7002W")) {
+  getProfile = "extended_drm";
+}
 const SelectedProfile = Profiles[getProfile] == undefined ? Profiles["default"] : Profiles[getProfile];
 window.ConfigString = Profiles[getProfile] == undefined ? "default" : getProfile;
+window.localStorage["profile"] = window.ConfigString;
 
 const EngineProperties = {
   shaka: {

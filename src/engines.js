@@ -127,16 +127,39 @@ class ShakaEngine extends Engine {
   }
   setup(test, media) {
     test.prototype.start = function (runner, video) {
+      var that = this;
+      this.shakaPlayer = new shaka.Player(video);
+      this.shakaPlayer.configure({
+        abr: {
+          enabled: true,
+        },
+        streaming: {
+          retryParameters: {
+            timeout: 2000, // timeout in ms, after which we abort a request; 0 means never
+            maxAttempts: 3, // the maximum number of requests before we fail
+            baseDelay: 1500, // the base delay in ms between retries
+            backoffFactor: 2, // the multiplicative backoff factor between retries
+            fuzzFactor: 0.5, // the fuzz factor to apply to each retry delay
+          },
+        },
+      });
       if (!shaka.polyfill.installed) {
         // Install built-in polyfills to patch browser incompatibilities.
         shaka.polyfill.installAll();
         shaka.polyfill.installed = true;
       }
-      var that = this;
-      this.shakaPlayer = new shaka.Player(video);
       if (media.drm) {
-        this.shakaPlayer.configure({ drm: media.drm });
-        this.shakaPlayer.configure("manifest.dash.ignoreDrmInfo", true);
+        this.shakaPlayer.configure({
+          drm: {
+            servers: media.drm.shaka.servers,
+            advanced: {
+              "com.widevine.alpha": {
+                videoRobustness: "SW_SECURE_CRYPTO",
+                audioRobustness: "SW_SECURE_CRYPTO",
+              },
+            },
+          },
+        });
       }
 
       this.shakaPlayer.addEventListener("error", (error) => onError(error));
@@ -149,6 +172,13 @@ class ShakaEngine extends Engine {
         that.onload(runner, video);
       });
       this.shakaPlayer.load(media.src).catch(onError);
+      if (media.drm && media.drm.shaka_headers) {
+        this.shakaPlayer.getNetworkingEngine().registerRequestFilter(function (type, request) {
+          if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
+            request.headers[media.drm.shaka_headers[0]] = media.drm.shaka_headers[1];
+          }
+        });
+      }
     };
     test.prototype.engine = this.name;
     test.prototype.superTeardown = test.prototype.teardown;
@@ -189,6 +219,13 @@ class DashjsEngine extends Engine {
       var that = this;
 
       this.dashjsPlayer = dashjs.MediaPlayer().create();
+      this.dashjsPlayer.updateSettings({
+        streaming: {
+          abr: {
+            autoSwitchBitrate: { audio: true, video: true },
+          },
+        },
+      });
 
       video.addEventListener("error", (error) => onError(event));
       function onError(error) {
@@ -273,10 +310,23 @@ class HlsjsEngine extends Engine {
   setup(test, media) {
     test.prototype.start = function (runner, video) {
       var that = this;
-      this.hls = new Hls();
+
+      if (media.widevine) {
+        this.hls = new Hls({
+          enableWorker: true,  // enable ABR
+          lowLatencyMode: true,
+          backBufferLength: 90,
+          widevineLicenseUrl: media.drm.servers["com.widevine.alpha"].serverURL,
+          emeEnabled: true,
+        });
+      } else {
+        this.hls = new Hls({
+          enableWorker: true,  // enable ABR
+        });
+      }
+
       this.hls.loadSource(media.src);
       this.hls.attachMedia(video);
-      // @todo: drm?
       this.hls.on(Hls.Events.MANIFEST_PARSED, function () {
         that.onload(runner, video);
       });

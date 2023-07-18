@@ -106,7 +106,7 @@ A list of of all external media assets used by a deployed instance of MVT:
 
 Tests are grouped into test suites, which differ in streaming type (DASH, HLS, HSS, progressive) and player (Shaka Player, dash.js, hls.js, native).
 
-The test list is generated dynamically based on available streams (`mediaStreams.js`),
+The test list is generated dynamically based on available streams (`src/mediaStreams.js`),
 test templates (`src/mediaTests.js`) and selected profile configuration (e.g. `src/profiles.js`).
 Each test is actually an instantiation of a test template, e.g. `DASH-FMP4-AVC1-AAC Playback`
 and `DASH-DYNAMIC Playback` share the same test code (`src/mediaTests.js::testPlayback`),
@@ -156,7 +156,7 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 - `engine_shaka=3.0.1|3.2.1|4.3.6` - select Shaka Player version. Please note it will only affect Shaka test suites.
 - `engine_dashjs=3.1.1|4.4.0|4.7.0|latest` - select dash.js version. Please note it will only affect dash.js test suites.
 - `engine_hlsjs=1.0.0|1.2.1|1.3.0|1.4.5` - select hls.js version. Please note it will only affect hls.js test suites.
-- `profile=all|default|desktop|VIP7002W` - depends of tested unit.
+- `profile=all|default|desktop|extended_drm` - depends of tested unit.
 - `debug=true|false` - adding additional timestamps to the output log.
 
 ### JavaScript API
@@ -231,7 +231,7 @@ in order to start `js_mse_eme` submodule and to render the UI.
 
 ### Adding new tests
 
-MVT test cases are a product of test templates (`src/mediaTests.js`) and media streams (`mediaStreams.js`).
+MVT test cases are a product of test templates (`src/mediaTests.js`) and media streams (`src/mediaStreams.js`).
 Test templates provide the actual test implementation, which can be parametrized with a given media stream.
 It means that e.g. `DASH_FMP4_AVC_AAC Playback` and `DASH_FMP4_MPEG2_MP3 Playback` load different media content,
 but the test code is exactly the same (`src/mediaTests.js::testPlayback`). Such approach allows us to verify

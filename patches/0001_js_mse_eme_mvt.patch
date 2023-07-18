@@ -345,7 +345,7 @@ index c040757..a342af3 100644
      document.body.appendChild(createElement('span', 'info', 'h4'));
      document.body.appendChild(createElement('span', 'usage', 'h4'));
 +    var config = createElement('span', 'configure', 'h4')
-+    config.innerHTML = "Configuration: " + window.ConfigString;
++    config.innerHTML = 'Profile: <span style="color: green">' + window.ConfigString + '</span>';
 +    document.body.appendChild(config);
      document.body.appendChild(createElement('div', 'testview'));
  

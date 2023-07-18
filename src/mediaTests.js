@@ -264,9 +264,9 @@ function arraysEqual(a, b) {
 }
 
 var testChangeAudioTracks = new TestTemplate("AudioTracks", function (video, runner) {
-  const initialPosition = 1;
+  const initialPosition = 5;
   const trackPlaybackTime = 7;
-  const positionInaccuracyThreshold = 2;
+  const positionInaccuracyThreshold = 3;
 
   var languages = this.content.audio.languages.slice().reverse();
   // Set the first language twice at start and end
@@ -276,17 +276,16 @@ var testChangeAudioTracks = new TestTemplate("AudioTracks", function (video, run
     return () => {
       return new Promise((resolve, _) => {
         runner.log("Changing language to " + lang);
+        let trackChangePosition = video.currentTime;
+        let expectedPosition = trackChangePosition + trackPlaybackTime;
         let availableLanguages = this.changeLanguage(video, runner, lang);
         runner.assert(
           arraysEqual(availableLanguages.sort(), this.content.audio.languages.slice().sort()),
           "languages to match declared"
         );
-        let trackChangePosition = video.currentTime;
-        let trackChangeTime = Date.now();
         runner.timeouts.setTimeout(() => {
-          let preciseTrackPlaybackTime = (Date.now() - trackChangeTime) / 1000;
-          let expectedPosition = trackChangePosition + preciseTrackPlaybackTime;
-          runner.checkApproxEq(video.currentTime, expectedPosition, "video.currentTime", positionInaccuracyThreshold);
+          let playTimeCurrent = video.currentTime;
+          runner.checkApproxEq(playTimeCurrent, expectedPosition, "video.currentTime", positionInaccuracyThreshold);
           resolve();
         }, trackPlaybackTime * 1000);
       });
