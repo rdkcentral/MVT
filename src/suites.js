@@ -107,7 +107,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let skipTests = {};
   StreamSets.DASH.dashjs = StreamSets.DASH.CommonAndDRM.filter((stream) => {
     return (
-      stream != MS.MULTIPERIOD // ONEM-31620
+      stream != MS.DASH.MULTIPERIOD // ONEM-31620
     );
   });
 
