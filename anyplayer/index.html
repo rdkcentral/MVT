@@ -6,7 +6,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+  http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,37 +15,255 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css" type="text/css" />
-  <script src="../js_mse_eme/harness/key.js"></script>
-  <script src="../js_mse_eme/harness/focusManager.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mux.js/5.10.0/mux.min.js"></script>
-  <script src="players.js"></script>
-  <script src="functions.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link href="style.css" rel="stylesheet" />
   <title>Anyplayer</title>
 </head>
+
 <body>
 
-  <div style="margin: 0 auto; text-align: left; width: 900px;">
-    <a class="focusable" href="/">Back to MVT</a>
-    <p>
-      Test 'any' player and stream here... ;)
-      <span style="margin-left: 20px; color: #316d24">// "Dash.JS", "Shaka" ("HLS.js" planned)</span>
-    </p>
-    <span style="color: #00442d;">Instruction for testing streams on the Set Top Box:</span>
-    <div class="info_box">
-      You can set the player version via remote controller from the versions listed below with provided default stream URL,<br>
-      or you can specify all the parameters ("player", "player_ver", "url"), setting them at the end of the URL:<br>
-      <div style="text-align: center;">
-        /?<span class="green">player</span>=<span class="orange">dashjs</span>&<span class="green">player_ver</span>=<span class="orange">4.2.0</span>&<span class="green">url</span>=<span class="orange">https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd</span>
-      </div>
+  <div id="player" class="text-center pt-2 bg-dark">
+    <video id="video" class="bg-dark border border-2 border-secondary my-1" controls></video>
+    <div class="text-center bg-secondary mb-2"
+      style="border-bottom: 2px solid #222 !important; border-top: 2px solid rgba(255, 255, 255, 0.4) !important">
+      <button class="btn btn-info border border-dark btn-sm px-2 m-1 focusable" type="button"
+        onclick="playPauseVideo()">PLAY / PAUSE</button>
+      <button class="btn btn-primary border border-dark btn-sm px-2 m-1 focusable" type="button"
+        onclick="seekVideo('relative', -10)">-10s</button>
+      <button class="btn btn-primary border border-dark btn-sm px-2 m-1 focusable" type="button"
+        onclick="seekVideo('relative', 10)">+10s</button>
+      <button class="btn btn-primary border border-dark btn-sm px-2 m-1 focusable" type="button"
+        onclick="seekVideo('absolute', 90)">SEEK TO&nbsp; 01:30</button>
+      <button class="btn btn-dark border border-primary btn-sm px-2 m-1 focusable" type="button"
+        onclick="setPlaybackRate(0.25)">x0.25</button>
+      <button class="btn btn-dark border border-primary btn-sm px-2 m-1 focusable" type="button"
+        onclick="setPlaybackRate(1.0)">x1</button>
+      <button class="btn btn-dark border border-primary btn-sm px-2 m-1 focusable" type="button"
+        onclick="setPlaybackRate(2.0)">x2</button>
+      <button class="btn btn-warning border border-dark btn-sm px-2 m-1 focusable" type="button"
+        onclick="location.reload()">RELOAD</button>
+      <button class="btn btn-light border border-dark btn-sm px-2 m-1 focusable" type="button"
+        style="margin-left: 30px !important" onclick="location.assign('/')">GO TO MVT</button>
     </div>
-    <div id="players_list"></div>
-    <video id="video" controls="true" autoplay="true"></video>
   </div>
 
-  <script src="load_engine.js"></script>
+  <div id="players_versions" class="container-sm rounded-3 py-2 mt-3 mb-2">
+    <div id="players_list" class="row"></div>
+  </div>
+
+  <div id="content" class="container py-0 my-0">
+
+    <div class="row mt-3">
+      <div class="col-sm-4">
+        <div class="d-grid py-0">
+          <button class="btn rounded-3 rounded-bottom-0 border-bottom-0 btn-sm nav_button focusable" id="config-btn"
+            type="button" onclick="showConfig()">Configuration</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="d-grid py-0">
+          <button class="btn rounded-3 rounded-bottom-0 border-bottom-0 btn-sm nav_button focusable active"
+            id="examples-btn" type="button" onclick="showExamples()">Examples</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container-xxl rounded-3 px-4 py-3 mt-0 mb-3">
+    <div class="tab-content" id="nav-tabContent">
+
+      <div class="tab-pane fade show active" id="config-tab">
+        <form id="streamSettings" class="was-validated">
+
+          <div class="row mb-2">
+            <label for="Stream" class="col-sm-2 col-form-label text-center">Stream URL:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="Stream"
+                placeholder="URL for media file or manifest [*.mp4, *.mkv, *.m3u8, *.mpd, etc.]" required
+                value="/test-materials/dash/fmp4_h264_aac/manifest.mpd" />
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <label for="Player" class="col-sm-2 col-form-label text-center">Player:</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="Player">
+                <option>dashjs</option>
+                <option>shaka</option>
+                <option>hlsjs</option>
+                <option>native</option>
+              </select>
+            </div>
+
+            <label for="DRM" class="col-sm-1 col-form-label text-center">DRM:</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="DRM" onclick="showDRMopt()">
+                <option></option>
+                <option>Widevine</option>
+                <option>Playready</option>
+              </select>
+            </div>
+
+            <div class="col-sm-3">
+              <div class="custom-control form-switch text-center py-1">
+                <input class="form-check-input custom-switch" type="checkbox" role="switch" id="Autoplay" checked>
+                <label class="form-check-label mx-2 text-dark py-1" for="Autoplay">Auto-Play</label>
+              </div>
+            </div>
+          </div>
+
+          <div id="drm_container" class="d-none">
+            <div class="row mb-2">
+              <label for="License" class="col-sm-2 col-form-label text-center">License server:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="License" placeholder="URL for DRM license server" />
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <label for="LicenseHeader" class="col-sm-2 col-form-label text-center">
+                X-AxDRM-Message:
+              </label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="LicenseHeader"
+                  placeholder="Optional request header 'X-AxDRM-Message' for license server"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center mt-3">
+            <div class="col-sm-6">
+              <div class="d-grid py-1">
+                <button id="createUrl" type="button" class="btn btn-outline-primary fw-bold"
+                  onclick="create_url(false)">
+                  Generate URL and copy to clipboard
+                </button>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-grid py-1">
+                <button id="createUrl" type="button" class="btn btn-outline-success fw-bold" onclick="create_url(true)">
+                  Apply config
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="output_div" class="d-none">
+            <textarea id="resultUrl" class="form-control bg-warning-subtle border border-warning mt-2"
+              readonly></textarea>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="tab-pane fade show active" id="examples-tab">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="list-group">
+              <a class="list-group-item active py-1px" aria-current="true" href="#">
+                "DASH.js" player:
+              </a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=dashjs&url=http://playready.directtaps.net/smoothstreaming/SSWSS720H264/SuperSpeedway_720.ism/Manifest">
+                Smooth streaming<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=dashjs&url=/test-materials/dash/fmp4_h264_aac/manifest.mpd">
+                FMP4_AVC_AAC<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=dashjs&url=http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)&drm=Playready&drm_license=https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)">
+                Playready 2.0 <span class="mx-3 text-dark-emphasis">[ CENC encryption ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=dashjs&url=/test-materials/dash/widevine/cenc/manifest.mpd&drm=Widevine&drm_license=https://proxy.uat.widevine.com/proxy">
+                Widevine <span class="mx-3 text-dark-emphasis">[ CENC encryption ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=dashjs&url=https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd&drm=Playready&drm_license=https://drm-playready-licensing.axprod.net/AcquireLicense&drm_header=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ2ZXJzaW9uIjogMSwKICAiY29tX2tleV9pZCI6ICI2OWU1NDA4OC1lOWUwLTQ1MzAtOGMxYS0xZWI2ZGNkMGQxNGUiLAogICJtZXNzYWdlIjogewogICAgInR5cGUiOiAiZW50aXRsZW1lbnRfbWVzc2FnZSIsCiAgICAidmVyc2lvbiI6IDIsCiAgICAibGljZW5zZSI6IHsKICAgICAgImFsbG93X3BlcnNpc3RlbmNlIjogdHJ1ZQogICAgfSwKICAgICJjb250ZW50X2tleXNfc291cmNlIjogewogICAgICAiaW5saW5lIjogWwogICAgICAgIHsKICAgICAgICAgICJpZCI6ICIzMDJmODBkZC00MTFlLTQ4ODYtYmNhNS1iYjFmODAxOGEwMjQiLAogICAgICAgICAgImVuY3J5cHRlZF9rZXkiOiAicm9LQWcwdDdKaTFpNDNmd3YremZ0UT09IiwKICAgICAgICAgICJ1c2FnZV9wb2xpY3kiOiAiUG9saWN5IEEiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgImNvbnRlbnRfa2V5X3VzYWdlX3BvbGljaWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAiUG9saWN5IEEiLAogICAgICAgICJwbGF5cmVhZHkiOiB7CiAgICAgICAgICAibWluX2RldmljZV9zZWN1cml0eV9sZXZlbCI6IDE1MCwKICAgICAgICAgICJwbGF5X2VuYWJsZXJzIjogWwogICAgICAgICAgICAiNzg2NjI3RDgtQzJBNi00NEJFLThGODgtMDhBRTI1NUIwMUE3IgogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQ._NfhLVY7S6k8TJDWPeMPhUawhympnrk6WAZHOVjER6M">
+                Playready 4.0 <span class="mx-3 text-dark-emphasis">[ CBCS encryption ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=dashjs&url=/test-materials/dash/widevine/cbcs/manifest.mpd&drm=Widevine&drm_license=https://proxy.uat.widevine.com/proxy">
+                Widevine <span class="mx-3 text-dark-emphasis">[ CBCS encryption ]</span></a>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="list-group">
+              <a class="list-group-item list-group-item-action active py-1px" aria-current="true" href="#">
+                "Shaka" player:
+              </a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=shaka&url=/test-materials/dash/fmp4_h264_aac/manifest.mpd">
+                FMP4_AVC_AAC<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=shaka&url=http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)&drm=Playready&drm_license=https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)">
+                Playready 2.0 <span class="mx-3 text-dark-emphasis">[ CENC encryption ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=shaka&url=/test-materials/dash/widevine/cenc/manifest.mpd&drm=Widevine&drm_license=https://proxy.uat.widevine.com/proxy">
+                Widevine <span class="mx-3 text-dark-emphasis">[ CENC encryption ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=shaka&url=https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd&drm=Playready&drm_license=https://drm-playready-licensing.axprod.net/AcquireLicense&drm_header=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ2ZXJzaW9uIjogMSwKICAiY29tX2tleV9pZCI6ICI2OWU1NDA4OC1lOWUwLTQ1MzAtOGMxYS0xZWI2ZGNkMGQxNGUiLAogICJtZXNzYWdlIjogewogICAgInR5cGUiOiAiZW50aXRsZW1lbnRfbWVzc2FnZSIsCiAgICAidmVyc2lvbiI6IDIsCiAgICAibGljZW5zZSI6IHsKICAgICAgImFsbG93X3BlcnNpc3RlbmNlIjogdHJ1ZQogICAgfSwKICAgICJjb250ZW50X2tleXNfc291cmNlIjogewogICAgICAiaW5saW5lIjogWwogICAgICAgIHsKICAgICAgICAgICJpZCI6ICIzMDJmODBkZC00MTFlLTQ4ODYtYmNhNS1iYjFmODAxOGEwMjQiLAogICAgICAgICAgImVuY3J5cHRlZF9rZXkiOiAicm9LQWcwdDdKaTFpNDNmd3YremZ0UT09IiwKICAgICAgICAgICJ1c2FnZV9wb2xpY3kiOiAiUG9saWN5IEEiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgImNvbnRlbnRfa2V5X3VzYWdlX3BvbGljaWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAiUG9saWN5IEEiLAogICAgICAgICJwbGF5cmVhZHkiOiB7CiAgICAgICAgICAibWluX2RldmljZV9zZWN1cml0eV9sZXZlbCI6IDE1MCwKICAgICAgICAgICJwbGF5X2VuYWJsZXJzIjogWwogICAgICAgICAgICAiNzg2NjI3RDgtQzJBNi00NEJFLThGODgtMDhBRTI1NUIwMUE3IgogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQ._NfhLVY7S6k8TJDWPeMPhUawhympnrk6WAZHOVjER6M">
+                Playready 4.0 <span class="mx-3 text-dark-emphasis">[ CBCS encryption ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=shaka&url=/test-materials/dash/widevine/cbcs/manifest.mpd&drm=Widevine&drm_license=https://proxy.uat.widevine.com/proxy">
+                Widevine <span class="mx-3 text-dark-emphasis">[ CBCS encryption ]</span></a>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="list-group">
+              <a class="list-group-item list-group-item-action active py-1px" aria-current="true" href="#">
+                "HLS.js" player:
+              </a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=hlsjs&url=/test-materials/hls/fmp4_h264_eac3/main.m3u8">
+                FMP4_AVC_EAC3<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=hlsjs&url=https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_HEVC_MultiRate_MultiRes_IFrame_AAC_WebVTT.m3u8">
+                CMAF_HEVC_AAC<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=hlsjs&url=/test-materials/hls/widevine/cenc/manifest.m3u8&drm=Widevine&drm_license=https://proxy.uat.widevine.com/proxy">
+                Widevine <span class="mx-3 text-dark-emphasis">[ CENC encryption ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=hlsjs&url=/test-materials/hls/widevine/cbcs/manifest.mpd&drm=Widevine&drm_license=https://proxy.uat.widevine.com/proxy">
+                Widevine <span class="mx-3 text-dark-emphasis">[ CBCS encryption ]</span></a>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="list-group">
+              <a class="list-group-item list-group-item-action active py-1px" aria-current="true" href="#">
+                Native player:
+              </a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=native&url=/test-materials/dash/fmp4_h264_aac/manifest.mpd">
+                DASH_FMP4_AVC_AAC<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=native&url=/test-materials/progressive/vid1_h264_ac3.mkv">
+                h264_ac3.mkv<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=native&url=/test-materials/progressive/vid1_mpeg2video_aac.mkv">
+                mpeg2video_aac.mkv<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+              <a class="list-group-item font-sm py-1px focusable"
+                href="/anyplayer/?player=native&url=/test-materials/progressive/vid2_mp3.mp3">
+                mp3.mp3<span class="mx-3 text-dark-emphasis">[ without DRM ]</span></a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="log" style="position: absolute; left: 50px; top: 20px;"
+    class="py-2 px-3 rounded-3 bg-black bg-opacity-25 text-info border border-secondary border-opacity-50">
+  </div>
+
+
+  <script src="main.js"></script>
 
 </body>
+
 </html>
