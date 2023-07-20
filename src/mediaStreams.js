@@ -297,7 +297,6 @@ var MS = {
       audio: {
         codec: "aac",
       },
-      unstable: new Unstable("ONEM-26036"),
     },
     CMAF_AVC_AC3: {
       variant: "dash",
