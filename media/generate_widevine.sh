@@ -52,7 +52,7 @@ function make_widevine {
     --signer widevine_test \
     --aes_signing_key 1ae8ccd0e7985cc0b6203a55855a1034afc252980e970ca90e5202689f947ab9 \
     --aes_signing_iv d58ce954203b7c9a9a9d467f59839249 \
-    --segment_duration 2 \
+    --segment_duration 5 \
     $manifest_cmd
   fi
 }
