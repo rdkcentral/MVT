@@ -1,18 +1,32 @@
-From cd76a7eb7b3336a64e6ec48c538feaed461d862d Mon Sep 17 00:00:00 2001
+From a23d4dc0509741b885c364b5f09c770f36421f61 Mon Sep 17 00:00:00 2001
 From: Lukasz Rutkowski <lrutkowski.contractor@libertyglobal.com>
-Date: Fri, 21 Jul 2023 11:36:17 +0200
+Date: Fri, 21 Jul 2023 16:12:47 +0200
 Subject: [PATCH] MVT patch
 
 ---
+ harness/compactTestList.js |   2 +-
  harness/compactTestView.js |  34 ++++------
  harness/constants.js       |   3 +-
  harness/main.js            |  51 ++++++++++++--
- harness/test.js            |  44 ++++--------
- harness/testView.js        |  56 +++++++++++-----
+ harness/test.js            |  45 ++++---------
+ harness/testView.js        |  57 +++++++++++-----
  harness/timeout.js         |   9 +++
  style.css                  | 133 +++++++++++++++++++++++++------------
- 7 files changed, 213 insertions(+), 117 deletions(-)
+ 8 files changed, 214 insertions(+), 120 deletions(-)
 
+diff --git a/harness/compactTestList.js b/harness/compactTestList.js
+index 157ef5d..ba3432f 100644
+--- a/harness/compactTestList.js
++++ b/harness/compactTestList.js
+@@ -165,7 +165,7 @@ function TestList(style) {
+       currentColumn.appendChild(tr);
+ 
+       var elems = [
+-        createElement('div', null, 'test-status-none', '&nbsp;'),
++        createElement('div', null, 'test-status-empty', '&nbsp;'),
+         createElement('div', null, 'cell-name', '&nbsp;')
+       ];
+       tr.appendChild(elems[0]);
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 77f7b68..2689de9 100644
 --- a/harness/compactTestView.js
@@ -219,7 +233,7 @@ index c722460..555ffde 100644
  
  })();
 diff --git a/harness/test.js b/harness/test.js
-index b781e31..20c60bd 100644
+index b781e31..17631cc 100644
 --- a/harness/test.js
 +++ b/harness/test.js
 @@ -1,6 +1,7 @@
@@ -263,8 +277,11 @@ index b781e31..20c60bd 100644
  };
  
  TestExecutor.prototype.assert = function(cond, msg) {
-@@ -289,17 +296,9 @@ TestExecutor.prototype.initialize = function() {
-   document.getElementById('info').innerHTML = this.info;
+@@ -286,20 +293,11 @@ TestExecutor.prototype.initialize = function() {
+ 
+   this.testView.generate(this.testSuiteVer);
+ 
+-  document.getElementById('info').innerHTML = this.info;
    this.log('Media Source and Encrypted Media Conformance Tests ' +
             '(version REVISION)');
 -
@@ -281,7 +298,7 @@ index b781e31..20c60bd 100644
    var keepRunning = (!harnessConfig.stoponfailure ||
        this.lastResult === 'pass') && harnessConfig.loop &&
        (this.testView.anySelected() || this.numOfTestToRun === 1);
-@@ -319,14 +318,6 @@ TestExecutor.prototype.onfinished = function() {
+@@ -319,14 +317,6 @@ TestExecutor.prototype.onfinished = function() {
        }
      }
    }
@@ -296,7 +313,7 @@ index b781e31..20c60bd 100644
  };
  
  TestExecutor.prototype.sendTestReport = function(results) {
-@@ -365,17 +356,16 @@ TestExecutor.prototype.startNextTest = function() {
+@@ -365,17 +355,16 @@ TestExecutor.prototype.startNextTest = function() {
      this.onfinished();
      return;
    }
@@ -316,7 +333,7 @@ index b781e31..20c60bd 100644
    this.updateStatus();
  
    this.startTime = Date.now();
-@@ -524,18 +514,10 @@ TestExecutor.prototype.timeout = function() {
+@@ -524,18 +513,10 @@ TestExecutor.prototype.timeout = function() {
  };
  
  TestExecutor.prototype.teardownCurrentTest = function(isTimeout, errorMsg) {
@@ -338,7 +355,7 @@ index b781e31..20c60bd 100644
  
    this.timeouts.clearAll();
 diff --git a/harness/testView.js b/harness/testView.js
-index c040757..b5fdca7 100644
+index c040757..5ca672e 100644
 --- a/harness/testView.js
 +++ b/harness/testView.js
 @@ -1,6 +1,7 @@
@@ -371,7 +388,7 @@ index c040757..b5fdca7 100644
      })
    };
  
-@@ -103,7 +100,7 @@ function TestView(testSuiteVer) {
+@@ -103,15 +100,15 @@ function TestView(testSuiteVer) {
  
    this.generate = function() {
      var heading = '[' + this.testSuiteVer + '] ' +
@@ -380,15 +397,16 @@ index c040757..b5fdca7 100644
      try {
        document.title = testSuiteDescriptions[harnessConfig.testType].title;
      } catch (e) {
-@@ -112,6 +109,7 @@ function TestView(testSuiteVer) {
+       // Use default html title if UA can't control document.title.
+     }
      document.body.appendChild(createElement('span', 'title', null, heading));
-     document.body.appendChild(createElement('span', 'info', 'h4'));
+-    document.body.appendChild(createElement('span', 'info', 'h4'));
      document.body.appendChild(createElement('span', 'usage', 'h4'));
 +    document.body.appendChild(createElement('span', 'profiles', 'h4'));
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -149,14 +147,42 @@ function TestView(testSuiteVer) {
+@@ -149,14 +146,42 @@ function TestView(testSuiteVer) {
        switchDiv.lastChild.exec = switchDiv.lastChild.onclick;
      }
      for (var i = 0; i < selectors.length; ++i) {
@@ -468,7 +486,7 @@ index 7c373c1..b4167ca 100644
      var interval = getUniqueItem(intervals);
      interval.func = func;
 diff --git a/style.css b/style.css
-index 79f5cb1..ac422ef 100644
+index 79f5cb1..636deb0 100644
 --- a/style.css
 +++ b/style.css
 @@ -17,12 +17,13 @@
@@ -568,8 +586,8 @@ index 79f5cb1..ac422ef 100644
 -  border-color: #800;
 -  border-width: 2px;
 -  padding: 0px;
-+  background-color: #fff9dc;
-+  border-color: #dd7600;
++  background-color: #fff;
++  border-color: #be0000;
 +  border-width: 1px;
 +  border-radius: 5px;
 +  padding: 0;
@@ -714,3 +732,4 @@ index 79f5cb1..ac422ef 100644
 \ No newline at end of file
 -- 
 2.25.1
+
