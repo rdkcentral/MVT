@@ -1,25 +1,17 @@
-From 784ef302d0398a92ab14804745de479d8e6de852 Mon Sep 17 00:00:00 2001
-From: Lukasz Rutkowski <lukasz.rutkowski@consult.red>
-Date: Mon, 8 Aug 2022 13:29:59 +0200
-Subject: [PATCH] MVT changes
+From cd76a7eb7b3336a64e6ec48c538feaed461d862d Mon Sep 17 00:00:00 2001
+From: Lukasz Rutkowski <lrutkowski.contractor@libertyglobal.com>
+Date: Fri, 21 Jul 2023 11:36:17 +0200
+Subject: [PATCH] MVT patch
 
-* Load MVT tests instead of the upstream tests
-* Add execution logs to test results
-* Add checkFrames flag
-* Add clearTimeout method
-* Set testVersion to MVT
-* Add engine (player) selectors
-* Remove some unsupported links
-* Add links to YouTube test suite, Media Coverage and Anyplayer
 ---
- harness/compactTestView.js | 34 ++++++++++++------------------
- harness/constants.js       |  3 ++-
- harness/main.js            | 29 +++++++++++++++++++++----
- harness/test.js            | 43 ++++++++++++--------------------------
- harness/testView.js        | 39 +++++++++++++++++++++-------------
- harness/timeout.js         |  9 ++++++++
- style.css                  | 22 +++++++++++--------
- 7 files changed, 99 insertions(+), 80 deletions(-)
+ harness/compactTestView.js |  34 ++++------
+ harness/constants.js       |   3 +-
+ harness/main.js            |  51 ++++++++++++--
+ harness/test.js            |  44 ++++--------
+ harness/testView.js        |  56 +++++++++++-----
+ harness/timeout.js         |   9 +++
+ style.css                  | 133 +++++++++++++++++++++++++------------
+ 7 files changed, 213 insertions(+), 117 deletions(-)
 
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 77f7b68..2689de9 100644
@@ -104,7 +96,7 @@ index ef553c5..1964af0 100644
 -var testVersion = '2020';
 +var testVersion = 'MVT';
 diff --git a/harness/main.js b/harness/main.js
-index c722460..af1fec6 100644
+index c722460..555ffde 100644
 --- a/harness/main.js
 +++ b/harness/main.js
 @@ -1,6 +1,7 @@
@@ -126,7 +118,16 @@ index c722460..af1fec6 100644
      testName = util.MakeCapitalName(testName) + 'Test';
      return window[testName]();
    }
-@@ -51,6 +56,8 @@ var parseParams = function(testSuiteConfig) {
+@@ -42,6 +47,8 @@ var parseParam = function(param, defaultValue) {
+ var parseParams = function(testSuiteConfig) {
+   var config = {};
+   config.testType = parseParam('test_type', testSuiteConfig.defaultTestSuite);
++  config.testnames = parseParam('testnames', '');
++  config.tests = parseParam('testnumbers');
+   config.command = parseParam('command', '');
+   config.timeout = Number(parseParam('timeout', TestBase.timeout));
+   config.logging = !util.stringToBoolean(parseParam('disable_log', false));
+@@ -51,9 +58,10 @@ var parseParams = function(testSuiteConfig) {
        parseParam('stoponfailure', false));
    config.enablewebm = util.stringToBoolean(
        parseParam('enablewebm', testSuiteConfig.enablewebm));
@@ -134,14 +135,26 @@ index c722460..af1fec6 100644
 +  config.debug = util.stringToBoolean(parseParam('debug', false));
    config.muted = util.stringToBoolean(parseParam('muted', false));
    config.novp9 = util.stringToBoolean(parseParam('novp9', false));
-   config.tests = parseParam('tests');
-@@ -143,7 +149,12 @@ var createLogger = function() {
+-  config.tests = parseParam('tests');
+   config.exclude = parseParam('exclude');
+   config.testsMask = parseParam('tests_mask', '');
+   config.testid = parseParam('testid', '');
+@@ -83,6 +91,8 @@ var configureHarness = function(testSuiteConfig) {
+ 
+   if (harnessConfig.testsMask) {
+     harnessConfig.testsMask += '0';
++  } else if (harnessConfig.testnames) {
++    harnessConfig.testsMask = '';
+   } else if (harnessConfig.tests) {
+     harnessConfig.tests =
+         harnessConfig.tests.split(',')
+@@ -143,15 +153,34 @@ var createLogger = function() {
        text += arguments[i].toString() + ' ';
  
      console.log(text);
 -    output.innerHTML = text + '\n' + output.innerHTML;
 +    var textBlock = output.innerHTML;
-+    textBlock = textBlock.split('\n').slice(-100).join('\n');
++    textBlock = textBlock.split('\n').slice(-50).join('\n');
 +    const separator = textBlock.length === 0 ? '' : '\n';
 +    output.innerHTML = textBlock + separator + text;
 +    output.scrollTop = output.scrollHeight
@@ -149,7 +162,30 @@ index c722460..af1fec6 100644
    };
  };
  
-@@ -196,7 +207,7 @@ window.startMseTest = function(testSuiteVer) {
+ window.globalRunner = null;
+ 
+ var createRunner = function(testSuite, testSuiteVer, testsMask) {
+-  var runner = new TestExecutor(testSuite, testsMask, testSuiteVer);
++  if (harnessConfig.testnames != "") {
++    testsMask = ""
++    let testNames = harnessConfig.testnames.split(',').map((testname) => {return testname.toLowerCase()});
++    console.log(testNames);
++    for (let test in testSuite.tests) {
++      if (testNames.includes(testSuite.tests[test].prototype.name.toLowerCase())) {
++        testsMask += "1";
++      } else if (testNames.includes(testSuite.tests[test].prototype.name.split('__')[0].toLowerCase())) {
++        testsMask += "1";
++      } else {
++        testsMask += "0";
++      }
++    }
++  }
+ 
++  var runner = new TestExecutor(testSuite, testsMask, testSuiteVer);
+   // Expose the runner so outside/injected scripts can read it.
+   window.globalRunner = runner;
+ 
+@@ -196,7 +225,7 @@ window.startMseTest = function(testSuiteVer) {
    window.harnessConfig = parseParams(testSuiteVersion.config);
    window.harnessConfig.testSuite = testSuiteVer;
  
@@ -158,16 +194,16 @@ index c722460..af1fec6 100644
  
    if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
      alert('Cannot find test type ' + harnessConfig.testType);
-@@ -210,11 +221,21 @@ window.startMseTest = function(testSuiteVer) {
+@@ -210,11 +239,21 @@ window.startMseTest = function(testSuiteVer) {
  
    configureHarness(testSuiteVersion.config);
    createLogger();
 -
-+  const waitForScriptLoad = (sec) => {
++  const waitFor = (ms) => {
 +    return new Promise((resolve, reject) => {
 +      setTimeout(() => {
 +        resolve()
-+      }, sec * 1000)
++      }, ms)
 +    })
 +  }
    var testSuite = loadTests(harnessConfig.testType);
@@ -177,13 +213,13 @@ index c722460..af1fec6 100644
      runner.startTest(0, runner.testList.length);
 +  }
 +  if (harnessConfig.command === 'run') {
-+    waitForScriptLoad(3).then(runTest)
++    waitFor(1000).then(runTest)
 +  }
  };
  
  })();
 diff --git a/harness/test.js b/harness/test.js
-index b781e31..8c9147f 100644
+index b781e31..20c60bd 100644
 --- a/harness/test.js
 +++ b/harness/test.js
 @@ -1,6 +1,7 @@
@@ -260,7 +296,11 @@ index b781e31..8c9147f 100644
  };
  
  TestExecutor.prototype.sendTestReport = function(results) {
-@@ -369,13 +360,13 @@ TestExecutor.prototype.startNextTest = function() {
+@@ -365,17 +356,16 @@ TestExecutor.prototype.startNextTest = function() {
+     this.onfinished();
+     return;
+   }
+-
    this.currentTest = new this.testList[this.currentTestIdx];
    this.blockTestResults = false;
  
@@ -276,7 +316,7 @@ index b781e31..8c9147f 100644
    this.updateStatus();
  
    this.startTime = Date.now();
-@@ -524,18 +515,10 @@ TestExecutor.prototype.timeout = function() {
+@@ -524,18 +514,10 @@ TestExecutor.prototype.timeout = function() {
  };
  
  TestExecutor.prototype.teardownCurrentTest = function(isTimeout, errorMsg) {
@@ -298,7 +338,7 @@ index b781e31..8c9147f 100644
  
    this.timeouts.clearAll();
 diff --git a/harness/testView.js b/harness/testView.js
-index c040757..a342af3 100644
+index c040757..b5fdca7 100644
 --- a/harness/testView.js
 +++ b/harness/testView.js
 @@ -1,6 +1,7 @@
@@ -340,17 +380,15 @@ index c040757..a342af3 100644
      try {
        document.title = testSuiteDescriptions[harnessConfig.testType].title;
      } catch (e) {
-@@ -112,6 +109,9 @@ function TestView(testSuiteVer) {
+@@ -112,6 +109,7 @@ function TestView(testSuiteVer) {
      document.body.appendChild(createElement('span', 'title', null, heading));
      document.body.appendChild(createElement('span', 'info', 'h4'));
      document.body.appendChild(createElement('span', 'usage', 'h4'));
-+    var config = createElement('span', 'configure', 'h4')
-+    config.innerHTML = 'Profile: <span style="color: green">' + window.ConfigString + '</span>';
-+    document.body.appendChild(config);
++    document.body.appendChild(createElement('span', 'profiles', 'h4'));
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -149,14 +149,23 @@ function TestView(testSuiteVer) {
+@@ -149,14 +147,42 @@ function TestView(testSuiteVer) {
        switchDiv.lastChild.exec = switchDiv.lastChild.onclick;
      }
      for (var i = 0; i < selectors.length; ++i) {
@@ -375,6 +413,25 @@ index c040757..a342af3 100644
 +              select.lastChild.classList.add('bold');
 +        }
 +        switchDiv.appendChild(select);
++      }
++    }
++
++    var profilesDiv = document.getElementById('profiles');
++    console.log(Profiles)
++    var title = createElement('span', 'profiles_select', 'bold', 'Profile: ');
++    profilesDiv.appendChild(title);
++    for (var profile in Profiles) {
++      profilesDiv.appendChild(createAnchor(profile, "profile_" + profile));
++      let url = `${location.origin}?test_type=${harnessConfig.testType}`
++      url += `&profile=${profile}`
++      if (window.ConfigString != profile) {
++        profilesDiv.lastChild.setAttribute('data-href', url);
++        profilesDiv.lastChild.onclick = window.navigate;
++        profilesDiv.lastChild.classList.add('focusable');
++        profilesDiv.lastChild.style = "font-weight: normal !important; color: #006ed4;";
++      } else {
++        profilesDiv.lastChild.classList.add('bold');
++        profilesDiv.lastChild.style = "color:green; text-decoration:underline;";
        }
 -      select.onchange = selectors[i].cb;
 -      switchDiv.appendChild(select);
@@ -411,11 +468,18 @@ index 7c373c1..b4167ca 100644
      var interval = getUniqueItem(intervals);
      interval.func = func;
 diff --git a/style.css b/style.css
-index 79f5cb1..973d8da 100644
+index 79f5cb1..ac422ef 100644
 --- a/style.css
 +++ b/style.css
-@@ -23,6 +23,9 @@ body {
-   height: 710px;
+@@ -17,12 +17,13 @@
+ 
+ body {
+   background: #fff;
+-  font: normal 0.64em 'Roboto',Sans-Serif;
++  font: normal 0.6em 'Roboto', Sans-Serif;
+   margin: 10px 20px 0 20px;
+-  width: 1240px;
+-  height: 710px;
  }
  
 +.bold {
@@ -424,7 +488,104 @@ index 79f5cb1..973d8da 100644
  
  .default-list .cell-category {
    display: inline-block;
-@@ -184,15 +187,15 @@ div.container_hidden {
+@@ -87,45 +88,72 @@ body {
+   min-width: 56px;
+   border-style: solid;
+   border-color: #800;
+-  border-width: 2px;
+-  padding: 0px;
++  border-width: 1px;
++  padding: 0;
+   text-align: center;
+   font-size: 0.6em;
++
+ }
+ 
+ .test-status-none {
+   display: inline-block;
+-  min-width: 7px;
++  min-width: 11px;
++  background-color: none;
++  border: 1px solid #fff;
++  border: 1px solid #e0e0e0;
++  border-radius: 5px;
++  padding: 0;
++  margin: 1px 0 0 0;
++}
++
++.test-status-empty {
++  display: inline-block;
++  min-width: 11px;
++  background-color: none;
++  padding: 0;
++  margin: 0;
+ }
+ 
+ .default-list .test-status-running {
+   display: inline-block;
+-  min-width: 5px;
+-  background-color: #f0e68c;
+-  border: 1px solid #880;
++  min-width: 11px;
++  background-color: #abfcff;
++  border: 1px solid #006ed4;
++  border-radius: 5px;
++  padding: 0;
++  margin: 1px 0 0 0;
+ }
+ 
+ .default-list .test-status-fail {
+   display: inline-block;
+-  min-width: 5px;
+-  background-color: #800;
+-  border: 1px solid #000;
++  min-width: 11px;
++  background-color: #be0000;
++  border: 1px solid #720000;
++  border-radius: 5px;
++  padding: 0;
++  margin: 1px 0 0 0;
+ }
+ 
+ .default-list .test-status-pass {
+   display: inline-block;
+-  min-width: 5px;
+-  background-color: #b5e61d;
+-  border: 1px solid #080;
++  min-width: 11px;
++  background-color: #7edf00;
++  border: 1px solid #00a000;
++  border-radius: 5px;
++  padding: 0;
++  margin: 1px 0 0 0;
+ }
+ 
+ .default-list .test-status-optional-fail {
+   display: inline-block;
+-  min-width: 5px;
++  min-width: 11px;
+   border-style: solid;
+-  border-color: #800;
+-  border-width: 2px;
+-  padding: 0px;
++  background-color: #fff9dc;
++  border-color: #dd7600;
++  border-width: 1px;
++  border-radius: 5px;
++  padding: 0;
++  margin: 1px 0 0 0;
+ }
+ 
+ .cell-column {
+@@ -167,7 +195,6 @@ div.container_hidden {
+ 
+ .box-right {
+   width: 420px;
+-  height: 210px;
+ }
+ 
+ #testarea {
+@@ -184,15 +211,15 @@ div.container_hidden {
  }
  
  #output {
@@ -443,7 +604,7 @@ index 79f5cb1..973d8da 100644
    letter-spacing: 0.2px;
    padding: 2px;
  }
-@@ -202,7 +205,8 @@ div.container_hidden {
+@@ -202,7 +229,8 @@ div.container_hidden {
  }
  
  #controls {
@@ -453,7 +614,7 @@ index 79f5cb1..973d8da 100644
  }
  
  #login-pop-up {
-@@ -224,7 +228,7 @@ div.container_hidden {
+@@ -224,7 +252,7 @@ div.container_hidden {
  .step {
    padding-bottom: 2rem;
    font-size: 200%;
@@ -462,27 +623,94 @@ index 79f5cb1..973d8da 100644
    white-space: pre-wrap;
    color: white
  }
-@@ -296,17 +300,17 @@ span:focus {
+@@ -265,7 +293,7 @@ span:focus {
+ .focusable {
+   color: #0000EE;
+   cursor: pointer;
+-  text-decoration: underline;
++  text-decoration: none;
+ }
  
- @media screen and (min-height: 720px) and (max-height: 721px) {
+ #title {
+@@ -282,8 +310,13 @@ span:focus {
+ }
+ 
+ @keyframes blink {
+-  from {background-color: white;}
+-  to {background-color: black;}
++  from {
++    background-color: white;
++  }
++
++  to {
++    background-color: black;
++  }
+ }
+ 
+ /* Use to activate CSS animation */
+@@ -294,33 +327,47 @@ span:focus {
+ }
+ 
+ 
+-@media screen and (min-height: 720px) and (max-height: 721px) {
++@media screen and (min-width: 720px) {
    body {
 -    font-size: 0.6em!important;
-+    font-size: 0.7em!important;
-     width: 1240px!important;
+-    width: 1240px!important;
++    font-size: 0.7em !important;
    }
++
    #output {
 -    height: 200px;
 -    width: 502px;
 +    height: 250px;
 +    width: 600px;
++  }
++
++  .box-right {
++    width: 420px;
    }
  }
- @media screen and (min-height: 1080px) and (max-height: 1081px) {
+-@media screen and (min-height: 1080px) and (max-height: 1081px) {
++
++@media screen and (min-width: 1080px) {
    body {
 -    font-size: 0.96em!important;
-+    font-size: 0.85em!important;
-     width: 1860px!important;
+-    width: 1860px!important;
++    font-size: 0.75em !important;
    }
++
    #output {
+-    height: 300px;
++    height: 350px;
+     width: 700px;
+   }
++
++  .box-right {
++    width: 500px;
++  }
+ }
+-@media screen and (min-height: 2160px) and (max-height: 2161px) {
++
++@media screen and (min-width: 2160px) {
+   body {
+-    font-size: 1.92em!important;
+-    width: 3720px!important;
++    font-size: 0.85em !important;
+   }
++
+   #output {
+-    height: 600px;
+-    width: 1400px;
++    height: 450px;
++    width: 800px;
+   }
+-}
++
++  .box-right {
++    width: 600px;
++  }
++}
+\ No newline at end of file
 -- 
 2.25.1
