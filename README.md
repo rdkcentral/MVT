@@ -129,7 +129,7 @@ All interactive elements are navigable via arrow keys and can be selected throug
 
 Test execution can be controlled through URL parameters, e.g. to run `DASH Shaka` tests 1,2,3 on Shaka Player version 2.5.20 use:
 
-    http://MVT_INSTANCE_ADDRESS/?test_type=dash-shaka-test&tests=1-3&engine_shaka=2.5.20
+    http://MVT_INSTANCE_ADDRESS/?test_type=dash-shaka-test&testnumbers=1-3&engine_shaka=2.5.20
 
 Most of the URL parameters can be combined. Here's a full list of supported queries:
 
@@ -144,10 +144,13 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
   - hss-dashjs-test
   - progressive-html5-test
 - `command=run` - test run autostart. Please note it may not work on desktop browser, because they tend to block autoplay before user interaction.
-- `tests=ID[,ID]|ID-ID2` - tests subset selection. Expected values:
-  - Single test id e.g. `tests=1`
-  - Multiple test ids e.g. `tests=1,5,13`
-  - Test ids range e.g. `tests=1-10`
+- `testnumbers=ID[,ID]|ID-ID2` - tests subset selection. Expected values:
+  - Single test id e.g. `testnumbers=1`
+  - Multiple test ids e.g. `testnumbers=1,5,13`
+  - Test ids range e.g. `testnumbers=1-10`
+- `testnames=ID[,ID]` - test names subset selection. Expected values:
+  - Single test id e.g. `testnames=DASH_FMP4_AVC_AAC__Playback`
+  - Multiple test ids e.g. `testnames=DASH_FMP4_AVC_AC3__Seek,DASH_FMP4_AVC_AAC__Playback,DASH_DYNAMIC`
 - `exclude=ID[,ID]|ID-ID2` - exclude subsets of tests.
 - `checkframes=false|true` - enable verification of video frames progress based on `video.getVideoPlaybackQuality().totalVideoFrames`.
 - `loop=false|true` - enable testing selected tests continuosly in a loop.

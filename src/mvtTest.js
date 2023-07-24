@@ -98,7 +98,7 @@ class MvtTest {
 
 class MvtMediaTest extends MvtTest {
   constructor(testTemplate, stream, engine, unstable = null, timeout = TestBase.timeout) {
-    let testCaseName = stream.name + " " + testTemplate.name;
+    let testCaseName = stream.name + "__" + testTemplate.name;
     super(testTemplate, testCaseName, unstable ? unstable : stream.unstable, timeout);
     this.stream = stream;
     this.engine = engine;

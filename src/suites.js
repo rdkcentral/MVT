@@ -56,12 +56,12 @@ function filterSkipTests(skipTests, tests) {
         unstable = new Unstable(`IsTypeSupported returns incorrect value for container ${container}`);
       }
       tests.push(
-        new MvtTest(makeVideoCanPlayTest(codec, container, MIME_TYPE_MAPPING[codec]), `CanPlay ${container} ${codec}`)
+        new MvtTest(makeVideoCanPlayTest(codec, container, MIME_TYPE_MAPPING[codec]), `CanPlay_${container.replace("/", "_")}_${codec}`)
       );
       tests.push(
         new MvtTest(
           makeIsTypeSupportedTest(codec, container, MIME_TYPE_MAPPING[codec]),
-          `IsTypeSupported ${container} ${codec}`,
+          `IsTypeSupported_${container.replace("/", "_")}_${codec}`,
           unstable
         )
       );
