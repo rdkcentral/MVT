@@ -118,8 +118,8 @@ There are six media test templates:
 - `Pause` - verifies if browser is capable of pausing a stream,
 - `PlayRate` - verifies playback with various playback rates,
 - `Seek` - executes seek operation,
-- `AudioTracks` -  changes audio track,
-- `Subtitles` -  activates text tracks and verifies its content.
+- `AudioTracks` - changes audio track,
+- `Subtitles` - activates text tracks and verifies its content.
 
 During test execution, test runner logs are printed into JavaScript console and into a div below tests list.
 The video under test can be observed on the right-hand side of main view.
@@ -160,7 +160,7 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
 - `engine_dashjs=3.1.1|4.4.0|4.7.0|latest` - select dash.js version. Please note it will only affect dash.js test suites.
 - `engine_hlsjs=1.0.0|1.2.1|1.3.0|1.4.5` - select hls.js version. Please note it will only affect hls.js test suites.
 - `profile=all|default|desktop|extended_drm` - depends of tested unit.
-- `debug=true|false` - adding additional timestamps to the output log.
+- `debug=true|false` - enabling the debug logs for MSE players (shaka, dash.js, hls.js) and adding additional timestamps to the output log.
 
 ### JavaScript API
 
