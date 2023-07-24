@@ -329,9 +329,7 @@ class HlsjsEngine extends Engine {
         config.emeEnabled = true;
       }
 
-      if (harnessConfig.debug) {
-        config.debug = true;
-      }
+      config.debug = harnessConfig.debug;
 
       this.hls = new Hls(config);
 
