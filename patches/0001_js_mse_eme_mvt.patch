@@ -1,18 +1,18 @@
-From a23d4dc0509741b885c364b5f09c770f36421f61 Mon Sep 17 00:00:00 2001
-From: Lukasz Rutkowski <lrutkowski.contractor@libertyglobal.com>
-Date: Fri, 21 Jul 2023 16:12:47 +0200
+From 296f3e299ba03246efb6eb30c570383f80dec26c Mon Sep 17 00:00:00 2001
+From: Pawel Bartkowiak <pbartkowiak.contractor@libertyglobal.com>
+Date: Mon, 24 Jul 2023 15:44:41 +0200
 Subject: [PATCH] MVT patch
 
 ---
  harness/compactTestList.js |   2 +-
- harness/compactTestView.js |  34 ++++------
+ harness/compactTestView.js |  35 ++++------
  harness/constants.js       |   3 +-
- harness/main.js            |  51 ++++++++++++--
+ harness/main.js            |  51 +++++++++++++--
  harness/test.js            |  45 ++++---------
- harness/testView.js        |  57 +++++++++++-----
+ harness/testView.js        |  65 +++++++++++++-----
  harness/timeout.js         |   9 +++
- style.css                  | 133 +++++++++++++++++++++++++------------
- 8 files changed, 214 insertions(+), 120 deletions(-)
+ style.css                  | 131 +++++++++++++++++++++++++------------
+ 8 files changed, 222 insertions(+), 119 deletions(-)
 
 diff --git a/harness/compactTestList.js b/harness/compactTestList.js
 index 157ef5d..ba3432f 100644
@@ -28,7 +28,7 @@ index 157ef5d..ba3432f 100644
        ];
        tr.appendChild(elems[0]);
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
-index 77f7b68..2689de9 100644
+index 77f7b68..9ebecb8 100644
 --- a/harness/compactTestView.js
 +++ b/harness/compactTestView.js
 @@ -1,6 +1,7 @@
@@ -39,11 +39,12 @@ index 77f7b68..2689de9 100644
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
-@@ -34,39 +35,30 @@ var compactTestView = (function() {
+@@ -34,39 +35,31 @@ var compactTestView = (function() {
        if (harnessConfig.controlMediaFormatSelection) {
          this.addSwitch('WebM/VP9: ', 'enablewebm');
        }
 +      this.addSwitch('Check frames: ', 'checkframes');
++      this.addSwitch('Debug: ', 'debug');
  
        this.addCommand('Run All', 'run-selected', 'Run all tests in order.',
          function(e) {
@@ -355,7 +356,7 @@ index b781e31..17631cc 100644
  
    this.timeouts.clearAll();
 diff --git a/harness/testView.js b/harness/testView.js
-index c040757..5ca672e 100644
+index c040757..38b826d 100644
 --- a/harness/testView.js
 +++ b/harness/testView.js
 @@ -1,6 +1,7 @@
@@ -406,7 +407,21 @@ index c040757..5ca672e 100644
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -149,14 +146,42 @@ function TestView(testSuiteVer) {
+@@ -144,19 +141,55 @@ function TestView(testSuiteVer) {
+           var wasOff = !util.stringToBoolean(e.target.innerHTML);
+           e.target.innerHTML = wasOff ? 'on' : 'off';
+           harnessConfig[id] = wasOff;
++          if (id == "debug"){
++            let queryParams = new URLSearchParams(window.location.search);
++            queryParams.set("debug", harnessConfig.debug);
++            let url = `${location.origin}${location.pathname}?` + queryParams.toString();
++            function setUrl(url) {
++              location.href = url;
++            }
++            switchDiv.lastChild.onclick = setUrl(url);
++          }
+         };
+       })(id);
        switchDiv.lastChild.exec = switchDiv.lastChild.onclick;
      }
      for (var i = 0; i < selectors.length; ++i) {
@@ -435,7 +450,6 @@ index c040757..5ca672e 100644
 +    }
 +
 +    var profilesDiv = document.getElementById('profiles');
-+    console.log(Profiles)
 +    var title = createElement('span', 'profiles_select', 'bold', 'Profile: ');
 +    profilesDiv.appendChild(title);
 +    for (var profile in Profiles) {
@@ -486,7 +500,7 @@ index 7c373c1..b4167ca 100644
      var interval = getUniqueItem(intervals);
      interval.func = func;
 diff --git a/style.css b/style.css
-index 79f5cb1..636deb0 100644
+index 79f5cb1..3f72d89 100644
 --- a/style.css
 +++ b/style.css
 @@ -17,12 +17,13 @@
@@ -722,14 +736,12 @@ index 79f5cb1..636deb0 100644
 -    width: 1400px;
 +    height: 450px;
 +    width: 800px;
-   }
--}
++  }
 +
 +  .box-right {
 +    width: 600px;
-+  }
-+}
-\ No newline at end of file
+   }
+ }
 -- 
-2.25.1
+2.35.1.windows.2
 

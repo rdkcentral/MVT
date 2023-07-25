@@ -236,6 +236,13 @@ class DashjsEngine extends Engine {
       });
 
       this.dashjsPlayer.initialize(video, media.src, false);
+      if (harnessConfig.debug) {
+        this.dashjsPlayer.updateSettings({
+          debug: {
+            logLevel: dashjs.Debug.LOG_LEVEL_INFO,
+          },
+        });
+      }
 
       if (media.drm) {
         this.dashjsPlayer.setProtectionData(media.drm.servers);
@@ -311,19 +318,20 @@ class HlsjsEngine extends Engine {
     test.prototype.start = function (runner, video) {
       var that = this;
 
+      let config = {
+        enableWorker: true, // enable ABR
+      };
+
       if (media.widevine) {
-        this.hls = new Hls({
-          enableWorker: true,  // enable ABR
-          lowLatencyMode: true,
-          backBufferLength: 90,
-          widevineLicenseUrl: media.drm.servers["com.widevine.alpha"].serverURL,
-          emeEnabled: true,
-        });
-      } else {
-        this.hls = new Hls({
-          enableWorker: true,  // enable ABR
-        });
+        config.lowLatencyMode = true;
+        config.backBufferLength = 90;
+        config.widevineLicenseUrl = media.drm.servers["com.widevine.alpha"].serverURL;
+        config.emeEnabled = true;
       }
+
+      config.debug = harnessConfig.debug;
+
+      this.hls = new Hls(config);
 
       this.hls.loadSource(media.src);
       this.hls.attachMedia(video);

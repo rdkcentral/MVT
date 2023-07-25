@@ -19,21 +19,33 @@
 
 "use strict";
 
+let debug = getQueryVariable("debug");
+let shakaPlayerScript;
+let dashjsPlayerScript;
+
+if (debug == "true") {
+  shakaPlayerScript = "shaka-player.compiled.debug.js";
+  dashjsPlayerScript = "dash.all.debug.js";
+} else {
+  shakaPlayerScript = "shaka-player.compiled.js";
+  dashjsPlayerScript = "dash.all.min.js";
+}
+
 var EngineVersions = {
   shaka: {
     versions: {
       // mux.js is required by Shaka Player to support MPEG-2 TS
       "3.0.1": [
         "https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.3.0/mux.min.js",
-        "https://ajax.googleapis.com/ajax/libs/shaka-player/3.0.1/shaka-player.compiled.js",
+        `https://ajax.googleapis.com/ajax/libs/shaka-player/3.0.1/${shakaPlayerScript}`,
       ],
       "3.2.1": [
         "https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.3.0/mux.min.js",
-        "https://ajax.googleapis.com/ajax/libs/shaka-player/3.2.1/shaka-player.compiled.js",
+        `https://ajax.googleapis.com/ajax/libs/shaka-player/3.2.1/${shakaPlayerScript}`,
       ],
       "4.3.6": [
         "https://cdnjs.cloudflare.com/ajax/libs/mux.js/6.3.0/mux.min.js",
-        "https://ajax.googleapis.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js",
+        `https://ajax.googleapis.com/ajax/libs/shaka-player/4.3.6/${shakaPlayerScript}`,
       ],
     },
     name: "Shaka Player",
@@ -41,10 +53,10 @@ var EngineVersions = {
   },
   dashjs: {
     versions: {
-      "3.1.1": ["https://cdn.dashjs.org/v3.1.1/dash.all.min.js", "https://cdn.dashjs.org/v3.1.1/dash.mss.min.js"],
-      "4.4.0": ["https://cdn.dashjs.org/v4.4.0/dash.all.min.js", "https://cdn.dashjs.org/v4.4.0/dash.mss.min.js"],
-      "4.7.0": ["https://cdn.dashjs.org/v4.7.0/dash.all.min.js", "https://cdn.dashjs.org/v4.7.0/dash.mss.min.js"],
-      latest: ["https://cdn.dashjs.org/latest/dash.all.min.js", "https://cdn.dashjs.org/latest/dash.mss.min.js"],
+      "3.1.1": [`https://cdn.dashjs.org/v3.1.1/${dashjsPlayerScript}`, "https://cdn.dashjs.org/v3.1.1/dash.mss.min.js"],
+      "4.4.0": [`https://cdn.dashjs.org/v4.4.0/${dashjsPlayerScript}`, "https://cdn.dashjs.org/v4.4.0/dash.mss.min.js"],
+      "4.7.0": [`https://cdn.dashjs.org/v4.7.0/${dashjsPlayerScript}`, "https://cdn.dashjs.org/v4.7.0/dash.mss.min.js"],
+      latest: [`https://cdn.dashjs.org/latest/${dashjsPlayerScript}`, "https://cdn.dashjs.org/latest/dash.mss.min.js"],
     },
     name: "Dash.JS",
     defaultVersion: "4.7.0",
