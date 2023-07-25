@@ -152,15 +152,15 @@ Most of the URL parameters can be combined. Here's a full list of supported quer
   - Single test id e.g. `testnames=DASH_FMP4_AVC_AAC__Playback`
   - Multiple test ids e.g. `testnames=DASH_FMP4_AVC_AC3__Seek,DASH_FMP4_AVC_AAC__Playback,DASH_DYNAMIC`
 - `exclude=ID[,ID]|ID-ID2` - exclude subsets of tests.
-- `checkframes=false|true` - enable verification of video frames progress based on `video.getVideoPlaybackQuality().totalVideoFrames`.
-- `loop=false|true` - enable testing selected tests continuosly in a loop.
-- `stoponfailure=false|true` - tests execution will stop on the first failed test.
-- `disable_log=false|true` - enable/disable logging.
-- `engine_shaka=3.0.1|3.2.1|4.3.6` - select Shaka Player version. Please note it will only affect Shaka test suites.
-- `engine_dashjs=3.1.1|4.4.0|4.7.0|latest` - select dash.js version. Please note it will only affect dash.js test suites.
-- `engine_hlsjs=1.0.0|1.2.1|1.3.0|1.4.5` - select hls.js version. Please note it will only affect hls.js test suites.
-- `profile=all|default|desktop|extended_drm` - depends of tested unit.
-- `debug=true|false` - enabling the debug logs for MSE players (shaka, dash.js, hls.js) and adding additional timestamps to the output log.
+- `checkframes=false|true` - [default: false] enable verification of video frames progress based on `video.getVideoPlaybackQuality().totalVideoFrames`.
+- `loop=false|true` - [default: false] enable testing selected tests continuosly in a loop.
+- `stoponfailure=false|true` - [default: false] tests execution will stop on the first failed test.
+- `disable_log=false|true` - [default: false] enable/disable logging.
+- `engine_shaka=3.0.1|3.2.1|4.3.6` - [default: 3.2.1] select Shaka Player version. Please note it will only affect Shaka test suites.
+- `engine_dashjs=3.1.1|4.4.0|4.7.0|latest` - [default: 4.7.0] select dash.js version. Please note it will only affect dash.js test suites.
+- `engine_hlsjs=1.0.0|1.2.1|1.3.0|1.4.5` - [default: 1.4.5] select hls.js version. Please note it will only affect hls.js test suites.
+- `profile=all|default|desktop|extended_drm` - [default: default] depends of tested unit.
+- `debug=true|false` - [default: false] enabling the debug logs for MSE players (shaka, dash.js, hls.js) and adding additional timestamps to the output log.
 
 ### JavaScript API
 
