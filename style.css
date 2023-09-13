@@ -52,3 +52,14 @@ video::-webkit-media-controls-panel {
   display: flex !important;
   opacity: 1 !important;
 }
+
+#mvt_version {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-weight: 900;
+  color: #000;
+  background-color: #999;
+  padding: 3px 8px;
+  border-top-left-radius: 6px;
+}
