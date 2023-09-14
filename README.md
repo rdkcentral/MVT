@@ -102,7 +102,7 @@ A list of of all external media assets used by a deployed instance of MVT:
 
 ## User Interface
 
-![alt text](docs/main_view.png "Main view")
+![User Interface screenshot](docs/main_view.png "Main view")
 
 Tests are grouped into test suites, which differ in streaming type (DASH, HLS, HSS, progressive) and player (Shaka Player, dash.js, hls.js, native).
 
@@ -116,7 +116,7 @@ There are six media test templates:
 
 - `Playback` - verifies basic playback and media position progress on the span of 10 seconds,
 - `Pause` - verifies if browser is capable of pausing a stream,
-- `PlayRate` - verifies playback with various playback rates,
+- `PlayRate` - verifies playback with various playback rates (disabled for now - ticket ONEM-26268),
 - `Seek` - executes seek operation,
 - `AudioTracks` - changes audio track,
 - `Subtitles` - activates text tracks and verifies its content.
@@ -211,7 +211,7 @@ It is still supported, but it uses different output format and does not include 
 - <span style="color:red">Supported, no content</span> - case is not covered by MVT test suite.
 - <span style="color:green">Supported</span> - case is represented by `x` tests. Please note that it does not mean that related tests pass on the active device - it is just a coverage view which does not verify test results.
 
-![alt text](docs/coverage.png "Coverage")
+![Media coverage screenshot](docs/coverage.png "Coverage")
 
 ## Development
 
