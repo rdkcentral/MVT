@@ -232,6 +232,19 @@ It loads all required scripts in a specific sequence, most importantly, `suites.
 where all MVT tests are declared. Once all files are loaded, `startMseTest` function is triggered
 in order to start `js_mse_eme` submodule and to render the UI.
 
+### Versioning
+
+Semantic versioning shall be used - vX.Y.Z, where:
+```
+X - major version (e.g. architectural changes)
+Y - minor version (e.g. changes that break API, new features)
+Z - patch version (e.g. bug fixes, marking tests as mandatory/optional)
+```
+After the PR is merged, version should be updated accordingly in the `src/main.js` file (variable `MVT_VERSION`)
+and in `CHANGELOG.md`. This should be done in the another PR with the title "release: vX.Y.Z".
+
+After PR "release: vX.Y.Z" is merged, commit should be tagged "vX.Y.Z" and a new release should be created on github.
+
 ### Adding new tests
 
 MVT test cases are a product of test templates (`src/mediaTests.js`) and media streams (`src/mediaStreams.js`).
