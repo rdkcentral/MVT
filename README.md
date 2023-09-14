@@ -211,6 +211,7 @@ It is still supported, but it uses different output format and does not include 
 - <span style="color:red">Supported, no content</span> - case is not covered by MVT test suite.
 - <span style="color:green">Supported</span> - case is represented by `x` tests. Please note that it does not mean that related tests pass on the active device - it is just a coverage view which does not verify test results.
 
+Screenshot from `v2.9.0`:
 ![Media coverage screenshot](docs/coverage.png "Coverage")
 
 ## Development
