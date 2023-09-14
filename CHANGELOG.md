@@ -23,27 +23,21 @@
 
 # v2.10.0 (2023-09-14)
 
-### [ [8831d18](https://github.com/rdkcentral/MVT/commit/8831d18) ] Add info about disabled PlayRate tests to README
-
-### [ [d7c7b31](https://github.com/rdkcentral/MVT/commit/d7c7b31) ] Update UI screenshots in README file
+### [ [e406c39](https://github.com/rdkcentral/MVT/commit/e406c39) ] Update UI screenshots in README file
 
 ```
+- Add info about disabled PlayRate tests to README
 - Update UI screenshots for the MVT main page and for the media coverage.
 ```
 
-### [ [1a3449f](https://github.com/rdkcentral/MVT/commit/1a3449f) ] Change status of all dash-html5 tests to mandatory
+### [ [9cf3a3e](https://github.com/rdkcentral/MVT/commit/9cf3a3e) ] Change status of all dash-html5 tests to mandatory
 
-### [ [2693350](https://github.com/rdkcentral/MVT/commit/2693350) ] Update CHANGELOG and README
-
-```
-- Add info about versioning to the README.
-```
-
-### [ [05f766e](https://github.com/rdkcentral/MVT/commit/05f766e) ] Add CHANGELOG.md and MVT version in the UI
+### [ [360466b](https://github.com/rdkcentral/MVT/commit/360466b) ] Add MVT versioning and CHANGELOG
 
 ```
 - Add new file CHANGELOG.md.
 - Add MVT version info on the UI in the bottom right corner.
+- Add info about versioning to the README.
 ```
 
 #
