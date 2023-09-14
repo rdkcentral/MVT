@@ -116,7 +116,7 @@ There are six media test templates:
 
 - `Playback` - verifies basic playback and media position progress on the span of 10 seconds,
 - `Pause` - verifies if browser is capable of pausing a stream,
-- `PlayRate` - verifies playback with various playback rates,
+- `PlayRate` - verifies playback with various playback rates (disabled for now - ticket ONEM-26268),
 - `Seek` - executes seek operation,
 - `AudioTracks` - changes audio track,
 - `Subtitles` - activates text tracks and verifies its content.
