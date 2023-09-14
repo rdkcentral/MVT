@@ -19,6 +19,10 @@
 
 "use strict";
 
+const MVT_VERSION = "v2.8.0"
+
+document.getElementById("mvt_version").innerHTML = MVT_VERSION;
+
 let debug = getQueryVariable("debug");
 let shakaPlayerScript;
 let dashjsPlayerScript;
