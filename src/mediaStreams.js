@@ -534,8 +534,8 @@ var MS = {
     FMP4_AVC_AAC_VTT: {
       variant: "hss",
       container: "fmp4",
-      note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
-      src: "http://amssamples.streaming.mediaservices.windows.net/683f7e47-bd83-4427-b0a3-26a6c4547782/BigBuckBunny.ism/manifest(format=mpd-time-csf)",
+      note: "",
+      src: "https://playready.directtaps.net/smoothstreaming/SSWSS720H264/SuperSpeedway_720.ism/Manifest",
       video: {
         codec: "avc",
       },
