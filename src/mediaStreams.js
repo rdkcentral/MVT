@@ -172,7 +172,7 @@ var MS = {
       variant: "dash",
       container: "fmp4",
       note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
-      src: "https://test.playready.microsoft.com/media/profficialsite/tearsofsteel_4k.ism/manifest.mpd",
+      src: "http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest(format=mpd-time-csf)",
       video: {
         codec: "avc",
       },
