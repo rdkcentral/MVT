@@ -223,6 +223,7 @@ class DashjsEngine extends Engine {
         streaming: {
           abr: {
             autoSwitchBitrate: { audio: true, video: true },
+            maxBitrate: { video: 8000 },
           },
         },
       });
