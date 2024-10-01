@@ -21,6 +21,16 @@
 
 #
 
+# v2.11.0 (2024-09-30)
+
+### [ [fb1e8a1](https://github.com/rdkcentral/MVT/commit/fb1e8a1) ] Added maxBitrate to DashjsEngine
+
+### [ [6c16f3a](https://github.com/rdkcentral/MVT/commit/6c16f3a) ] Updated PlayReady 2.0 test stream
+
+### [ [73871b2](https://github.com/rdkcentral/MVT/commit/73871b2) ] Update source for 'HSS_FMP4_AVC_AAC' content 
+
+#
+
 # v2.10.0 (2023-09-14)
 
 ### [ [e406c39](https://github.com/rdkcentral/MVT/commit/e406c39) ] Update UI screenshots in README file
