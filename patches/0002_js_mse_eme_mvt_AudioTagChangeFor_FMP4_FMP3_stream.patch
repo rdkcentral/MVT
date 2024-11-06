@@ -1,0 +1,72 @@
+From 9d553966f613db53533074ff9b255ca0ccd3a48d Mon Sep 17 00:00:00 2001
+From: akshay p <apushpan.ext@libertyglobal.com>
+Date: Fri, 8 Nov 2024 15:39:03 +0530
+Subject: [PATCH] Akshay P
+
+---
+ harness/main.js |  4 ++--
+ harness/test.js | 13 ++++++++++---
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/harness/main.js b/harness/main.js
+index c722460..78413cd 100644
+--- a/harness/main.js
++++ b/harness/main.js
+@@ -156,14 +156,14 @@ var createRunner = function(testSuite, testSuiteVer, testsMask) {
+   window.globalRunner = runner;
+ 
+   var id = 0;
+-  runner.getNewVideoTag = function() {
++  runner.getNewAudioVideoTag = function(tag) {
+     var testarea = document.getElementById('testarea');
+     var vid = 'v' + id;
+     if (harnessConfig.recycleVideoTag)
+       ++id;
+     if (!document.getElementById(vid)) {
+       testarea.innerHTML = '';
+-      testarea.appendChild(util.createElement('video', vid, 'box-right'));
++      testarea.appendChild(util.createElement(tag, vid, 'box-right'));
+       document.getElementById(vid).controls = true;
+       document.getElementById(vid).muted = harnessConfig.muted;
+       if (harnessConfig.fullscreen) {
+diff --git a/harness/test.js b/harness/test.js
+index b781e31..ea28f7e 100644
+--- a/harness/test.js
++++ b/harness/test.js
+@@ -256,7 +256,7 @@ TestExecutor.prototype.getControlContainer = function() {
+   return document.createElement('div');
+ };
+ 
+-TestExecutor.prototype.getNewVideoTag = function() {
++TestExecutor.prototype.getNewAudioVideoTag = function() {
+   // Override this function to anchor one to the DOM.
+   return document.createElement('video');
+ };
+@@ -309,7 +309,7 @@ TestExecutor.prototype.onfinished = function() {
+     this.startNextTest();
+   } else {
+     this.lastResult = 'pass';
+-    this.getNewVideoTag();
++    this.getNewAudioVideoTag();
+     this.log('All tests are completed');
+     for (var i = 0; i < window.globalRunner.testList.length; i++) {
+       var test =  window.globalRunner.testList[i];
+@@ -380,7 +380,14 @@ TestExecutor.prototype.startNextTest = function() {
+ 
+   this.startTime = Date.now();
+   this.currentTest.runner = this;
+-  this.currentTest.video = this.getNewVideoTag();
++  var tag='video';
++  if (this.currentTest.desc.includes("FMP4_MP3")) {
++     tag='audio';
++  }
++  else{
++     tag='video';
++  }
++  this.currentTest.video = this.getNewAudioVideoTag(tag);
+ 
+   var addEventListener = this.currentTest.video.addEventListener;
+   this.currentTest.video.eventsAdded = [];
+-- 
+2.34.1
+
