@@ -529,6 +529,50 @@ var MS = {
       widevine: true,
       cbcs: true,
     },
+    PLAYREADY_2_0: {
+      variant: "hls",  // Changed to hls for HLS streaming
+      container: "ts",  // Changed to ts for HLS transport stream
+      note: "Source: https://testweb.playready.microsoft.com/Content/Content2X",
+      src: "https://example.com/path/to/hls/playlist.m3u8",  // Replace with the actual HLS manifest URL
+      video: {
+         codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+      drm: {
+        servers: {
+            "com.microsoft.playready": {
+                serverURL: "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
+            },
+        },
+        shaka: {
+            "com.microsoft.playready": "https://test.playready.microsoft.com/service/rightsmanager.asmx?cfg=(persist:false,sl:150)",
+        },
+      },
+    },
+    PLAYREADY_4_0_CBCS: {
+      variant: "hls",  // Set to hls for HLS streaming
+      container: "ts",  // Use ts for HLS transport stream
+      note: "PlayReady 4.0 with CBCS encryption for HLS",
+      src: "https://cdn.bitmovin.com/content/assets/art-of-motion_drm/m3u8s/11331.m3u8",  // Replace with the actual HLS manifest URL for CBCS
+      video: {
+        codec: "avc",  // Codec used for video
+      },
+      audio: {
+        codec: "aac",  // Codec used for audio
+      },
+      drm: {
+        servers: {
+            "com.microsoft.playready": {
+                serverURL: "https://test.playready.microsoft.com/service/rightsmanager.asmx?PlayRight=1&ContentKey=EAtsIJQPd5pFiRUrV9Layw==",
+            },
+        },
+        shaka: {
+            "com.microsoft.playready": "https://test.playready.microsoft.com/service/rightsmanager.asmx?PlayRight=1&ContentKey=EAtsIJQPd5pFiRUrV9Layw==",
+        },
+      },
+    },
   },
   HSS: {
     FMP4_AVC_AAC_VTT: {
@@ -854,7 +898,7 @@ const StreamSets = {
       MS.HLS.CMAF_HEVC_EAC3,
       MS.HLS.CMAF_AVC_MP3,
     ],
-    DRM: [MS.HLS.WIDEVINE_CENC, MS.HLS.WIDEVINE_CBCS],
+    DRM: [MS.HLS.WIDEVINE_CENC, MS.HLS.WIDEVINE_CBCS, MS.HLS.PLAYREADY_2_0, MS.HLS.PLAYREADY_4_0_CBCS],
     Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT],
   },
   Progressive: {
