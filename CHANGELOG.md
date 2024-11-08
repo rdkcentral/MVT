@@ -21,6 +21,12 @@
 
 #
 
+# v2.12.0 (2024-11-08)
+
+### [ [1baf488](https://github.com/rdkcentral/MVT/commit/1baf488) ] Replaced video tag with audio tag for all fmp4_mp3 tests
+
+#
+
 # v2.11.0 (2024-09-30)
 
 ### [ [fb1e8a1](https://github.com/rdkcentral/MVT/commit/fb1e8a1) ] Added maxBitrate to DashjsEngine
