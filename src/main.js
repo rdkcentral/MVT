@@ -19,7 +19,7 @@
 
 "use strict";
 
-const MVT_VERSION = "v2.12.0";
+const MVT_VERSION = "v2.13.0";
 
 document.getElementById("mvt_version").innerHTML = MVT_VERSION;
 
@@ -125,6 +125,8 @@ var libSources = [
   "js_mse_eme/harness/compactTestList.js",
   "js_mse_eme/harness/compactTestView.js",
   "js_mse_eme/harness/test.js",
+  "js_mse_eme/lib/codecs/vp9Codec.js",
+  "js_mse_eme/lib/codecs/av1Codec.js",
   "js_mse_eme/lib/mse/msutil.js",
   "js_mse_eme/lib/mse/mediaSourcePortability.js",
   "js_mse_eme/harness/focusManager.js",
