@@ -27,6 +27,7 @@ const A_WEBM = "audio/webm";
 const V_WEBM = "video/webm";
 const A_MKV = "audio/x-matroska";
 const V_MKV = "video/x-matroska";
+const A_FLAC = "audio/flac";
 
 const CONTAINER_MAPPING = {
   avc: [V_MP4, V_MP2T, V_MKV],
@@ -39,6 +40,7 @@ const CONTAINER_MAPPING = {
   eac3: [A_MP4],
   mp3: [A_MP4],
   opus: [A_WEBM],
+  flac: [A_FLAC],
 };
 
 const MIME_TYPE_MAPPING = {
@@ -52,6 +54,7 @@ const MIME_TYPE_MAPPING = {
   eac3: "mp4a.a6",
   mp3: "mp4a.69",
   opus: "opus",
+  flac: "flac",
 };
 
 const SUBTITLES_TYPES = ["track-tag-webvtt", "webvtt", "ttml"];

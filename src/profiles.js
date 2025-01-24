@@ -47,13 +47,13 @@ const Profiles = {
   all: {
     note: "Everything enabled, CBCS and Widevine included",
     drm: ["com.microsoft.playready", "com.widevine.alpha"],
-    codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
+    codecs: ["avc", "hevc", "mpeg2", "mpeg4part2", "vp9", "aac", "ac3", "eac3", "mp3", "opus", "flac"],
     native_support: ["dash", "hls", "hss", "progressive"],
   },
   default: {
     note: "Default",
     drm: ["com.microsoft.playready"],
-    codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus"],
+    codecs: ["avc", "hevc", "mpeg2", "vp9", "aac", "ac3", "eac3", "mp3", "opus", "flac"],
     native_support: ["dash", "hss", "progressive"],
   },
   desktop: {
