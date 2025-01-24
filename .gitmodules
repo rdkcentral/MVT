@@ -2,4 +2,4 @@
 	path = js_mse_eme
 	url = https://github.com/youtube/js_mse_eme.git
 	shallow = true
-	branch = 2020
+	branch = master
