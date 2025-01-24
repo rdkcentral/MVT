@@ -21,6 +21,16 @@
 
 #
 
+# v2.13.0 (2025-01-24)
+
+### [ [68cb512](https://github.com/rdkcentral/MVT/commit/68cb512) ] Rebasing js_mse_eme to July 2021 changes, as well as rebasing necessary patches.
+
+### [ [983c8f8](https://github.com/rdkcentral/MVT/commit/983c8f8) ] Add flac codec check
+
+### [ [f7d7ef6](https://github.com/rdkcentral/MVT/commit/f7d7ef6) ] Enabled Fix Rate tests
+
+#
+
 # v2.12.0 (2024-11-08)
 
 ### [ [1baf488](https://github.com/rdkcentral/MVT/commit/1baf488) ] Replaced video tag with audio tag for all fmp4_mp3 tests
