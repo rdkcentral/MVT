@@ -1,24 +1,24 @@
-From 296f3e299ba03246efb6eb30c570383f80dec26c Mon Sep 17 00:00:00 2001
-From: Pawel Bartkowiak <pbartkowiak.contractor@libertyglobal.com>
-Date: Mon, 24 Jul 2023 15:44:41 +0200
-Subject: [PATCH] MVT patch
+From 35ade7cfedb00f12eef15094a6c44e6e581cf43b Mon Sep 17 00:00:00 2001
+From: pradeep-raveendranpillai-infosys <ppillai.ext@libertyglobal.com>
+Date: Fri, 24 Jan 2025 15:11:12 +0530
+Subject: [PATCH] MVT Patch
 
 ---
  harness/compactTestList.js |   2 +-
- harness/compactTestView.js |  35 ++++------
+ harness/compactTestView.js |  19 ++++--
  harness/constants.js       |   3 +-
- harness/main.js            |  51 +++++++++++++--
- harness/test.js            |  45 ++++---------
- harness/testView.js        |  65 +++++++++++++-----
+ harness/main.js            |  52 +++++++++++++--
+ harness/test.js            |  43 ++++---------
+ harness/testView.js        |  65 ++++++++++++++-----
  harness/timeout.js         |   9 +++
- style.css                  | 131 +++++++++++++++++++++++++------------
- 8 files changed, 222 insertions(+), 119 deletions(-)
+ style.css                  | 127 +++++++++++++++++++++++++------------
+ 8 files changed, 217 insertions(+), 103 deletions(-)
 
 diff --git a/harness/compactTestList.js b/harness/compactTestList.js
-index 157ef5d..ba3432f 100644
+index 84a50d8..d0906da 100644
 --- a/harness/compactTestList.js
 +++ b/harness/compactTestList.js
-@@ -165,7 +165,7 @@ function TestList(style) {
+@@ -167,7 +167,7 @@ function TestList(style) {
        currentColumn.appendChild(tr);
  
        var elems = [
@@ -28,18 +28,18 @@ index 157ef5d..ba3432f 100644
        ];
        tr.appendChild(elems[0]);
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
-index 77f7b68..9ebecb8 100644
+index 23771ce..4dc6fb0 100644
 --- a/harness/compactTestView.js
 +++ b/harness/compactTestView.js
 @@ -1,6 +1,7 @@
  /**
   * @license
   * Copyright 2018 Google Inc. All rights reserved.
-+ * Copyright 2022 Liberty Global B.V.
++ * Copyright 2025 Liberty Global B.V.
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
-@@ -34,39 +35,31 @@ var compactTestView = (function() {
+@@ -34,6 +35,8 @@ var compactTestView = (function() {
        if (harnessConfig.controlMediaFormatSelection) {
          this.addSwitch('WebM/VP9: ', 'enablewebm');
        }
@@ -48,40 +48,24 @@ index 77f7b68..9ebecb8 100644
  
        this.addCommand('Run All', 'run-selected', 'Run all tests in order.',
          function(e) {
-           if (self.onrunselected)
-             self.onrunselected.call(self, e);
+@@ -42,18 +45,20 @@ var compactTestView = (function() {
          });
--      // Begin non GitHub files
--      this.addCommand('Login', 'login', 'login to get user token.', function(e) {
--        util.login(() => {
--          if (document.getElementById('login-pop-up')) {
--            document.getElementById('login-pop-up').style.display = 'none';
--            util.uploadTestResult(() => { window.LOG(this, ['Login:', 'Successful']); });
--          }
--        });
--      });
--      this.addCommand('Submit', 'submit', 'submit test results.', function(e) {
--        util.uploadTestResult(() => { window.LOG(this, ['TestResult:', 'Sent']); });
--      });
--      //End non GitHub files
--
--
--      this.addLink('Links', 'links.html');
--      this.addLink('Instructions', 'instructions.html');
+ 
+ 
+-      this.addLink('Links', '/links.html');
+-      this.addLink('Instructions', '/instructions.html');
 -      this.addLink('Changelog', 'changelog.html');
 -      this.addLink('Download-Source', 'download.tar.gz');
--      this.addLink('Download-Media-files', 'YTS-media-files.tar.gz');
-+
-+
+-      this.addLink('Download-Media-files', 'https://storage.cloud.google.com/ytlr-cert.appspot.com/test-materials/YTS-media-files.tar.gz');
        if (harnessConfig.novp9) {
          this.addLink('No VP9', 'main.html');
        }
 +      this.addLink('YouTube Tests', 'https://ytlr-cert.appspot.com/2021/main.html');
        this.addLink('Content Licenses', 'licenses.html');
 -      this.addLink('YouTube', 'https://youtube.com/tv');
+-
 +      this.addLink('Media Coverage', 'coverage.html');
 +      this.addLink('Test Any Player', '/anyplayer');
- 
        this.addTestSuites(testSuiteVersions[this.testSuiteVer].testSuites);
 +
 +      for (var engineId in EngineVersions) {
@@ -93,14 +77,14 @@ index 77f7b68..9ebecb8 100644
  
      this.addTest = function(desc) {
 diff --git a/harness/constants.js b/harness/constants.js
-index ef553c5..1964af0 100644
+index e0e08bf..aa140a8 100644
 --- a/harness/constants.js
 +++ b/harness/constants.js
 @@ -1,6 +1,7 @@
  /**
   * @license
   * Copyright 2018 Google Inc. All rights reserved.
-+ * Copyright 2022 Liberty Global B.V.
++ * Copyright 2025 Liberty Global B.V.
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
@@ -108,23 +92,23 @@ index ef553c5..1964af0 100644
  
  'use strict';
  
--var testVersion = '2020';
-+var testVersion = 'MVT';
+-window.testVersion = '2021';
++window.testVersion = 'MVT';
 diff --git a/harness/main.js b/harness/main.js
-index c722460..555ffde 100644
+index b0918ca..3e7973e 100644
 --- a/harness/main.js
 +++ b/harness/main.js
 @@ -1,6 +1,7 @@
  /**
   * @license
   * Copyright 2018 Google Inc. All rights reserved.
-+ * Copyright 2022 Liberty Global B.V.
++ * Copyright 2025 Liberty Global B.V.
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
 @@ -28,6 +29,10 @@ var loadTests = function(testType) {
        testType.substring(testType.indexOf('-') + 1, testType.lastIndexOf('-'));
-     return window['PlaybackperfTest'](subgroup)
+     return window['PlaybackperfTest'](subgroup);
    } else {
 +
 +    if ('tests' in window.testSuiteDescriptions[testType]) {
@@ -154,16 +138,18 @@ index c722460..555ffde 100644
    config.exclude = parseParam('exclude');
    config.testsMask = parseParam('tests_mask', '');
    config.testid = parseParam('testid', '');
-@@ -83,6 +91,8 @@ var configureHarness = function(testSuiteConfig) {
+@@ -85,7 +93,9 @@ var configureHarness = function(testSuiteConfig) {
  
    if (harnessConfig.testsMask) {
      harnessConfig.testsMask += '0';
+-  } else if (harnessConfig.tests) {
 +  } else if (harnessConfig.testnames) {
-+    harnessConfig.testsMask = '';
-   } else if (harnessConfig.tests) {
++      harnessConfig.testsMask = '';
++   } else if (harnessConfig.tests) {
      harnessConfig.tests =
          harnessConfig.tests.split(',')
-@@ -143,15 +153,34 @@ var createLogger = function() {
+             .map(function(x) {
+@@ -145,7 +155,12 @@ var createLogger = function() {
        text += arguments[i].toString() + ' ';
  
      console.log(text);
@@ -177,17 +163,17 @@ index c722460..555ffde 100644
    };
  };
  
- window.globalRunner = null;
+@@ -153,9 +168,23 @@ window.globalRunner = null;
  
- var createRunner = function(testSuite, testSuiteVer, testsMask) {
--  var runner = new TestExecutor(testSuite, testsMask, testSuiteVer);
-+  if (harnessConfig.testnames != "") {
-+    testsMask = ""
-+    let testNames = harnessConfig.testnames.split(',').map((testname) => {return testname.toLowerCase()});
-+    console.log(testNames);
-+    for (let test in testSuite.tests) {
-+      if (testNames.includes(testSuite.tests[test].prototype.name.toLowerCase())) {
-+        testsMask += "1";
+ var createRunner = function(
+     testSuite, testSuiteVer, testsMask, testAllowList = [], testPlanId = '') {
++    if (harnessConfig.testnames != "") {
++      testsMask = ""
++      let testNames = harnessConfig.testnames.split(',').map((testname) => {return testname.toLowerCase()});
++      console.log(testNames);
++      for (let test in testSuite.tests) {
++        if (testNames.includes(testSuite.tests[test].prototype.name.toLowerCase())) {
++          testsMask += "1";
 +      } else if (testNames.includes(testSuite.tests[test].prototype.name.split('__')[0].toLowerCase())) {
 +        testsMask += "1";
 +      } else {
@@ -195,25 +181,17 @@ index c722460..555ffde 100644
 +      }
 +    }
 +  }
- 
-+  var runner = new TestExecutor(testSuite, testsMask, testSuiteVer);
++
+   var runner = new TestExecutor(
+       testSuite, testsMask, testSuiteVer, testAllowList, testPlanId);
+-
    // Expose the runner so outside/injected scripts can read it.
    window.globalRunner = runner;
  
-@@ -196,7 +225,7 @@ window.startMseTest = function(testSuiteVer) {
-   window.harnessConfig = parseParams(testSuiteVersion.config);
-   window.harnessConfig.testSuite = testSuiteVer;
+@@ -195,10 +224,21 @@ var addTimestampHash = function() {
+ };
  
--  addTimestampHash();
-+//  addTimestampHash();
- 
-   if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
-     alert('Cannot find test type ' + harnessConfig.testType);
-@@ -210,11 +239,21 @@ window.startMseTest = function(testSuiteVer) {
- 
-   configureHarness(testSuiteVersion.config);
-   createLogger();
--
+ var loadTestsAndCreateRunner = function(testSuiteVer) {
 +  const waitFor = (ms) => {
 +    return new Promise((resolve, reject) => {
 +      setTimeout(() => {
@@ -232,20 +210,29 @@ index c722460..555ffde 100644
 +  }
  };
  
- })();
+ 
+@@ -208,7 +248,7 @@ window.startMseTest = function(testSuiteVer) {
+   window.harnessConfig = parseParams(testSuiteVersion.config);
+   window.harnessConfig.testSuite = testSuiteVer;
+ 
+-  addTimestampHash();
++  //addTimestampHash();
+ 
+   if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
+     alert('Cannot find test type ' + harnessConfig.testType);
 diff --git a/harness/test.js b/harness/test.js
-index b781e31..17631cc 100644
+index 1719490..a22ea0d 100644
 --- a/harness/test.js
 +++ b/harness/test.js
 @@ -1,6 +1,7 @@
  /**
   * @license
   * Copyright 2018 Google Inc. All rights reserved.
-+ * Copyright 2022 Liberty Global B.V.
++ * Copyright 2025 Liberty Global B.V.
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
-@@ -109,15 +110,18 @@ window.createTest = function (name, category = '', mandatory = true, id = '',
+@@ -110,12 +111,15 @@ window.createTest = function (name, category = '', mandatory = true, id = '',
    var t = function() {};
    t.prototype = Object.create(TestBase);
    t.prototype.name = name;
@@ -257,14 +244,11 @@ index b781e31..17631cc 100644
    t.prototype.desc = name;
    t.prototype.running = false;
 +  t.prototype.playing = false;
-   t.prototype.passes = 0;
-   t.prototype.failures = 0;
-   t.prototype.timeouts = 0;
 +  t.prototype.executionTime = 0;
    t.prototype.outcome = TestOutcome.UNKNOWN;
    t.prototype.category = category;
    t.prototype.mandatory = mandatory;
-@@ -167,8 +171,11 @@ var TestExecutor = function(testSuite, testsMask, testSuiteVer) {
+@@ -185,8 +189,11 @@ var TestExecutor = function(
  
  TestExecutor.prototype.log = function() {
    var args = Array.prototype.slice.call(arguments, 0);
@@ -278,16 +262,20 @@ index b781e31..17631cc 100644
  };
  
  TestExecutor.prototype.assert = function(cond, msg) {
-@@ -286,20 +293,11 @@ TestExecutor.prototype.initialize = function() {
+@@ -304,12 +311,9 @@ TestExecutor.prototype.initialize = function() {
  
    this.testView.generate(this.testSuiteVer);
  
 -  document.getElementById('info').innerHTML = this.info;
    this.log('Media Source and Encrypted Media Conformance Tests ' +
             '(version REVISION)');
--
+ 
 -  this.longestTimeRatio = -1;
 -  this.longestTest = null;
+ };
+ 
+ TestExecutor.prototype.reinitializeWithTestCaseIdAllowList = function(
+@@ -354,11 +358,6 @@ TestExecutor.prototype.reinitializeWithTestCaseIdAllowList = function(
  };
  
  TestExecutor.prototype.onfinished = function() {
@@ -299,7 +287,7 @@ index b781e31..17631cc 100644
    var keepRunning = (!harnessConfig.stoponfailure ||
        this.lastResult === 'pass') && harnessConfig.loop &&
        (this.testView.anySelected() || this.numOfTestToRun === 1);
-@@ -319,14 +317,6 @@ TestExecutor.prototype.onfinished = function() {
+@@ -380,14 +379,6 @@ TestExecutor.prototype.onfinished = function() {
        }
      }
    }
@@ -314,11 +302,7 @@ index b781e31..17631cc 100644
  };
  
  TestExecutor.prototype.sendTestReport = function(results) {
-@@ -365,17 +355,16 @@ TestExecutor.prototype.startNextTest = function() {
-     this.onfinished();
-     return;
-   }
--
+@@ -430,13 +421,13 @@ TestExecutor.prototype.startNextTest = function() {
    this.currentTest = new this.testList[this.currentTestIdx];
    this.blockTestResults = false;
  
@@ -334,7 +318,7 @@ index b781e31..17631cc 100644
    this.updateStatus();
  
    this.startTime = Date.now();
-@@ -524,18 +513,10 @@ TestExecutor.prototype.timeout = function() {
+@@ -583,18 +574,10 @@ TestExecutor.prototype.timeout = function() {
  };
  
  TestExecutor.prototype.teardownCurrentTest = function(isTimeout, errorMsg) {
@@ -356,18 +340,18 @@ index b781e31..17631cc 100644
  
    this.timeouts.clearAll();
 diff --git a/harness/testView.js b/harness/testView.js
-index c040757..38b826d 100644
+index 0c0e8df..ac093c0 100644
 --- a/harness/testView.js
 +++ b/harness/testView.js
 @@ -1,6 +1,7 @@
  /**
   * @license
   * Copyright 2018 Google Inc. All rights reserved.
-+ * Copyright 2022 Liberty Global B.V.
++ * Copyright 2025 Liberty Global B.V.
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
-@@ -44,18 +45,14 @@ function TestView(testSuiteVer) {
+@@ -45,18 +46,14 @@ function TestView(testSuiteVer, testViewInfo) {
    var testSuites = [];
    var links = [];
  
@@ -389,12 +373,12 @@ index c040757..38b826d 100644
      })
    };
  
-@@ -103,15 +100,15 @@ function TestView(testSuiteVer) {
- 
-   this.generate = function() {
-     var heading = '[' + this.testSuiteVer + '] ' +
--        testSuiteDescriptions[harnessConfig.testType].heading + ' (v REVISION)';
-+        testSuiteDescriptions[harnessConfig.testType].heading;
+@@ -110,15 +107,15 @@ function TestView(testSuiteVer, testViewInfo) {
+     if (this.testViewInfo) {
+       heading += this.testViewInfo;
+     }
+-    heading += ' ' + testSuiteDescriptions[harnessConfig.testType].heading + ' (v REVISION)';
++    heading += ' ' + testSuiteDescriptions[harnessConfig.testType].heading;
      try {
        document.title = testSuiteDescriptions[harnessConfig.testType].title;
      } catch (e) {
@@ -407,7 +391,7 @@ index c040757..38b826d 100644
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -144,19 +141,55 @@ function TestView(testSuiteVer) {
+@@ -151,19 +148,55 @@ function TestView(testSuiteVer, testViewInfo) {
            var wasOff = !util.stringToBoolean(e.target.innerHTML);
            e.target.innerHTML = wasOff ? 'on' : 'off';
            harnessConfig[id] = wasOff;
@@ -446,7 +430,9 @@ index c040757..38b826d 100644
 +              select.lastChild.classList.add('bold');
 +        }
 +        switchDiv.appendChild(select);
-+      }
+       }
+-      select.onchange = selectors[i].cb;
+-      switchDiv.appendChild(select);
 +    }
 +
 +    var profilesDiv = document.getElementById('profiles');
@@ -464,21 +450,19 @@ index c040757..38b826d 100644
 +      } else {
 +        profilesDiv.lastChild.classList.add('bold');
 +        profilesDiv.lastChild.style = "color:green; text-decoration:underline;";
-       }
--      select.onchange = selectors[i].cb;
--      switchDiv.appendChild(select);
++       }
      }
  
      switchDiv.appendChild(
 diff --git a/harness/timeout.js b/harness/timeout.js
-index 7c373c1..b4167ca 100644
+index 7c373c1..1628040 100644
 --- a/harness/timeout.js
 +++ b/harness/timeout.js
 @@ -1,6 +1,7 @@
  /**
   * @license
   * Copyright 2018 Google Inc. All rights reserved.
-+ * Copyright 2022 Liberty Global B.V.
++ * Copyright 2025 Liberty Global B.V.
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
@@ -500,7 +484,7 @@ index 7c373c1..b4167ca 100644
      var interval = getUniqueItem(intervals);
      interval.func = func;
 diff --git a/style.css b/style.css
-index 79f5cb1..3f72d89 100644
+index 79f5cb1..07163f7 100644
 --- a/style.css
 +++ b/style.css
 @@ -17,12 +17,13 @@
@@ -508,7 +492,7 @@ index 79f5cb1..3f72d89 100644
  body {
    background: #fff;
 -  font: normal 0.64em 'Roboto',Sans-Serif;
-+  font: normal 0.6em 'Roboto', Sans-Serif;
++  font: normal 0.6em 'Roboto',Sans-Serif;
    margin: 10px 20px 0 20px;
 -  width: 1240px;
 -  height: 710px;
@@ -520,7 +504,7 @@ index 79f5cb1..3f72d89 100644
  
  .default-list .cell-category {
    display: inline-block;
-@@ -87,45 +88,72 @@ body {
+@@ -87,45 +88,70 @@ body {
    min-width: 56px;
    border-style: solid;
    border-color: #800;
@@ -530,7 +514,6 @@ index 79f5cb1..3f72d89 100644
 +  padding: 0;
    text-align: center;
    font-size: 0.6em;
-+
  }
  
  .test-status-none {
@@ -600,8 +583,7 @@ index 79f5cb1..3f72d89 100644
 -  border-color: #800;
 -  border-width: 2px;
 -  padding: 0px;
-+  background-color: #fff;
-+  border-color: #be0000;
++  border-color: #fff;
 +  border-width: 1px;
 +  border-radius: 5px;
 +  padding: 0;
@@ -609,7 +591,7 @@ index 79f5cb1..3f72d89 100644
  }
  
  .cell-column {
-@@ -167,7 +195,6 @@ div.container_hidden {
+@@ -167,7 +193,6 @@ div.container_hidden {
  
  .box-right {
    width: 420px;
@@ -617,7 +599,7 @@ index 79f5cb1..3f72d89 100644
  }
  
  #testarea {
-@@ -184,15 +211,15 @@ div.container_hidden {
+@@ -184,15 +209,15 @@ div.container_hidden {
  }
  
  #output {
@@ -636,7 +618,7 @@ index 79f5cb1..3f72d89 100644
    letter-spacing: 0.2px;
    padding: 2px;
  }
-@@ -202,7 +229,8 @@ div.container_hidden {
+@@ -202,7 +227,8 @@ div.container_hidden {
  }
  
  #controls {
@@ -646,7 +628,7 @@ index 79f5cb1..3f72d89 100644
  }
  
  #login-pop-up {
-@@ -224,7 +252,7 @@ div.container_hidden {
+@@ -224,7 +250,7 @@ div.container_hidden {
  .step {
    padding-bottom: 2rem;
    font-size: 200%;
@@ -655,7 +637,7 @@ index 79f5cb1..3f72d89 100644
    white-space: pre-wrap;
    color: white
  }
-@@ -265,7 +293,7 @@ span:focus {
+@@ -265,7 +291,7 @@ span:focus {
  .focusable {
    color: #0000EE;
    cursor: pointer;
@@ -664,7 +646,7 @@ index 79f5cb1..3f72d89 100644
  }
  
  #title {
-@@ -282,8 +310,13 @@ span:focus {
+@@ -282,8 +308,13 @@ span:focus {
  }
  
  @keyframes blink {
@@ -680,7 +662,7 @@ index 79f5cb1..3f72d89 100644
  }
  
  /* Use to activate CSS animation */
-@@ -294,33 +327,47 @@ span:focus {
+@@ -294,33 +325,45 @@ span:focus {
  }
  
  
@@ -697,11 +679,11 @@ index 79f5cb1..3f72d89 100644
 -    width: 502px;
 +    height: 250px;
 +    width: 600px;
-+  }
+   }
 +
 +  .box-right {
 +    width: 420px;
-   }
++   }
  }
 -@media screen and (min-height: 1080px) and (max-height: 1081px) {
 +
@@ -711,7 +693,6 @@ index 79f5cb1..3f72d89 100644
 -    width: 1860px!important;
 +    font-size: 0.75em !important;
    }
-+
    #output {
 -    height: 300px;
 +    height: 350px;
@@ -721,27 +702,26 @@ index 79f5cb1..3f72d89 100644
 +  .box-right {
 +    width: 500px;
 +  }
++
  }
 -@media screen and (min-height: 2160px) and (max-height: 2161px) {
-+
 +@media screen and (min-width: 2160px) {
    body {
 -    font-size: 1.92em!important;
 -    width: 3720px!important;
 +    font-size: 0.85em !important;
    }
-+
    #output {
 -    height: 600px;
 -    width: 1400px;
 +    height: 450px;
 +    width: 800px;
-+  }
+   }
 +
 +  .box-right {
 +    width: 600px;
-   }
++   }
  }
 -- 
-2.35.1.windows.2
+2.34.1
 
