@@ -1,10 +1,10 @@
-From 3802c89eecd72dc839330fe52278ea3a01787ce0 Mon Sep 17 00:00:00 2001
+From 35ade7cfedb00f12eef15094a6c44e6e581cf43b Mon Sep 17 00:00:00 2001
 From: pradeep-raveendranpillai-infosys <ppillai.ext@libertyglobal.com>
-Date: Wed, 8 Jan 2025 19:21:10 +0530
+Date: Fri, 24 Jan 2025 15:11:12 +0530
 Subject: [PATCH] MVT Patch
 
 ---
- harness/compactTestList.js |   3 +-
+ harness/compactTestList.js |   2 +-
  harness/compactTestView.js |  19 ++++--
  harness/constants.js       |   3 +-
  harness/main.js            |  52 +++++++++++++--
@@ -12,21 +12,13 @@ Subject: [PATCH] MVT Patch
  harness/testView.js        |  65 ++++++++++++++-----
  harness/timeout.js         |   9 +++
  style.css                  | 127 +++++++++++++++++++++++++------------
- 8 files changed, 218 insertions(+), 103 deletions(-)
+ 8 files changed, 217 insertions(+), 103 deletions(-)
 
 diff --git a/harness/compactTestList.js b/harness/compactTestList.js
-index 84a50d8..7fcf31c 100644
+index 84a50d8..d0906da 100644
 --- a/harness/compactTestList.js
 +++ b/harness/compactTestList.js
-@@ -1,6 +1,7 @@
- /**
-  * @license
-  * Copyright 2018 Google Inc. All rights reserved.
-+ * Copyright 2025 Liberty Global B.V.
-  *
-  * Licensed under the Apache License, Version 2.0 (the "License");
-  * you may not use this file except in compliance with the License.
-@@ -167,7 +168,7 @@ function TestList(style) {
+@@ -167,7 +167,7 @@ function TestList(style) {
        currentColumn.appendChild(tr);
  
        var elems = [
@@ -103,7 +95,7 @@ index e0e08bf..aa140a8 100644
 -window.testVersion = '2021';
 +window.testVersion = 'MVT';
 diff --git a/harness/main.js b/harness/main.js
-index b0918ca..975fbd6 100644
+index b0918ca..3e7973e 100644
 --- a/harness/main.js
 +++ b/harness/main.js
 @@ -1,6 +1,7 @@
@@ -229,7 +221,7 @@ index b0918ca..975fbd6 100644
    if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
      alert('Cannot find test type ' + harnessConfig.testType);
 diff --git a/harness/test.js b/harness/test.js
-index 1719490..d692c8d 100644
+index 1719490..a22ea0d 100644
 --- a/harness/test.js
 +++ b/harness/test.js
 @@ -1,6 +1,7 @@
