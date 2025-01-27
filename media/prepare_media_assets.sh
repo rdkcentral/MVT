@@ -40,6 +40,11 @@ function download_progressive_stream {
   if [ ! -f $target_filename ]; then
     echo "Downloading $1 into $target_filename"
     wget $url --no-check-certificate -O $tmp_stream
+     if [[ $1 =~ "zip" ]]; then
+      /usr/bin/unzip $tmp_stream
+      tmp_stream=`awk -F'/' '{print substr($8, 0, 36)}'<<< $1`
+    fi
+
     ffmpeg -ss 00:00:00.000 -i $tmp_stream -t 120 \
       -vcodec h264 -vf scale=1280:720,fps=24 -movflags faststart \
       -acodec aac -ac 2 \
