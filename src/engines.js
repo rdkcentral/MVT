@@ -135,7 +135,7 @@ class ShakaEngine extends Engine {
         },
         streaming: {
           retryParameters: {
-            timeout: 2000, // timeout in ms, after which we abort a request; 0 means never
+            timeout: 6000, // timeout in ms, after which we abort a request; 0 means never
             maxAttempts: 3, // the maximum number of requests before we fail
             baseDelay: 1500, // the base delay in ms between retries
             backoffFactor: 2, // the multiplicative backoff factor between retries
