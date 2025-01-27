@@ -99,7 +99,7 @@ A list of of all external media assets used by a deployed instance of MVT:
 | DASH-PLAYREADY-4.0 | [DASH IF](https://testassets.dashif.org/)                                        | https://media.axprod.net/TestVectors/Cmaf/protected_1080p_h264_cbcs/manifest.mpd                                                              | Not distributed by MVT, used for playback during test execution                                                                             |
 | HSS-AVC1-AAC       | [DASH IF](https://testassets.dashif.org/) | https://playready.directtaps.net/smoothstreaming/SSWSS720H264/SuperSpeedway_720.ism/Manifest(format=mpd-time-csf)     | Not distributed by MVT, used for playback during test execution                                                                             |
 | HSS-AVC1-AAC       | [Microsoft PlayReady](https://testweb.playready.microsoft.com/Content/Content2X) | http://profficialsite.origin.mediaservices.windows.net/c51358ea-9a5e-4322-8951-897d640fdfd7/tearsofsteel_4k.ism/manifest                      | Not distributed by MVT, used for playback during test execution                                                                             |
-
+|DASH-PLAYREADY-CMAF | [Microsoft PlayReady] (https://github.com/Axinom/public-test-vectors)                                      | https://media.axprod.net/TestVectors/MultiKey/Cmaf_h264_1080p_cbcs/manifest.mpd                                                              | Not distributed by MVT, used for playback during test execution                                                                             |
 ## User Interface
 
 ![User Interface screenshot](docs/main_view.png "Main view")
