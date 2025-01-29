@@ -1,0 +1,12 @@
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index 35c6b10..52013fb 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -53,6 +53,7 @@ var compactTestView = (function() {
+       this.addLink('Media Coverage', 'coverage.html');
+       this.addLink('Test Any Player', '/anyplayer');
+       this.addLink('HTML Tests', 'https://html5test.com');
++      this.addLink('CSS Tests', 'https://css3test.com');
+       this.addTestSuites(testSuiteVersions[this.testSuiteVer].testSuites);
+ 
+       for (var engineId in EngineVersions) {
