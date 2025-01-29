@@ -23,3 +23,4 @@ git submodule update --init --remote
 cd js_mse_eme
 git apply ../patches/0001_js_mse_eme_mvt.patch
 git apply ../patches/0002_js_mse_eme_mvt_AudioTagChangeFor_FMP4_FMP3_stream.patch
+git apply ../patches/0003_js_mse_eme_mvt_Add_HtmlTests.patch
