@@ -21,6 +21,20 @@
 
 #
 
+# v2.14.0 (2025-01-29)
+
+### [ [37467e0](https://github.com/rdkcentral/MVT/commit/37467e0) ] Add CSS tests
+
+### [ [f8fdd04](https://github.com/rdkcentral/MVT/commit/f8fdd04) ] Add Html tests
+
+### [ [6475a19](https://github.com/rdkcentral/MVT/commit/6475a19) ] Fixed media url so that docker_prepare_assets.sh script runs properly
+
+### [ [b845be0](https://github.com/rdkcentral/MVT/commit/b845be0) ] Add Playready CMAF testcases in DASH test suite
+
+### [ [8d08c98](https://github.com/rdkcentral/MVT/commit/8d08c98) ] Change timeout value to 6000
+
+#
+
 # v2.13.0 (2025-01-24)
 
 ### [ [68cb512](https://github.com/rdkcentral/MVT/commit/68cb512) ] Rebasing js_mse_eme to July 2021 changes, as well as rebasing necessary patches.
