@@ -1,5 +1,5 @@
 [submodule "js_mse_eme"]
 	path = js_mse_eme
-	url = https://github.com/youtube/js_mse_eme.git
+	url = https://github.com/stagingrdkm/js_mse_eme.git
 	shallow = true
 	branch = master
