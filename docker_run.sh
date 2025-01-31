@@ -19,3 +19,4 @@
 
 mkdir -p ${TEST_MATERIALS_SRC:-/data/test-materials}
 docker run -v ${TEST_MATERIALS_SRC:-/data/test-materials}:/home/MVT/test-materials --rm -d --name mvt-app -p ${PORT:-80}:80 mvt-app-img
+docker cp download-test-materials.sh mvt-app:/usr/local/apache2/cgi-bin/
