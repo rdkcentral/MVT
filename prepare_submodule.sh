@@ -26,3 +26,5 @@ git apply ../patches/0002_js_mse_eme_mvt_AudioTagChangeFor_FMP4_FMP3_stream.patc
 git apply ../patches/0003_js_mse_eme_mvt_Add_HtmlTests.patch
 git apply ../patches/0004_js_mse_eme_mvt_Add_CSSTests.patch
 git apply ../patches/0005_js_mse_eme_mvt_Add_JSTests.patch
+git apply ../patches/0006_js_mse_eme_mvt_Add_WPTTests.patch
+
