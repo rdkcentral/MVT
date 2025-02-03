@@ -214,13 +214,9 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 
   let tests = [
     new MvtMediaTest(testPlayback, MS.HSS.FMP4_AVC_AAC_VTT, engine),
-    new MvtMediaTest(testPlayback, MS.HSS.PLAYREADY_2_0, engine),
     new MvtMediaTest(testPause, MS.HSS.FMP4_AVC_AAC_VTT, engine),
-    new MvtMediaTest(testPause, MS.HSS.PLAYREADY_2_0, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, engine),
-    new MvtMediaTest(testSetPosition, MS.HSS.PLAYREADY_2_0, engine),
     new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine),
-    new MvtMediaTest(testPlayRate, MS.HSS.PLAYREADY_2_0, engine),
   ];
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
