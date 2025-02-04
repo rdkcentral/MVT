@@ -21,6 +21,18 @@
 
 #
 
+# v2.15.0 (2025-02-04)
+
+### [ [1eb4157](https://github.com/rdkcentral/MVT/commit/1eb4157) ] Remove PlayReady2 tests from MVT
+
+### [ [b6be6f1](https://github.com/rdkcentral/MVT/commit/b6be6f1) ] Add WPT tests
+
+### [ [6dfefce](https://github.com/rdkcentral/MVT/commit/6dfefce) ] Add JavaScript Tests
+
+### [ [3cb9119](https://github.com/rdkcentral/MVT/commit/3cb9119) ] Prepare a fork of js_mse_eme and use it in MVT
+
+#
+
 # v2.14.0 (2025-01-29)
 
 ### [ [37467e0](https://github.com/rdkcentral/MVT/commit/37467e0) ] Add CSS tests
