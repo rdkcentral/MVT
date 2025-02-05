@@ -1,0 +1,13 @@
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index ddf3c9e..70d6b22 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -56,6 +56,8 @@ var compactTestView = (function() {
+       this.addLink('CSS Tests', 'https://css3test.com');
+       this.addLink('JS ECMAScript Tests','https://compat-table.github.io/compat-table/es2016plus/');
+       this.addLink('WPT Tests', 'https://wpt.live/');
++      this.addLink('Browse Media Assets', 'https://mvt.onemw.net/test-materials/');
++      this.addLink('Download Media Assets', 'http://mvt.onemw.net/cgi-bin/download-test-materials.sh');
+       this.addTestSuites(testSuiteVersions[this.testSuiteVer].testSuites);
+ 
+       for (var engineId in EngineVersions) {
