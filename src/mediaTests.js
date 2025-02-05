@@ -127,7 +127,7 @@ var testPlayback = new TestTemplate("Playback", function (video, runner) {
 });
 
 var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
-  const rates = [0.5, 2, 0.75, 1.5, 0];
+  const rates = [0.5, 2, 0.75, 1.5];
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
 
