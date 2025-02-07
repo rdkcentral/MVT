@@ -21,6 +21,16 @@
 
 #
 
+# v2.16.0 (2025-02-07)
+
+### [ [9b4fb79](https://github.com/rdkcentral/MVT/commit/9b4fb79) ] Remove "download media assets" tab
+
+### [ [dc6dafa](https://github.com/rdkcentral/MVT/commit/dc6dafa) ] HLS hlsjs tests for Playrate fails
+
+### [ [ad65799](https://github.com/rdkcentral/MVT/commit/ad65799) ] Add browse and download media assets
+
+#
+
 # v2.15.0 (2025-02-04)
 
 ### [ [1eb4157](https://github.com/rdkcentral/MVT/commit/1eb4157) ] Remove PlayReady2 tests from MVT
