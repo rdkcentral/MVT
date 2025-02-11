@@ -28,4 +28,5 @@ git apply ../patches/0004_js_mse_eme_mvt_Add_CSSTests.patch
 git apply ../patches/0005_js_mse_eme_mvt_Add_JSTests.patch
 git apply ../patches/0006_js_mse_eme_mvt_Add_WPTTests.patch
 git apply ../patches/0007_js_mse_eme_mvt_Add_Browse_Media_Assets.patch
+git apply ../patches/0008_js_mse_eme_mvt_dynamic_loading_platform_tests.patch
 
