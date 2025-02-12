@@ -312,6 +312,22 @@ The new template has to be binded with media stream and added into a test suite 
 
 Now test case 'DASH_PLAYREADY_3_0 complicatedTest` should appear under 'DASH dashjs' test suite.
 
+### Platform Specific Tests
+The config file platform/tests.json can be used to load platform specific tests if any, to MVT during runtime.
+By default the config file is empty. It can be be filled in with custom test urls where user need to specify 
+the test name in "test" key and corresponding url in "url" key as given below.
+
+[
+        {
+            "test": "Dummy test 1",
+            "url" : "Dummy url 1"
+        },
+        {
+            "test": "Dummy test 2",
+            "url" : "Dummy url 2"
+        }
+]
+
 ### Prettier
 
 Source files are auto formatted by [prettier](https://prettier.io/), which should be used before committing any changes:
