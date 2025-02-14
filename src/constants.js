@@ -28,12 +28,13 @@ const V_WEBM = "video/webm";
 const A_MKV = "audio/x-matroska";
 const V_MKV = "video/x-matroska";
 const A_FLAC = "audio/flac";
+const V_MOV = "video/quicktime";
 
 const CONTAINER_MAPPING = {
-  avc: [V_MP4, V_MP2T, V_MKV],
-  hevc: [V_MP4, V_MKV],
-  mpeg2: [V_MP2T],
-  mpeg4part2: [V_MP4, V_MKV],
+  avc: [V_MP4, V_MP2T, V_MKV, V_MOV],
+  hevc: [V_MP4, V_MKV, V_MOV],
+  mpeg2: [V_MP2T, V_MOV],
+  mpeg4part2: [V_MP4, V_MKV, V_MOV],
   vp9: [V_WEBM],
   aac: [A_MP4],
   ac3: [A_MP4],
