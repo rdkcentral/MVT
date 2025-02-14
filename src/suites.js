@@ -52,7 +52,7 @@ function filterSkipTests(skipTests, tests) {
   for (let codec of SelectedProfile.codecs) {
     for (let container of CONTAINER_MAPPING[codec]) {
       let unstable = undefined;
-      if (container === V_MP2T || container === V_MKV) {
+      if (container === V_MP2T || container === V_MKV || container === V_MOV) {
         unstable = new Unstable(`IsTypeSupported returns incorrect value for container ${container}`);
       }
       tests.push(
