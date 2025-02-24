@@ -21,6 +21,18 @@
 
 #
 
+# v2.17.0 (2025-02-24)
+
+### [ [82417fe](https://github.com/rdkcentral/MVT/commit/82417fe) ] Adjust the inaccuracy threshold value for play rate test verification
+
+### [ [1f8759f](https://github.com/rdkcentral/MVT/commit/1f8759f) ] Add QuickTime container check
+
+### [ [e5102be](https://github.com/rdkcentral/MVT/commit/e5102be) ] Updating documentation path for dynamic platform tests
+
+### [ [01261b1](https://github.com/rdkcentral/MVT/commit/01261b1) ] Dynamic loading of platform specific tests
+
+#
+
 # v2.16.0 (2025-02-07)
 
 ### [ [9b4fb79](https://github.com/rdkcentral/MVT/commit/9b4fb79) ] Remove "download media assets" tab
