@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Font Check</title>
+		<style>
+			body {
+				font-family: 'Vera', sans-serif;
+				background-color: white;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
+			table, th, td {
+				border: 1px solid black;
+			}
+			th, td {
+				padding: 8px;
+				text-align: left;
+			}
+			th {
+				background-color: purple;
+				color: black;
+				width: 200px;
+			}
+			td {
+				width: 300px; /* Set the width of the table data cells */
+			}
+			.supported {
+				background-color: green;
+				color: white;
+			}
+			.not-supported {
+				background-color: red;
+				color: white;
+			}
+		</style>
+		<script>
+			// This function will be triggered directly when the page loads
+			function checkFonts() {
+				// Define a list of fonts to check
+				const fonts = [
+					'Bitstream Vera Sans', 
+					'Bitstream Vera Sans Mono', 
+					'Bitstream Vera Serif', 
+					'InterstatePro ExtraLight',
+					'InterstatePro Light',
+					'Interstatepro Bold', 
+					'Interstatepro Regular', 
+					'Liberation Mono', 
+					'Liberation Serif', 
+					'Liberation Sans',
+					'Mayberry Pro',
+					'LG\-Handwritten', 
+					'LG\-Horizon\-4\-OneMW\-Icons', 
+					'LG\-Horizon\-4\-OneMW\-Mono',  
+					'Teletext\-43'
+				];
+
+				const fontNameMap = {
+					'Bitstream Vera Sans': 'Bitstream Vera Sans  (Bold, Bold Oblique, Roman, Oblique)',
+					'Bitstream Vera Sans Mono': 'Bitstream Vera Sans Mono  (Bold, Bold Oblique, Oblique, Roman)',
+					'Bitstream Vera Serif': 'Bitstream Vera Serif  (Bold, Roman)',
+					'InterstatePro ExtraLight': 'InterstatePro ExtraLight  (ExtraLight, Regular)',
+					'InterstatePro Light': 'InterstatePro Light  (Light, Regular)',
+					'Interstatepro Bold': 'Interstatepro Bold  (Bold, Regular)', 
+					'Interstatepro Regular': 'Interstatepro Regular  (Regular)', 
+					'Liberation Mono': 'Liberation Mono  (Bold, Bold Italic, Italic, Regular)',
+					'Liberation Serif': 'Liberation Serif  (Bold, Bold Italic, Italic, Regular)',
+					'Liberation Sans': 'Liberation Sans  (Bold, Bold Italic, Italic, Regular)', 
+					'Mayberry Pro': 'Mayberry Pro  (Regular)',    
+					'LG\-Handwritten': 'LG Handwritten  (Regular)',
+					'LG\-Horizon\-4\-OneMW\-Icons': 'LG Horizon 4 OneMW Icons  (Regular)',
+					'LG\-Horizon\-4\-OneMW\-Mono': 'LG Horizon 4 OneMW Mono  (Regular)',
+					'Teletext\-43': 'Teletext 43  (Regular)',
+				};
+
+				const results = [];
+
+				// Check each font
+				fonts.forEach(font => {
+					const fontName = fontNameMap[font] || font; 
+					if (isFontAvailable(font)) {
+						results.push({ font: fontName, status: 'SUPPORTED', class: 'supported' });
+					} else {
+						results.push({ font: fontName, status: 'NOT SUPPORTED', class: 'not-supported' });
+					}
+				});
+
+				// Display results in a table
+				const tableBody = document.getElementById('font-table-body');
+				tableBody.innerHTML = ''; // Clear previous results
+
+				results.forEach(result => {
+					const row = document.createElement('tr');
+
+					const fontCell = document.createElement('td');
+					fontCell.textContent = result.font;
+					row.appendChild(fontCell);
+
+					const statusCell = document.createElement('td');
+					statusCell.textContent = result.status;
+					statusCell.classList.add(result.class); // Add class to change color
+					row.appendChild(statusCell);
+
+					tableBody.appendChild(row);
+				});
+			}
+
+			// Function to check if a font is available in the browser
+			function isFontAvailable(font) {
+				const testElement = document.createElement('span');
+				testElement.innerText = 'abcdefghijklmnopqrstuvwxyz';
+				testElement.style.fontFamily = font;
+				testElement.style.position = 'absolute';
+				testElement.style.visibility = 'hidden';
+				document.body.appendChild(testElement);
+
+				// Get the computed font-family of the test element
+				const computedFont = window.getComputedStyle(testElement).fontFamily;
+
+				document.body.removeChild(testElement);
+
+				// Check if the computed font matches the requested font exactly
+				return computedFont.includes(font);
+			}
+
+			// Automatically call checkFonts when the page loads
+			window.onload = checkFonts;
+		</script>
+	</head>
+	<body>
+		<h1>Supported System Fonts</h1>
+
+		<table>
+			<thead>
+				<tr>
+					<th>System fonts and their styles</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody id="font-table-body">
+				<!-- Font check results will be inserted here -->
+			</tbody>
+		</table>
+	</body>
+</html>
+
