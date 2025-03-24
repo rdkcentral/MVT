@@ -1,0 +1,12 @@
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index 1677ad2..3b16886 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -57,6 +57,7 @@ var compactTestView = (function() {
+       this.addLink('JS ECMAScript Tests','https://compat-table.github.io/compat-table/es2016plus/');
+       this.addLink('WPT Tests', 'https://wpt.live/');
+       this.addLink('Browse Media Assets', 'https://mvt.onemw.net/test-materials/');
++      this.addLink('System fonts', 'fonts.html');
+ 
+       var platCfg = new XMLHttpRequest();
+       platCfg.overrideMimeType("application/json");
