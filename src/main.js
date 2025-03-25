@@ -19,7 +19,7 @@
 
 "use strict";
 
-const MVT_VERSION = "v2.17.0";
+const MVT_VERSION = "v2.18.0";
 
 document.getElementById("mvt_version").innerHTML = MVT_VERSION;
 
