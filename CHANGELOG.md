@@ -21,6 +21,14 @@
 
 #
 
+# v2.18.0 (2025-03-25)
+
+### [ [f0487d9](https://github.com/rdkcentral/MVT/commit/f0487d9) ] Add System Fonts Check
+
+### [ [de0befe](https://github.com/rdkcentral/MVT/commit/de0befe) ] Add PlayReady CENC test
+
+#
+
 # v2.17.0 (2025-02-24)
 
 ### [ [82417fe](https://github.com/rdkcentral/MVT/commit/82417fe) ] Adjust the inaccuracy threshold value for play rate test verification
