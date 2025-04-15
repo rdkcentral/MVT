@@ -37,6 +37,11 @@ function getTestStatus(test) {
   else return "skipped";
 }
 
+function extractPerformanceResult(logStr) {
+  const match = logStr.match(/Performance Result:\s*(PASS|FAIL)/);
+  return match ? match[1] : "UNKNOWN";
+}
+
 function getMvtTestResults(testStartId, testEndId) {
   testStartId = testStartId || 0;
   testEndId = testEndId || window.globalRunner.testList.length;
@@ -54,6 +59,8 @@ function getMvtTestResults(testStartId, testEndId) {
   for (var i = testStartId; i < testEndId; ++i) {
     if (window.globalRunner.testList[i]) {
       var test = window.globalRunner.testList[i];
+      const logs = test.prototype.logs;
+      const perfResult = extractPerformanceResult(logs);
       results["tests"].push({
         log: test.prototype.logs,
         name: test.prototype.name,
@@ -62,6 +69,7 @@ function getMvtTestResults(testStartId, testEndId) {
         time_ms: test.prototype.executionTime,
         type: "test_result",
         ver: "1.0",
+        performance_result: perfResult
       });
     }
   }

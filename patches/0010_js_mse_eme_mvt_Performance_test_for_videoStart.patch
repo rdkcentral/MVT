@@ -1,0 +1,23 @@
+diff --git a/harness/test.js b/harness/test.js
+index 76ff6a3..d0247b9 100644
+--- a/harness/test.js
++++ b/harness/test.js
+@@ -448,6 +448,18 @@ TestExecutor.prototype.startNextTest = function() {
+         addEventListener.call(this, type, listener, useCapture);
+         this.eventsAdded.push([type, listener]);
+       };
++
++  const TIME_TO_VIDEO_THRESHOLD = 4000;
++  this.currentTest.video.addEventListener('playing', () => {
++    let timeToVideo = Date.now() - this.startTime;
++    this.log('Time taken to start video: ' + timeToVideo + ' ms');
++    if (timeToVideo <= TIME_TO_VIDEO_THRESHOLD) {
++      this.log('Performance Result: PASS');
++    } else {
++      this.log('Performance Result: FAIL');
++    }
++  }, { once: true });
++
+   this.currentTest.video.removeAllEventListeners = function() {
+     for (var i = 0; i < this.eventsAdded.length; ++i) {
+       this.removeEventListener(this.eventsAdded[i][0],
