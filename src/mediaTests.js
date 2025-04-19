@@ -356,3 +356,17 @@ var testSubtitles = new TestTemplate("Subtitles", function (video, runner) {
   });
   promise.then(() => runner.succeed());
 });
+
+var testPerformance = new TestTemplate("Performance", function (video, runner) {
+  const TIME_TO_VIDEO_THRESHOLD = 4000;
+
+  video.addEventListener('playing', () => {
+    const timeToVideo = Date.now() - window.globalRunner.startTime;
+    runner.log('Time taken to start video ' + timeToVideo + ' ms');
+      if (timeToVideo <= TIME_TO_VIDEO_THRESHOLD) {
+           runner.succeed();
+      } else {
+           runner.fail();
+      }
+  }, { once: true });
+});

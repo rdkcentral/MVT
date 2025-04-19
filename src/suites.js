@@ -96,6 +96,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine, new Unstable("ONEM-26279"), 40000));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
+  tests = tests.concat(makeMvtMediaTests(testPerformance, engine, StreamSets.DASH.Performance));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
@@ -121,6 +122,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.DASH.Video));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.DASH.MULTIAUDIO, engine, null, 40000));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.DASH.Subtitles));
+  tests = tests.concat(makeMvtMediaTests(testPerformance, engine, StreamSets.DASH.Performance));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
@@ -159,6 +161,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine, null, 40000));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
+  tests = tests.concat(makeMvtMediaTests(testPerformance, engine, StreamSets.HLS.Performance));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
@@ -179,6 +182,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   tests = tests.concat(makeMvtMediaTests(testPlayRate, engine, StreamSets.HLS.Video));
   tests.push(new MvtMediaTest(testChangeAudioTracks, MS.HLS.FMP4_MULTIAUDIO, engine, null, 40000));
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.HLS.Subtitles));
+  tests = tests.concat(makeMvtMediaTests(testPerformance, engine, StreamSets.HLS.Performance));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
@@ -198,6 +202,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
     new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testSubtitles, MS.HSS.FMP4_AVC_AAC_VTT, engine),
+    new MvtMediaTest(testPerformance, MS.HSS.FMP4_AVC_AAC_VTT_PLAYBACK_START_TIME, engine),
   ];
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
@@ -217,6 +222,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
     new MvtMediaTest(testPause, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testSetPosition, MS.HSS.FMP4_AVC_AAC_VTT, engine),
     new MvtMediaTest(testPlayRate, MS.HSS.FMP4_AVC_AAC_VTT, engine),
+    new MvtMediaTest(testPerformance, MS.HSS.FMP4_AVC_AAC_VTT_PLAYBACK_START_TIME, engine),
   ];
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
@@ -241,6 +247,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
     makeMvtMediaTests(testPlayRate, engine, StreamSets.Progressive.Video)
   );
   tests = tests.concat(makeMvtMediaTests(testSubtitles, engine, StreamSets.Progressive.Subtitles));
+  tests = tests.concat(makeMvtMediaTests(testPerformance, engine, StreamSets.Progressive.Performance));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
