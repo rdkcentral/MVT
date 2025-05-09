@@ -142,6 +142,7 @@ var libSources = [
   "src/engines.js",
   "src/mediaTests.js",
   "src/suites.js",
+  "src/mvtWsClient.js",
   "js_mse_eme/harness/main.js",
 ];
 
