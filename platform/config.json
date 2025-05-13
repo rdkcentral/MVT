@@ -1,0 +1,4 @@
+{
+    "_comment":"MVT_Runner_IP is the IP of the server where MVT runner is deployed",
+    "MVT_Runner_IP" : "10.64.15.20"
+}
