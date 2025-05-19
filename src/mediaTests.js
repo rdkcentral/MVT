@@ -317,7 +317,7 @@ var testSubtitles = new TestTemplate("Subtitles", function (video, runner) {
   this.content.subtitles.languages.sort();
   let languages = this.content.subtitles.languages.slice();
   if (this.content.subtitles.testLanguages) {
-    languages = this.content.subtitles.testLanguages;
+    languages = this.content.subtitles.testLanguages.slice();
   }
   languages.reverse();
   // Set the first language twice at start and end
