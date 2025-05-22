@@ -21,6 +21,16 @@
 
 #
 
+# v2.19.0 (2025-05-22)
+
+### [ [079bab5](https://github.com/rdkcentral/MVT/commit/079bab5) ] testSubtitles: keep static data
+
+### [ [76909d2](https://github.com/rdkcentral/MVT/commit/76909d2) ] Added support for WS client in MVT
+
+### [ [5e7a105](https://github.com/rdkcentral/MVT/commit/5e7a105) ] Add performance test
+
+#
+
 # v2.18.0 (2025-03-25)
 
 ### [ [f0487d9](https://github.com/rdkcentral/MVT/commit/f0487d9) ] Add System Fonts Check
