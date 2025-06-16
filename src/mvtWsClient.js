@@ -27,7 +27,7 @@ config.onreadystatechange = function() {
     if (config.readyState == 4 && config.status == "200") {
         var resp = JSON.parse(config.responseText);
         var mvtRunnerIp = resp.MVT_Runner_IP;
-        const wsUrl = 'ws://' + mvtRunnerIp + ':10199';
+        const wsUrl = 'wss://' + mvtRunnerIp + ':10199';
         const wsSocket = new WebSocket(wsUrl);
 
         wsSocket.onmessage=function(message)
