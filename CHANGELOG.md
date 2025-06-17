@@ -21,6 +21,12 @@
 
 #
 
+# v2.20.0 (2025-06-17)
+
+### [ [c026be5](https://github.com/rdkcentral/MVT/commit/c026be5) ] Updating communication to MVT-runner to WSS
+
+#
+
 # v2.19.0 (2025-05-22)
 
 ### [ [079bab5](https://github.com/rdkcentral/MVT/commit/079bab5) ] testSubtitles: keep static data
