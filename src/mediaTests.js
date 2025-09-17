@@ -370,3 +370,88 @@ var testPerformance = new TestTemplate("Performance", function (video, runner) {
       }
   }, { once: true });
 });
+
+var testLongDurationVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
+  const initialPosition = video.currentTime + 1;
+  const hasVideoTrack = this.content.video;
+  const playbackTime = 25;
+
+  const makePlaybackTestStep = function (position) {
+    return () =>
+      new Promise((resolve, _) => {
+        return waitForPosition(video, runner, position)
+          .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack))
+          .then(resolve);
+      });
+  };
+
+  var promise = Promise.resolve();
+  for (let i = 0; i < playbackTime; ++i) {
+    promise = promise.then(makePlaybackTestStep(initialPosition + i));
+  }
+  promise.then(() => runner.succeed());
+});
+
+var testLongDurationVideoPause = new TestTemplate("Long-Duration-Video-Pause", function (video, runner) {
+  const hasVideoTrack = this.content.video;
+  var pauseTimes = [5, 10];
+  if (this.content.dynamic) {
+    pauseTimes = [video.currentTime + 5, video.currentTime + 10];
+  }
+
+  const makePauseTest = function (pauseTime) {
+    return () =>
+      waitForPosition(video, runner, pauseTime)
+        .then(() => {
+          const promise = waitForEvent(video, runner, "pause");
+          runner.log("Pausing video");
+          video.pause();
+          return promise;
+        })
+        .then(() => {
+          runner.checkGE(video.currentTime, pauseTime, "currentTime should be greater or equal to pause point");
+          runner.checkGr(pauseTime + 2, video.currentTime, "currentTime should be less than pause point + 2s");
+          const promise = waitForEvent(video, runner, "playing");
+          video.play();
+          return promise;
+        })
+        .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack));
+  };
+
+  var promise = Promise.resolve();
+  pauseTimes.forEach((pauseTime) => (promise = promise.then(makePauseTest(pauseTime))));
+  promise.then(() => runner.succeed());
+});
+
+var testLongDurationVideoSetPosition = new TestTemplate("Long-Duration-Video-Seek", function (video, runner) {
+  const initialPosition = 5;
+  const hasVideoTrack = this.content.video;
+  var positions = [0, 10, 20];
+  if (this.content.dynamic) {
+    let curTime = video.currentTime;
+    positions = [curTime - 40, curTime - 20, curTime];
+  }
+
+  const makeSeekTest = function (position) {
+    return () => {
+      return new Promise((resolve, _) => {
+        runner.log("Changing position to " + position);
+        seek(video, runner, position).then(() => {
+          let curTime = video.currentTime;
+          runner.checkGE(curTime, position, "currentTime should be greater or equal to seek point");
+          runner.checkGr(position + 10, curTime, "currentTime should be less than seek point + 10s");
+          checkVideoFramesIncreasing(video, runner, hasVideoTrack).then(resolve);
+        });
+      });
+    };
+  };
+
+  var promise = waitForPosition(video, runner, initialPosition).then(() => {
+    runner.checkGE(video.currentTime, initialPosition, "video should start playback");
+    return checkVideoFramesIncreasing(video, runner, hasVideoTrack);
+  });
+  positions.forEach((position) => {
+    promise = promise.then(makeSeekTest(position));
+  });
+  promise.then(() => runner.succeed());
+});

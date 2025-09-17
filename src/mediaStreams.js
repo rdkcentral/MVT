@@ -1063,6 +1063,11 @@ const StreamSets = {
     Subtitles: [MS.PROG.MP4_AVC_AAC_VTT, MS.PROG.MKV_AVC_AAC_VTT],
     Performance: [MS.PROG.MP4_AVC_AC3_PLAYBACK_START_TIME]
   },
+  LongDuration: {
+    Common: [
+      MS.PROG.MP4_AVC_AC3,
+    ],
+  },
 };
 
 (function () {

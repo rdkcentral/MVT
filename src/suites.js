@@ -254,3 +254,18 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
+
+(function () {
+  const testSuite = "LongDuration";
+  let engine = new Html5Engine();
+  let skipTests = {};
+
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.LongDuration.Common);
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.LongDuration.Common));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.LongDuration.Common));
+
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
+
+  registerTestSuite(testSuite, makeTests(tests));
+})();
