@@ -374,7 +374,7 @@ var testPerformance = new TestTemplate("Performance", function (video, runner) {
 var testLongDurationVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
-  const playbackTime = 25;
+  const playbackTime = 1*60*60*1000;
 
   const makePlaybackTestStep = function (position) {
     return () =>

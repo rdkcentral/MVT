@@ -260,7 +260,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   let engine = new Html5Engine();
   let skipTests = {};
 
-  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.LongDuration.Common);
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.LongDuration.Common, null, 3*60*60*1000); //timeout of 3 hrs
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.LongDuration.Common));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.LongDuration.Common));
 

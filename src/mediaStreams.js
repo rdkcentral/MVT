@@ -993,6 +993,19 @@ var MS = {
       },
     },
   },
+  LONG: {
+    MKV_AVC_AAC:{
+      variant: "progressive",
+      container: "mkv",
+      src: "https://ftp.nluug.nl/pub/video/HackerHotel/HackerHotel-2020/HH20-Mischa-Geelen-Stranger-inside-network.mkv",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
+  },
 };
 
 (function setMediaStreamNames() {
@@ -1065,7 +1078,7 @@ const StreamSets = {
   },
   LongDuration: {
     Common: [
-      MS.PROG.MP4_AVC_AC3,
+      MS.LONG.MKV_AVC_AAC,
     ],
   },
 };
