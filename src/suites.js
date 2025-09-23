@@ -256,13 +256,26 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 })();
 
 (function () {
-  const testSuite = "LongDuration";
+  const testSuite = "LongDuration Progressive";
   let engine = new Html5Engine();
   let skipTests = {};
 
-  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.LongDuration.Common, null, 3*60*60*1000); //timeout of 3 hrs
-  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.LongDuration.Common));
-  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.LongDuration.Common));
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.Progressive.LongDuration, null, 2*60*60*1000);
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.Progressive.LongDuration));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.Progressive.LongDuration));
+
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
+
+  registerTestSuite(testSuite, makeTests(tests));
+})();
+
+(function () {
+  const testSuite = "LongDuration dashjs";
+  let engine = new DashjsEngine();
+  let skipTests = {};
+
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.DASH.LongDuration, null, 2*60*60*1000);
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);

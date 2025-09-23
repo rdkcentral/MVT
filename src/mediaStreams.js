@@ -457,6 +457,17 @@ var MS = {
       },
       cbcs: true,
     },
+    FMP4_AVC_AAC_LONG: {
+      variant: "dash",
+      container: "fmp4",
+      src: "test-materials/long/manifest.mpd",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
   },
   HLS: {
     MP2TS_AVC_AAC: {
@@ -992,12 +1003,10 @@ var MS = {
         codec: "ac3",
       },
     },
-  },
-  LONG: {
-    MKV_AVC_AAC:{
+    MKV_AVC_AAC_LONG:{
       variant: "progressive",
       container: "mkv",
-      src: "https://ftp.nluug.nl/pub/video/HackerHotel/HackerHotel-2020/HH20-Mischa-Geelen-Stranger-inside-network.mkv",
+      src: "https://ftp.nluug.nl/pub/video/HackerHotel/HackerHotel-2020/HH20-Leslie-Forbes-Nessus-and-Tenable.mkv",
       video: {
         codec: "avc",
       },
@@ -1035,6 +1044,7 @@ const StreamSets = {
     DRM: [MS.DASH.PLAYREADY_4_0_CBCS, MS.DASH.PLAYREADY_CENC, MS.DASH.WIDEVINE_CENC, MS.DASH.WIDEVINE_CBCS, MS.DASH.PLAYREADY_CMAF_CBCS],
     Subtitles: [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT],
     Performance: [MS.DASH.FMP4_AVC_AAC_PLAYBACK_START_TIME, MS.DASH.PLAYREADY_4_0_CBCS_PLAYBACK_START_TIME],
+    LongDuration: [MS.DASH.FMP4_AVC_AAC_LONG],
   },
   HLS: {
     Common: [
@@ -1074,12 +1084,8 @@ const StreamSets = {
       MS.PROG.MP3_MP3,
     ],
     Subtitles: [MS.PROG.MP4_AVC_AAC_VTT, MS.PROG.MKV_AVC_AAC_VTT],
-    Performance: [MS.PROG.MP4_AVC_AC3_PLAYBACK_START_TIME]
-  },
-  LongDuration: {
-    Common: [
-      MS.LONG.MKV_AVC_AAC,
-    ],
+    Performance: [MS.PROG.MP4_AVC_AC3_PLAYBACK_START_TIME],
+    LongDuration: [MS.PROG.MKV_AVC_AAC_LONG],
   },
 };
 

@@ -374,7 +374,7 @@ var testPerformance = new TestTemplate("Performance", function (video, runner) {
 var testLongDurationVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
-  const playbackTime = 1*60*60*1000;
+  const playbackTime = 5400; //1.5 hours
 
   const makePlaybackTestStep = function (position) {
     return () =>
@@ -394,7 +394,7 @@ var testLongDurationVideoPlayback = new TestTemplate("Long-Duration-Video-Playba
 
 var testLongDurationVideoPause = new TestTemplate("Long-Duration-Video-Pause", function (video, runner) {
   const hasVideoTrack = this.content.video;
-  var pauseTimes = [5, 10];
+  var pauseTimes = [5, 20, 40, 100, 300, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 4000, 4250, 4500, 4750, 5000, 5250];
   if (this.content.dynamic) {
     pauseTimes = [video.currentTime + 5, video.currentTime + 10];
   }
