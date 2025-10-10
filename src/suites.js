@@ -272,16 +272,3 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
-
-(function () {
-  const testSuite = "LongDuration dashjs";
-  let engine = new DashjsEngine();
-  let skipTests = {};
-
-  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.DASH.LongDuration, null, 2*60*60*1000);
-
-  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
-  tests = filterSkipTests(skipTests, tests);
-
-  registerTestSuite(testSuite, makeTests(tests));
-})();

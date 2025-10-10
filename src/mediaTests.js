@@ -469,21 +469,22 @@ var testLongDurationVideoSetPosition = new TestTemplate("Long-Duration-Video-See
 });
 
 var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRate", function (video, runner) {
-  const rates = [0.5, 2, 0.75, 1.5];
+  const rates = [0.5, 1, 1.5, 1.75, 2];
+  const ratesLoopCount = 10; //How many times the above rates need to be iterated
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
 
   // Each playbackRate will be verified on the span of |playbackTimePerRate|ms, with media position assertions frequency
   // of |checkInterval|/|playbackTimePerRate|.
-  const playbackTimePerRate = 3000;
-  const checkInterval = 500;
+  const playbackTimePerRate = 60000;
+  const checkInterval = 5000;
   const numberOfChecks = Math.floor(playbackTimePerRate / checkInterval);
 
   // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
   // These events should be emitted within timeout of |setRateToPlayTimeout|.
   // The aim of this mechanism is to let the player buffer some data before playback speed verification.
   const warmUpTimeUpdates = 10;
-  const setRateToPlayTimeout = 10000;
+  const setRateToPlayTimeout = 20000;
 
   const makePlayRateTest = function (playbackRate) {
     return () =>
@@ -521,11 +522,14 @@ var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRa
       });
   };
 
-  var promise = waitForPosition(video, runner, initialPosition).then(() => {
+  var promise = waitForPosition(video, runner, initialPosition, 200*100).then(() => {
     runner.checkGE(video.currentTime, initialPosition, "video should start playback");
   });
-  rates.forEach((rate) => {
-    promise = promise.then(makePlayRateTest(rate));
-  });
+
+  for(let count = 0; count <= ratesLoopCount; count++) {
+    rates.forEach((rate) => {
+      promise = promise.then(makePlayRateTest(rate));
+    });
+  }
   promise.then(() => runner.succeed());
 });
