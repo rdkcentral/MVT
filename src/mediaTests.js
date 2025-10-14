@@ -370,3 +370,166 @@ var testPerformance = new TestTemplate("Performance", function (video, runner) {
       }
   }, { once: true });
 });
+
+var LONG_DUR_VIDEO_PLAYTIME_SEC = 5400; //1.5hrs
+
+var testLongDurationVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
+  const initialPosition = video.currentTime + 1;
+  const hasVideoTrack = this.content.video;
+  const playbackTime = LONG_DUR_VIDEO_PLAYTIME_SEC;
+
+  const makePlaybackTestStep = function (position) {
+    return () =>
+      new Promise((resolve, _) => {
+        return waitForPosition(video, runner, position, 200*1000)
+          .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack))
+          .then(resolve);
+      });
+  };
+
+  var promise = Promise.resolve();
+  for (let i = 0; i < playbackTime; ++i) {
+    promise = promise.then(makePlaybackTestStep(initialPosition + i));
+  }
+  promise.then(() => runner.succeed());
+});
+
+var testLongDurationVideoPause = new TestTemplate("Long-Duration-Video-Pause", function (video, runner) {
+  const hasVideoTrack = this.content.video;
+  var pauseTimes = [];
+  for(let val = 15; val < LONG_DUR_VIDEO_PLAYTIME_SEC; val=val+25) {
+    if (this.content.dynamic) {
+      pauseTimes.push(video.currentTime + val);
+    }
+    else {
+      pauseTimes.push(val);
+    }
+  }
+
+  const makePauseTest = function (pauseTime) {
+    return () =>
+      waitForPosition(video, runner, pauseTime, 200*1000)
+        .then(() => {
+          const promise = waitForEvent(video, runner, "pause");
+          runner.log("Pausing video");
+          video.pause();
+          return promise;
+        })
+        .then(() => {
+          runner.checkGE(video.currentTime, pauseTime, "currentTime should be greater or equal to pause point");
+          runner.checkGr(pauseTime + 2, video.currentTime, "currentTime should be less than pause point + 2s");
+          const promise = waitForEvent(video, runner, "playing");
+          video.play();
+          return promise;
+        })
+        .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack));
+  };
+
+  var promise = Promise.resolve();
+  pauseTimes.forEach((pauseTime) => (promise = promise.then(makePauseTest(pauseTime))));
+  promise.then(() => runner.succeed());
+});
+
+var testLongDurationVideoSetPosition = new TestTemplate("Long-Duration-Video-Seek", function (video, runner) {
+  const initialPosition = 50;
+  const hasVideoTrack = this.content.video;
+  var positions = [];
+
+  for(let val = 5; val < LONG_DUR_VIDEO_PLAYTIME_SEC; val=val+25) {
+    if (this.content.dynamic) {
+      positions.push(video.currentTime + val);
+    }
+    else {
+      positions.push(val);
+    }
+  }
+
+  const makeSeekTest = function (position) {
+    return () => {
+      return new Promise((resolve, _) => {
+        runner.log("Changing position to " + position);
+        seek(video, runner, position).then(() => {
+          let curTime = video.currentTime;
+          runner.checkGE(curTime, position, "currentTime should be greater or equal to seek point");
+          runner.checkGr(position + 10, curTime, "currentTime should be less than seek point + 10s");
+          checkVideoFramesIncreasing(video, runner, hasVideoTrack).then(resolve);
+        });
+      });
+    };
+  };
+
+  var promise = waitForPosition(video, runner, initialPosition, 200*1000).then(() => {
+    runner.checkGE(video.currentTime, initialPosition, "video should start playback");
+    return checkVideoFramesIncreasing(video, runner, hasVideoTrack);
+  });
+  positions.forEach((position) => {
+    promise = promise.then(makeSeekTest(position));
+  });
+  promise.then(() => runner.succeed());
+});
+
+var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRate", function (video, runner) {
+  const rates = [0.5, 1, 1.5, 1.75, 2];
+  const ratesLoopCount = 10; //How many times the above rates need to be iterated
+  const initialPosition = video.currentTime + 1;
+  const hasVideoTrack = this.content.video;
+
+  // Each playbackRate will be verified on the span of |playbackTimePerRate|ms, with media position assertions frequency
+  // of |checkInterval|/|playbackTimePerRate|.
+  const playbackTimePerRate = 60000;
+  const checkInterval = 5000;
+  const numberOfChecks = Math.floor(playbackTimePerRate / checkInterval);
+
+  // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
+  // These events should be emitted within timeout of |setRateToPlayTimeout|.
+  // The aim of this mechanism is to let the player buffer some data before playback speed verification.
+  const warmUpTimeUpdates = 10;
+  const setRateToPlayTimeout = 20000;
+
+  const makePlayRateTest = function (playbackRate) {
+    return () =>
+      new Promise((resolve, _) => {
+        let inaccuracyThreshold = playbackRate * 0.75;
+        let checks = 0;
+        let playTimeLast = 0;
+        let realTimeLast = 0;
+
+        runner.log("Setting playbackRate to ", playbackRate, ", acceptable position inaccuracy: ", inaccuracyThreshold);
+        video.playbackRate = playbackRate;
+
+        function verifyPlaybackProgress() {
+          if (checks >= numberOfChecks) {
+            resolve();
+          } else {
+            if (realTimeLast) {
+              checks++;
+              let playTimeCurrent = video.currentTime;
+              let timePassed = (Date.now() - realTimeLast) / 1000;
+              let expectedPosition = playTimeLast + timePassed * playbackRate;
+              runner.checkApproxEq(playTimeCurrent, expectedPosition, "video.currentTime", inaccuracyThreshold);
+            }
+            playTimeLast = video.currentTime;
+            realTimeLast = Date.now();
+            runner.timeouts.setTimeout(verifyPlaybackProgress, checkInterval);
+          }
+        }
+
+        if (playbackRate)
+          waitForEvent(video, runner, "timeupdate", null, setRateToPlayTimeout, warmUpTimeUpdates)
+            .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack))
+            .then(verifyPlaybackProgress);
+        else runner.timeouts.setTimeout(verifyPlaybackProgress, checkInterval);
+      });
+  };
+
+  var promise = waitForPosition(video, runner, initialPosition, 200*100).then(() => {
+    runner.checkGE(video.currentTime, initialPosition, "video should start playback");
+  });
+
+  for(let count = 0; count <= ratesLoopCount; count++) {
+    rates.forEach((rate) => {
+      promise = promise.then(makePlayRateTest(rate));
+    });
+  }
+  promise.then(() => runner.succeed());
+});

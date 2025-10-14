@@ -457,6 +457,17 @@ var MS = {
       },
       cbcs: true,
     },
+    FMP4_AVC_AAC_LONG: {
+      variant: "dash",
+      container: "fmp4",
+      src: "test-materials/long/manifest.mpd",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
   },
   HLS: {
     MP2TS_AVC_AAC: {
@@ -992,6 +1003,17 @@ var MS = {
         codec: "ac3",
       },
     },
+    MKV_AVC_AAC_LONG:{
+      variant: "progressive",
+      container: "mkv",
+      src: "https://ftp.nluug.nl/pub/video/HackerHotel/HackerHotel-2020/HH20-Leslie-Forbes-Nessus-and-Tenable.mkv",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
   },
 };
 
@@ -1061,7 +1083,8 @@ const StreamSets = {
       MS.PROG.MP3_MP3,
     ],
     Subtitles: [MS.PROG.MP4_AVC_AAC_VTT, MS.PROG.MKV_AVC_AAC_VTT],
-    Performance: [MS.PROG.MP4_AVC_AC3_PLAYBACK_START_TIME]
+    Performance: [MS.PROG.MP4_AVC_AC3_PLAYBACK_START_TIME],
+    LongDuration: [MS.PROG.MKV_AVC_AAC_LONG],
   },
 };
 
