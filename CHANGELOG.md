@@ -21,6 +21,26 @@
 
 #
 
+# v2.21.0 (2025-10-17)
+
+### [ [9b2d756](https://github.com/rdkcentral/MVT/commit/9b2d756) ] Merge branch 'main' into pradeepr-infosys/ONEM-42405
+
+### [ [25606d0](https://github.com/rdkcentral/MVT/commit/25606d0) ] Added playrate tests
+
+### [ [362b41b](https://github.com/rdkcentral/MVT/commit/362b41b) ] Deploy cla action
+
+### [ [d1d93cd](https://github.com/rdkcentral/MVT/commit/d1d93cd) ] Update#2 23Sep25
+
+### [ [284982e](https://github.com/rdkcentral/MVT/commit/284982e) ] Update#1 on 23Sep25
+
+### [ [c22b4c6](https://github.com/rdkcentral/MVT/commit/c22b4c6) ] Updated long duration progressive url
+
+### [ [d280617](https://github.com/rdkcentral/MVT/commit/d280617) ] ONEM-42405: Add new tests to test long duration clear content
+
+### [ [9daa10b](https://github.com/rdkcentral/MVT/commit/9daa10b) ] Deploy cla action
+
+#
+
 # v2.20.0 (2025-06-17)
 
 ### [ [c026be5](https://github.com/rdkcentral/MVT/commit/c026be5) ] Updating communication to MVT-runner to WSS
