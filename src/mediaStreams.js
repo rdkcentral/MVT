@@ -460,7 +460,7 @@ var MS = {
     FMP4_AVC_AAC_LONG: {
       variant: "dash",
       container: "fmp4",
-      src: "test-materials/long/manifest.mpd",
+      src: "test-materials/dash/longdur/manifest.mpd",
       video: {
         codec: "avc",
       },
@@ -1044,6 +1044,7 @@ const StreamSets = {
     DRM: [MS.DASH.PLAYREADY_4_0_CBCS, MS.DASH.PLAYREADY_CENC, MS.DASH.WIDEVINE_CENC, MS.DASH.WIDEVINE_CBCS, MS.DASH.PLAYREADY_CMAF_CBCS],
     Subtitles: [MS.DASH.FMP4_AVC_AAC_TTML, MS.DASH.WEBM_VP9_OPUS_VTT, MS.DASH.CMAF_AVC_MP3_VTT],
     Performance: [MS.DASH.FMP4_AVC_AAC_PLAYBACK_START_TIME, MS.DASH.PLAYREADY_4_0_CBCS_PLAYBACK_START_TIME],
+    LongDuration: [MS.DASH.FMP4_AVC_AAC_LONG],
   },
   HLS: {
     Common: [

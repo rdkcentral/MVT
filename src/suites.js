@@ -258,7 +258,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
 var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
 
 (function () {
-  const testSuite = "LongDuration Progressive";
+  const testSuite = "Long Duration Progressive";
   let engine = new Html5Engine();
   let skipTests = {};
 
@@ -266,6 +266,22 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.Progressive.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.Progressive.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.Progressive.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
+
+  registerTestSuite(testSuite, makeTests(tests));
+})();
+
+(function () {
+  const testSuite = "Long Duration DASH dashjs";
+  let engine = new DashjsEngine();
+  let skipTests = {};
+
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);

@@ -162,7 +162,7 @@ function startTestSuite(name, testSet) {
 
 function registerTestSuite(name, tests) {
   if (tests.length === 0) return;
-  let suiteKey = name.replace(" ", "-").toLowerCase() + "-test";
+  let suiteKey = name.replace(/ /g, "-").toLowerCase() + "-test";
   let info = "Default Timeout: " + TestBase.timeout + "ms";
   let fields = ["passes", "failures", "timeouts"];
   tests.forEach((test, index) => {
