@@ -27,11 +27,12 @@ function make_fmp4_dash {
   local acodec=$3
   local stream_dir=$4
   local ffmpeg_args=$5
+  local streamloop="${6:-0}"
 
   local manifest_path=$stream_dir/manifest.mpd
   if [ ! -f $manifest_path ]; then
     mkdir -p $stream_dir
-    ffmpeg -i $input \
+    ffmpeg -stream_loop $streamloop -i $input \
       -map 0:v:0 -map 0:v:0 -map 0:v:0 -map 0:a:0 \
       -b:v:0 350k -c:v:0 $vcodec -filter:v:0 'scale=320:-1' -g 96 -keyint_min 24 \
       -b:v:1 1000k -c:v:1 $vcodec -filter:v:1 "scale=640:-1"  -g 96 -keyint_min 24 \
@@ -130,3 +131,7 @@ if [ ! -f $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd ]; then
   python3 $media_path/mpd_processor.py add_subtitles $dash_path/fmp4_h264_aac_ttml/manifest.mpd ttml \
     $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd
 fi
+
+#Generate long duration dash stream by appending video in a loop such that play duration >= 1.5hrs
+#input video duration = 2mins, so the number of loops required is 45 to get 92 min video
+make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 aac $dash_path/longdur "" 45
