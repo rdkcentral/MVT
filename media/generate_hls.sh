@@ -37,6 +37,7 @@ function make_fmp4_audio_hls {
       -master_pl_name main.m3u8 \
       -var_stream_map 'a:0' $stream_dir/stream_%v/.m3u8
   fi
+
 }
 
 function make_hls {
@@ -45,6 +46,7 @@ function make_hls {
   local vcodec=$3
   local acodec=$4
   local stream_dir=$5
+  local streamloop="${6:-0}"
   local extension="mp4"
   if [[ $container == "mpegts" ]]; then
     extension="ts"
@@ -53,7 +55,7 @@ function make_hls {
   if [ ! -f $stream_dir/main.m3u8 ]; then
     mkdir -p $stream_dir
     local video_args='-g 48 -sc_threshold 0 -keyint_min 48'
-    ffmpeg -i $input \
+    ffmpeg -stream_loop $streamloop -i $input \
       -filter_complex \
       '[0:v]split=3[v1][v2][v3]; [v1]scale=w=1280:h=720[v0out]; [v2]scale=w=640:h=360[v1out]; [v3]scale=w=360:h=180[v2out]' \
       -map "[v0out]" -c:v:0 $vcodec -profile:v:0 main -b:v:0 5M -maxrate:v:0 5M -minrate:v:0 5M -bufsize:v:0 10 $video_args \
@@ -102,3 +104,7 @@ if [ ! -f $hls_path/fmp4_h264_aac_vtt/main.m3u8 ]; then
     -var_stream_map "v:0,a:0,s:0,sgroup:subtitles,language:en" \
     $hls_path/fmp4_h264_aac_vtt/stream_%v/.m3u8
 fi
+
+#Generate long duration dash stream by appending video in a loop such that play duration >= 1.5hrs
+#input video duration = 2mins, so the number of loops required is 45 to get 92 min video
+make_hls $progressive_path/vid1_h264_aac.mp4 mpegts libx264 aac $hls_path/longdur 45
