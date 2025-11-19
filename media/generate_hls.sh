@@ -37,7 +37,6 @@ function make_fmp4_audio_hls {
       -master_pl_name main.m3u8 \
       -var_stream_map 'a:0' $stream_dir/stream_%v/.m3u8
   fi
-
 }
 
 function make_hls {
