@@ -21,6 +21,14 @@
 
 #
 
+# v2.22.0 (2025-11-20)
+
+### [ [8654c9d](https://github.com/rdkcentral/MVT/commit/8654c9d) ] review comment fix
+
+### [ [1e18847](https://github.com/rdkcentral/MVT/commit/1e18847) ] remove extra line
+
+### [ [b45d581](https://github.com/rdkcentral/MVT/commit/b45d581) ] add long duration hls shaka test
+
 # v2.21.0 (2025-10-17)
 
 ### [ [9b2d756](https://github.com/rdkcentral/MVT/commit/9b2d756) ] Merge branch 'main' into pradeepr-infosys/ONEM-42405
