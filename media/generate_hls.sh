@@ -73,6 +73,10 @@ make_hls $progressive_path/vid1_h264_aac.mp4 fmp4 libx264 eac3 $hls_path/fmp4_h2
 make_hls $progressive_path/vid2_h264_aac.mp4 fmp4 hevc ac3 $hls_path/fmp4_hevc_ac3
 make_fmp4_audio_hls $progressive_path/vid2_h264_aac.mp4 mp3 $hls_path/fmp4_mp3
 
+#Generate long duration hls stream by appending video in a loop such that play duration >= 1.5hrs
+#input video duration = 2mins, so the number of loops required is 45 to get 92 min video
+make_hls $progressive_path/vid1_h264_aac.mp4 mpegts libx264 aac $hls_path/longdur 45
+
 # Two audio tracks with different languages
 if [ ! -f $hls_path/fmp4_multiaudio/main.m3u8 ]; then
   mkdir -p $hls_path/fmp4_multiaudio
@@ -103,7 +107,3 @@ if [ ! -f $hls_path/fmp4_h264_aac_vtt/main.m3u8 ]; then
     -var_stream_map "v:0,a:0,s:0,sgroup:subtitles,language:en" \
     $hls_path/fmp4_h264_aac_vtt/stream_%v/.m3u8
 fi
-
-#Generate long duration dash stream by appending video in a loop such that play duration >= 1.5hrs
-#input video duration = 2mins, so the number of loops required is 45 to get 92 min video
-make_hls $progressive_path/vid1_h264_aac.mp4 mpegts libx264 aac $hls_path/longdur 45
