@@ -288,3 +288,19 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
 
   registerTestSuite(testSuite, makeTests(tests));
 })();
+
+(function () {
+  const testSuite = "Long Duration HLS shaka";
+  let engine = new ShakaEngine();
+  let skipTests = {};
+
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
+
+  registerTestSuite(testSuite, makeTests(tests));
+})();

@@ -86,6 +86,10 @@ make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 aac $dash_path/fmp4_h
 make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 ac3 $dash_path/fmp4_h264_ac3
 make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx265 eac3 $dash_path/fmp4_hevc_eac3
 
+#Generate long duration dash stream by appending video in a loop such that play duration >= 1.5hrs
+#input video duration = 2mins, so the number of loops required is 45 to get 92 min video
+make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 aac $dash_path/longdur "" 45
+
 # fMP4 with single MP3 track (audio only)
 if [ ! -f $dash_path/fmp4_mp3/manifest.mpd ]; then
   mkdir -p $dash_path/fmp4_mp3
@@ -131,7 +135,3 @@ if [ ! -f $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd ]; then
   python3 $media_path/mpd_processor.py add_subtitles $dash_path/fmp4_h264_aac_ttml/manifest.mpd ttml \
     $dash_path/fmp4_h264_aac_ttml/manifest_ttml.mpd
 fi
-
-#Generate long duration dash stream by appending video in a loop such that play duration >= 1.5hrs
-#input video duration = 2mins, so the number of loops required is 45 to get 92 min video
-make_fmp4_dash $progressive_path/vid1_h264_aac.mp4 libx264 aac $dash_path/longdur "" 45

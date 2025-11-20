@@ -686,6 +686,17 @@ var MS = {
       },
       widevine: true,
     },
+    MP2TS_AVC_AAC_LONG: {
+      variant: "hls",
+      container: "mpeg2ts",
+      src: "test-materials/hls/longdur/main.m3u8",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+    },
   },
   HSS: {
     FMP4_AVC_AAC_VTT: {
@@ -1061,6 +1072,7 @@ const StreamSets = {
     DRM: [MS.HLS.WIDEVINE_CENC, MS.HLS.WIDEVINE_CBCS],
     Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT],
     Performance: [MS.HLS.MP2TS_AVC_AAC_PLAYBACK_START_TIME, MS.HLS.WIDEVINE_CENC_PLAYBACK_START_TIME],
+    LongDuration: [MS.HLS.MP2TS_AVC_AAC_LONG],
   },
   Progressive: {
     Common: [
