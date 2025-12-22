@@ -533,3 +533,227 @@ var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRa
   }
   promise.then(() => runner.succeed());
 });
+
+const TEST_DURATION = 5400 * 1000;
+const VIDEO_DURATION = 734;
+const LOOP_THRESHOLD = 0.15;
+
+var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
+  const startTime = Date.now();
+  let expectedPosition = video.currentTime + 1;
+  const hasVideoTrack = this.content.video;
+
+  function loopCheck() {
+    const t = video.currentTime;
+    const remaining = VIDEO_DURATION - t;
+
+    if (Date.now() - startTime >= TEST_DURATION) {
+        runner.succeed();
+    }
+
+    if (t >= expectedPosition) {
+      runner.log("Current time: " + t.toFixed(2));
+      checkVideoFramesIncreasing(video, runner, hasVideoTrack);
+      expectedPosition++;
+    }
+
+    if (remaining < LOOP_THRESHOLD) {
+      runner.log("looping video");
+      video.currentTime = 0.01;                 // looping the 12 min encrypted video to play the test for 1.5 hrs
+      expectedPosition = 1;
+    }
+    requestAnimationFrame(loopCheck);
+  }
+  requestAnimationFrame(loopCheck);
+});
+
+var testLongDurationEncryptedVideoPause = new TestTemplate("Long-Duration-Video-Pause", function (video, runner) {
+  const hasVideoTrack = this.content.video;
+  const startTime = Date.now();
+  let pauseTimes = [];
+  let pauseIndex = 0;
+  let isPaused = false;
+
+  for (let val = 15; val < VIDEO_DURATION; val += 25) {
+      pauseTimes.push(val);
+  }
+
+  function loopCheck() {
+    const t = video.currentTime;
+    const remaining = VIDEO_DURATION - t;
+
+    if (Date.now() - startTime >= TEST_DURATION) {
+        runner.succeed();
+    }
+
+    if (!isPaused && pauseIndex < pauseTimes.length && t >= pauseTimes[pauseIndex]) {
+      runner.log("Pausing at: " + pauseTimes[pauseIndex]);
+      const p = pauseTimes[pauseIndex];
+      isPaused = true;
+      video.pause();
+
+      runner.timeouts.setTimeout(() => {
+        runner.checkGE(video.currentTime, p, "currentTime >= pause point");
+        runner.checkGr(p + 2, video.currentTime, "currentTime < pause point + 2s");
+
+        runner.log("Resuming playback");
+        video.play();
+        checkVideoFramesIncreasing(video, runner, hasVideoTrack);
+
+        isPaused = false;
+        pauseIndex++;
+      }, 1000);
+    }
+
+    if (!isPaused && remaining < LOOP_THRESHOLD) {
+      isPaused = false;
+      pauseIndex = 0;
+      runner.log("looping video");
+      video.currentTime = 0.01;
+    }
+
+    requestAnimationFrame(loopCheck);
+  }
+
+  requestAnimationFrame(loopCheck);
+});
+
+var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-Video-Seek", function (video, runner) {
+  const initialPosition = 50;
+  const POST_SEEK_PLAY_SEC = 2;
+  const hasVideoTrack = this.content.video;
+  let startTime = Date.now();
+  let initialReached = false;
+  let seekInProgress = false;
+  let seekIndex = 0;
+  let seekTime = 0;
+
+  const positions = [];
+  for (let val = 5; val < VIDEO_DURATION; val += 25) {
+    positions.push(val);
+  }
+
+  function loopCheck() {
+    const t = video.currentTime;
+    const remaining = VIDEO_DURATION - t;
+
+    if (Date.now() - startTime >= TEST_DURATION) {
+        runner.succeed();
+    }
+
+    if (!initialReached) {
+      if (t >= initialPosition) {
+        runner.log("Initial position reached at " + t.toFixed(2));
+        initialReached = true;
+      }
+      requestAnimationFrame(loopCheck);
+      return;
+    }
+
+    if (!seekInProgress && seekIndex < positions.length) {
+      runner.log("Seek to " + positions[seekIndex]);
+      video.currentTime = positions[seekIndex];
+      seekTime = positions[seekIndex];
+      seekInProgress = true;
+    }
+
+    if (seekInProgress && video.currentTime >= seekTime + POST_SEEK_PLAY_SEC) {
+      runner.log("Post-seek playback at " + video.currentTime.toFixed(2));
+      checkVideoFramesIncreasing(video, runner, hasVideoTrack);
+      seekIndex++;
+      seekInProgress = false;
+    }
+
+    if (remaining < LOOP_THRESHOLD) {
+      seekIndex = 0;
+      initialReached = false;
+      seekInProgress = false;
+      runner.log("looping video");
+      video.currentTime = 0.01;
+    }
+
+    requestAnimationFrame(loopCheck);
+  }
+
+  requestAnimationFrame(loopCheck);
+});
+
+var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRate", function (video, runner) {
+  const rates = [0.5, 1, 1.5, 1.75, 2];
+  const playbackTimePerRate = 6000;
+  const checkInterval = 500;
+  const numberOfChecks = Math.floor(playbackTimePerRate / checkInterval);
+  const hasVideoTrack = this.content.video;
+  let startTime = Date.now();
+  let playbackStarted = false;
+  let rateIndex = 0;
+  let checks = 0;
+  let playTimeLast = 0;
+  let realTimeLast = 0;
+
+  function startRateVerification(rate) {
+    runner.log("Setting playbackRate to " + rate);
+    video.playbackRate = rate;
+    checks = 0;
+    playTimeLast = video.currentTime;
+    realTimeLast = Date.now();
+    checkVideoFramesIncreasing(video, runner, hasVideoTrack);
+  }
+
+  function verifyPlaybackRate() {
+    const rate = rates[rateIndex];
+    const inaccuracyThreshold = rate * 0.75;
+
+    if (checks >= numberOfChecks) {
+      rateIndex++;
+
+      if (rateIndex >= rates.length) {
+        rateIndex = 0;
+      }
+
+      startRateVerification(rates[rateIndex]);
+      runner.timeouts.setTimeout(loopCheck, checkInterval);
+      return;
+    }
+
+    let playTimeCurrent = video.currentTime;
+    let timePassed = (Date.now() - realTimeLast) / 1000;
+    let expectedPosition = playTimeLast + timePassed * rate;
+
+    runner.checkApproxEq(playTimeCurrent, expectedPosition, "video.currentTime", inaccuracyThreshold);
+
+    playTimeLast = playTimeCurrent;
+    realTimeLast = Date.now();
+    checks++;
+    runner.timeouts.setTimeout(loopCheck, checkInterval);
+  }
+
+  function loopCheck() {
+    const t = video.currentTime;
+    const remaining = VIDEO_DURATION - t;
+
+    if (Date.now() - startTime >= TEST_DURATION) {
+        runner.succeed();
+    }
+
+    if (!playbackStarted) {
+      if (t > 0) {
+        runner.log("Playback started at " + t.toFixed(2));
+        playbackStarted = true;
+        startRateVerification(rates[rateIndex]);
+      }
+      requestAnimationFrame(loopCheck);
+      return;
+    }
+
+    verifyPlaybackRate();
+
+    if (remaining < LOOP_THRESHOLD) {
+      playbackStarted = false;
+      runner.log("looping video");
+      video.currentTime = 0.01;
+    }
+  }
+
+  requestAnimationFrame(loopCheck);
+});
