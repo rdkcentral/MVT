@@ -534,8 +534,11 @@ var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRa
   promise.then(() => runner.succeed());
 });
 
-const TEST_DURATION = 5400 * 1000;
-const VIDEO_DURATION = 734;
+
+// Due to long duration encrypted stream unavailability, looping the existing 12 min encrypted stream for 1.5 hrs.
+// Hence created these 4 new functions instead of reusing the existing four functions of long duration clearstream playback.
+
+const LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP = 734;
 const LOOP_THRESHOLD = 0.15;
 
 var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
@@ -545,10 +548,11 @@ var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Vid
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = VIDEO_DURATION - t;
+    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
 
-    if (Date.now() - startTime >= TEST_DURATION) {
+    if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
+        return;
     }
 
     if (t >= expectedPosition) {
@@ -574,16 +578,17 @@ var testLongDurationEncryptedVideoPause = new TestTemplate("Long-Duration-Video-
   let pauseIndex = 0;
   let isPaused = false;
 
-  for (let val = 15; val < VIDEO_DURATION; val += 25) {
+  for (let val = 15; val < LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP; val += 25) {
       pauseTimes.push(val);
   }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = VIDEO_DURATION - t;
+    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
 
-    if (Date.now() - startTime >= TEST_DURATION) {
+    if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
+        return;
     }
 
     if (!isPaused && pauseIndex < pauseTimes.length && t >= pauseTimes[pauseIndex]) {
@@ -609,7 +614,7 @@ var testLongDurationEncryptedVideoPause = new TestTemplate("Long-Duration-Video-
       isPaused = false;
       pauseIndex = 0;
       runner.log("looping video");
-      video.currentTime = 0.01;
+      video.currentTime = 0.01;                   // looping the 12 min encrypted video to play the test for 1.5 hrs
     }
 
     requestAnimationFrame(loopCheck);
@@ -629,16 +634,17 @@ var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-
   let seekTime = 0;
 
   const positions = [];
-  for (let val = 5; val < VIDEO_DURATION; val += 25) {
+  for (let val = 5; val < LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP; val += 25) {
     positions.push(val);
   }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = VIDEO_DURATION - t;
+    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
 
-    if (Date.now() - startTime >= TEST_DURATION) {
+    if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
+        return;
     }
 
     if (!initialReached) {
@@ -669,7 +675,7 @@ var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-
       initialReached = false;
       seekInProgress = false;
       runner.log("looping video");
-      video.currentTime = 0.01;
+      video.currentTime = 0.01;                    // looping the 12 min encrypted video to play the test for 1.5 hrs
     }
 
     requestAnimationFrame(loopCheck);
@@ -730,10 +736,11 @@ var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Vid
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = VIDEO_DURATION - t;
+    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
 
-    if (Date.now() - startTime >= TEST_DURATION) {
+    if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
+        return;
     }
 
     if (!playbackStarted) {
@@ -751,7 +758,7 @@ var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Vid
     if (remaining < LOOP_THRESHOLD) {
       playbackStarted = false;
       runner.log("looping video");
-      video.currentTime = 0.01;
+      video.currentTime = 0.01;                    // looping the 12 min encrypted video to play the test for 1.5 hrs
     }
   }
 
