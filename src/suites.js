@@ -45,6 +45,19 @@ function filterSkipTests(skipTests, tests) {
 }
 
 (function () {
+  const testSuite = "System";
+
+  let tests = [];
+
+  tests.push(new MvtTest(
+          makeCheckResolutionTest(),
+          `Resolution`
+        )
+      );
+  registerTestSuite(testSuite, makeTests(tests));
+})();
+
+(function () {
   const testSuite = "Codec Support";
 
   let tests = [];
