@@ -105,6 +105,20 @@ function makeIsTypeSupportedTest(codec, container, mimeType) {
   });
 }
 
+//Test for checking resolution, test will pass if the resolutioni is 1920x1080
+function makeCheckResolutionTest() {
+    return new TestTemplate(`Check Resolution`, function (runner, video) {
+    const expected_disp_width  = 1920;
+    const expected_disp_height = 1080;
+    const disp_width  = window.screen.width*window.devicePixelRatio;
+    const disp_height = window.screen.height*window.devicePixelRatio;
+    runner.log("Executing CheckResolution test");
+    runner.log(`Resolution = ${disp_width}x${disp_height}`);
+    runner.assert(((expected_disp_width == disp_width) && (expected_disp_height == disp_height)), `Display resolution : ${disp_width}x${disp_height} is NOT ${expected_disp_width}x${expected_disp_height} !!!`);
+    runner.succeed();
+  });
+}
+
 var testPlayback = new TestTemplate("Playback", function (video, runner) {
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
