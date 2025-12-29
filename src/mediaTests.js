@@ -552,7 +552,7 @@ var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRa
 // Due to long duration encrypted stream unavailability, looping the existing 12 min encrypted stream for 1.5 hrs.
 // Hence created these 4 new functions instead of reusing the existing four functions of long duration clearstream playback.
 
-const LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP = 734;
+const LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP = 120;
 const LOOP_THRESHOLD = 0.15;
 
 var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {

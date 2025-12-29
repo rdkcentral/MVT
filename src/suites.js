@@ -312,9 +312,13 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
   let skipTests = {};
 
   let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
+  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPlayback, MS.HLS.WIDEVINE_CENC, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPause, MS.HLS.WIDEVINE_CENC, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoSetPosition, MS.HLS.WIDEVINE_CENC, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPlayRate, MS.HLS.WIDEVINE_CENC, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
