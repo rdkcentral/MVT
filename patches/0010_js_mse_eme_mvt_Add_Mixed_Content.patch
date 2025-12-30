@@ -1,0 +1,12 @@
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index 3b16886..1f2cfd8 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -58,6 +58,7 @@ var compactTestView = (function() {
+       this.addLink('WPT Tests', 'https://wpt.live/');
+       this.addLink('Browse Media Assets', 'https://mvt.onemw.net/test-materials/');
+       this.addLink('System fonts', 'fonts.html');
++      this.addLink('Mixed Content', 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html');
+ 
+       var platCfg = new XMLHttpRequest();
+       platCfg.overrideMimeType("application/json");
