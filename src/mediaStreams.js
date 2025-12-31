@@ -689,13 +689,38 @@ var MS = {
     MP2TS_AVC_AAC_LONG: {
       variant: "hls",
       container: "mpeg2ts",
-      src: "test-materials/hls/longdur/main.m3u8",
+      src: "test-materials/hls/mpegts_h264_aac/main.m3u8",
       video: {
         codec: "avc",
       },
       audio: {
         codec: "aac",
       },
+    },
+    WIDEVINE_CENC_LONG: {
+      variant: "hls",
+      container: "fmp4",
+      note: "Widevine with CENC encryption",
+      src: "test-materials/hls/widevine/cenc/manifest.m3u8",
+      video: {
+        codec: "avc",
+      },
+      audio: {
+        codec: "aac",
+      },
+      drm: {
+        servers: {
+          "com.widevine.alpha": {
+            serverURL: "https://proxy.uat.widevine.com/proxy",
+          },
+        },
+        shaka: {
+          servers: {
+            "com.widevine.alpha": "https://proxy.uat.widevine.com/proxy",
+          },
+        },
+      },
+      widevine: true,
     },
   },
   HSS: {
@@ -1072,7 +1097,7 @@ const StreamSets = {
     DRM: [MS.HLS.WIDEVINE_CENC, MS.HLS.WIDEVINE_CBCS],
     Subtitles: [MS.HLS.FMP4_AVC_AAC_VTT],
     Performance: [MS.HLS.MP2TS_AVC_AAC_PLAYBACK_START_TIME, MS.HLS.WIDEVINE_CENC_PLAYBACK_START_TIME],
-    LongDuration: [MS.HLS.MP2TS_AVC_AAC_LONG],
+    LongDuration: [MS.HLS.MP2TS_AVC_AAC_LONG,MS.HLS.WIDEVINE_CENC_LONG],
   },
   Progressive: {
     Common: [

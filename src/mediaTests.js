@@ -552,17 +552,24 @@ var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRa
 // Due to long duration encrypted stream unavailability, looping the existing 12 min encrypted stream for 1.5 hrs.
 // Hence created these 4 new functions instead of reusing the existing four functions of long duration clearstream playback.
 
-const LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP = 120;
 const LOOP_THRESHOLD = 0.15;
 
 var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
   const startTime = Date.now();
   let expectedPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
+
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
@@ -591,14 +598,22 @@ var testLongDurationEncryptedVideoPause = new TestTemplate("Long-Duration-Video-
   let pauseTimes = [];
   let pauseIndex = 0;
   let isPaused = false;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
 
-  for (let val = 15; val < LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP; val += 25) {
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
+
+  for (let val = 15; val < LONG_DUR_STREAM_PLAYTIME_PER_LOOP; val += 25) {
       pauseTimes.push(val);
   }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
@@ -646,15 +661,23 @@ var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-
   let seekInProgress = false;
   let seekIndex = 0;
   let seekTime = 0;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
+
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
 
   const positions = [];
-  for (let val = 5; val < LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP; val += 25) {
+  for (let val = 5; val < LONG_DUR_STREAM_PLAYTIME_PER_LOOP; val += 25) {
     positions.push(val);
   }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
@@ -710,6 +733,14 @@ var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Vid
   let checks = 0;
   let playTimeLast = 0;
   let realTimeLast = 0;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
+
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
 
   function startRateVerification(rate) {
     runner.log("Setting playbackRate to " + rate);
@@ -750,7 +781,7 @@ var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Vid
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
