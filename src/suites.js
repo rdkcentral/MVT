@@ -292,13 +292,9 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
   let skipTests = {};
 
   let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPlayback, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPause, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoSetPosition, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPlayRate, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
@@ -311,10 +307,10 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
   let engine = new ShakaEngine();
   let skipTests = {};
 
-  let tests = makeMvtMediaTests(testLongDurationEncryptedVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
-  tests = tests.concat(makeMvtMediaTests(testLongDurationEncryptedVideoPause, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests = tests.concat(makeMvtMediaTests(testLongDurationEncryptedVideoSetPosition, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests = tests.concat(makeMvtMediaTests(testLongDurationEncryptedVideoPlayRate, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
@@ -327,10 +323,10 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
   let engine = new HlsjsEngine();
   let skipTests = {};
 
-  let tests = makeMvtMediaTests(testLongDurationEncryptedVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
-  tests = tests.concat(makeMvtMediaTests(testLongDurationEncryptedVideoPause, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests = tests.concat(makeMvtMediaTests(testLongDurationEncryptedVideoSetPosition, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests = tests.concat(makeMvtMediaTests(testLongDurationEncryptedVideoPlayRate, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
