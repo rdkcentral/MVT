@@ -385,184 +385,27 @@ var testPerformance = new TestTemplate("Performance", function (video, runner) {
   }, { once: true });
 });
 
+// Looping the existing clear and encrypted stream for 1.5 hrs.
+
 var LONG_DUR_VIDEO_PLAYTIME_SEC = 5400; //1.5hrs
-
-var testLongDurationVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
-  const initialPosition = video.currentTime + 1;
-  const hasVideoTrack = this.content.video;
-  const playbackTime = LONG_DUR_VIDEO_PLAYTIME_SEC;
-
-  const makePlaybackTestStep = function (position) {
-    return () =>
-      new Promise((resolve, _) => {
-        return waitForPosition(video, runner, position, 200*1000)
-          .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack))
-          .then(resolve);
-      });
-  };
-
-  var promise = Promise.resolve();
-  for (let i = 0; i < playbackTime; ++i) {
-    promise = promise.then(makePlaybackTestStep(initialPosition + i));
-  }
-  promise.then(() => runner.succeed());
-});
-
-var testLongDurationVideoPause = new TestTemplate("Long-Duration-Video-Pause", function (video, runner) {
-  const hasVideoTrack = this.content.video;
-  var pauseTimes = [];
-  for(let val = 15; val < LONG_DUR_VIDEO_PLAYTIME_SEC; val=val+25) {
-    if (this.content.dynamic) {
-      pauseTimes.push(video.currentTime + val);
-    }
-    else {
-      pauseTimes.push(val);
-    }
-  }
-
-  const makePauseTest = function (pauseTime) {
-    return () =>
-      waitForPosition(video, runner, pauseTime, 200*1000)
-        .then(() => {
-          const promise = waitForEvent(video, runner, "pause");
-          runner.log("Pausing video");
-          video.pause();
-          return promise;
-        })
-        .then(() => {
-          runner.checkGE(video.currentTime, pauseTime, "currentTime should be greater or equal to pause point");
-          runner.checkGr(pauseTime + 2, video.currentTime, "currentTime should be less than pause point + 2s");
-          const promise = waitForEvent(video, runner, "playing");
-          video.play();
-          return promise;
-        })
-        .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack));
-  };
-
-  var promise = Promise.resolve();
-  pauseTimes.forEach((pauseTime) => (promise = promise.then(makePauseTest(pauseTime))));
-  promise.then(() => runner.succeed());
-});
-
-var testLongDurationVideoSetPosition = new TestTemplate("Long-Duration-Video-Seek", function (video, runner) {
-  const initialPosition = 50;
-  const hasVideoTrack = this.content.video;
-  var positions = [];
-
-  for(let val = 5; val < LONG_DUR_VIDEO_PLAYTIME_SEC; val=val+25) {
-    if (this.content.dynamic) {
-      positions.push(video.currentTime + val);
-    }
-    else {
-      positions.push(val);
-    }
-  }
-
-  const makeSeekTest = function (position) {
-    return () => {
-      return new Promise((resolve, _) => {
-        runner.log("Changing position to " + position);
-        seek(video, runner, position).then(() => {
-          let curTime = video.currentTime;
-          runner.checkGE(curTime, position, "currentTime should be greater or equal to seek point");
-          runner.checkGr(position + 10, curTime, "currentTime should be less than seek point + 10s");
-          checkVideoFramesIncreasing(video, runner, hasVideoTrack).then(resolve);
-        });
-      });
-    };
-  };
-
-  var promise = waitForPosition(video, runner, initialPosition, 200*1000).then(() => {
-    runner.checkGE(video.currentTime, initialPosition, "video should start playback");
-    return checkVideoFramesIncreasing(video, runner, hasVideoTrack);
-  });
-  positions.forEach((position) => {
-    promise = promise.then(makeSeekTest(position));
-  });
-  promise.then(() => runner.succeed());
-});
-
-var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRate", function (video, runner) {
-  const rates = [0.5, 1, 1.5, 1.75, 2];
-  const ratesLoopCount = 10; //How many times the above rates need to be iterated
-  const initialPosition = video.currentTime + 1;
-  const hasVideoTrack = this.content.video;
-
-  // Each playbackRate will be verified on the span of |playbackTimePerRate|ms, with media position assertions frequency
-  // of |checkInterval|/|playbackTimePerRate|.
-  const playbackTimePerRate = 60000;
-  const checkInterval = 5000;
-  const numberOfChecks = Math.floor(playbackTimePerRate / checkInterval);
-
-  // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
-  // These events should be emitted within timeout of |setRateToPlayTimeout|.
-  // The aim of this mechanism is to let the player buffer some data before playback speed verification.
-  const warmUpTimeUpdates = 10;
-  const setRateToPlayTimeout = 20000;
-
-  const makePlayRateTest = function (playbackRate) {
-    return () =>
-      new Promise((resolve, _) => {
-        let inaccuracyThreshold = playbackRate * 0.75;
-        let checks = 0;
-        let playTimeLast = 0;
-        let realTimeLast = 0;
-
-        runner.log("Setting playbackRate to ", playbackRate, ", acceptable position inaccuracy: ", inaccuracyThreshold);
-        video.playbackRate = playbackRate;
-
-        function verifyPlaybackProgress() {
-          if (checks >= numberOfChecks) {
-            resolve();
-          } else {
-            if (realTimeLast) {
-              checks++;
-              let playTimeCurrent = video.currentTime;
-              let timePassed = (Date.now() - realTimeLast) / 1000;
-              let expectedPosition = playTimeLast + timePassed * playbackRate;
-              runner.checkApproxEq(playTimeCurrent, expectedPosition, "video.currentTime", inaccuracyThreshold);
-            }
-            playTimeLast = video.currentTime;
-            realTimeLast = Date.now();
-            runner.timeouts.setTimeout(verifyPlaybackProgress, checkInterval);
-          }
-        }
-
-        if (playbackRate)
-          waitForEvent(video, runner, "timeupdate", null, setRateToPlayTimeout, warmUpTimeUpdates)
-            .then(() => checkVideoFramesIncreasing(video, runner, hasVideoTrack))
-            .then(verifyPlaybackProgress);
-        else runner.timeouts.setTimeout(verifyPlaybackProgress, checkInterval);
-      });
-  };
-
-  var promise = waitForPosition(video, runner, initialPosition, 200*100).then(() => {
-    runner.checkGE(video.currentTime, initialPosition, "video should start playback");
-  });
-
-  for(let count = 0; count <= ratesLoopCount; count++) {
-    rates.forEach((rate) => {
-      promise = promise.then(makePlayRateTest(rate));
-    });
-  }
-  promise.then(() => runner.succeed());
-});
-
-
-// Due to long duration encrypted stream unavailability, looping the existing 12 min encrypted stream for 1.5 hrs.
-// Hence created these 4 new functions instead of reusing the existing four functions of long duration clearstream playback.
-
-const LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP = 120;
 const LOOP_THRESHOLD = 0.15;
 
-var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
+var testLongDurationVideoPlayback = new TestTemplate("Long-Duration-Video-Playback", function (video, runner) {
   const startTime = Date.now();
   let expectedPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
+
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
@@ -577,7 +420,7 @@ var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Vid
 
     if (remaining < LOOP_THRESHOLD) {
       runner.log("looping video");
-      video.currentTime = 0.01;                 // looping the 12 min encrypted video to play the test for 1.5 hrs
+      video.currentTime = 0.01;                 // looping the video to play the test for 1.5 hrs
       expectedPosition = 1;
     }
     requestAnimationFrame(loopCheck);
@@ -585,20 +428,28 @@ var testLongDurationEncryptedVideoPlayback = new TestTemplate("Long-Duration-Vid
   requestAnimationFrame(loopCheck);
 });
 
-var testLongDurationEncryptedVideoPause = new TestTemplate("Long-Duration-Video-Pause", function (video, runner) {
+var testLongDurationVideoPause = new TestTemplate("Long-Duration-Video-Pause", function (video, runner) {
   const hasVideoTrack = this.content.video;
   const startTime = Date.now();
   let pauseTimes = [];
   let pauseIndex = 0;
   let isPaused = false;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
 
-  for (let val = 15; val < LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP; val += 25) {
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
+
+  for (let val = 15; val < LONG_DUR_STREAM_PLAYTIME_PER_LOOP; val += 25) {
       pauseTimes.push(val);
   }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
@@ -628,7 +479,7 @@ var testLongDurationEncryptedVideoPause = new TestTemplate("Long-Duration-Video-
       isPaused = false;
       pauseIndex = 0;
       runner.log("looping video");
-      video.currentTime = 0.01;                   // looping the 12 min encrypted video to play the test for 1.5 hrs
+      video.currentTime = 0.01;                   // looping the video to play the test for 1.5 hrs
     }
 
     requestAnimationFrame(loopCheck);
@@ -637,7 +488,7 @@ var testLongDurationEncryptedVideoPause = new TestTemplate("Long-Duration-Video-
   requestAnimationFrame(loopCheck);
 });
 
-var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-Video-Seek", function (video, runner) {
+var testLongDurationVideoSetPosition = new TestTemplate("Long-Duration-Video-Seek", function (video, runner) {
   const initialPosition = 50;
   const POST_SEEK_PLAY_SEC = 2;
   const hasVideoTrack = this.content.video;
@@ -646,15 +497,23 @@ var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-
   let seekInProgress = false;
   let seekIndex = 0;
   let seekTime = 0;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
+
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
 
   const positions = [];
-  for (let val = 5; val < LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP; val += 25) {
+  for (let val = 5; val < LONG_DUR_STREAM_PLAYTIME_PER_LOOP; val += 25) {
     positions.push(val);
   }
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
@@ -689,7 +548,7 @@ var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-
       initialReached = false;
       seekInProgress = false;
       runner.log("looping video");
-      video.currentTime = 0.01;                    // looping the 12 min encrypted video to play the test for 1.5 hrs
+      video.currentTime = 0.01;                    // looping the video to play the test for 1.5 hrs
     }
 
     requestAnimationFrame(loopCheck);
@@ -698,7 +557,7 @@ var testLongDurationEncryptedVideoSetPosition = new TestTemplate("Long-Duration-
   requestAnimationFrame(loopCheck);
 });
 
-var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRate", function (video, runner) {
+var testLongDurationVideoPlayRate = new TestTemplate("Long-Duration-Video-PlayRate", function (video, runner) {
   const rates = [0.5, 1, 1.5, 1.75, 2];
   const playbackTimePerRate = 6000;
   const checkInterval = 500;
@@ -710,6 +569,14 @@ var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Vid
   let checks = 0;
   let playTimeLast = 0;
   let realTimeLast = 0;
+  let LONG_DUR_STREAM_PLAYTIME_PER_LOOP;
+
+  if (runner.currentTest.desc.includes("PLAYREADY_4_0")) {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 734;
+  }
+  else {
+    LONG_DUR_STREAM_PLAYTIME_PER_LOOP = 120;
+  }
 
   function startRateVerification(rate) {
     runner.log("Setting playbackRate to " + rate);
@@ -750,7 +617,7 @@ var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Vid
 
   function loopCheck() {
     const t = video.currentTime;
-    const remaining = LONG_DUR_ENCRYPTED_STREAM_PLAYTIME_PER_LOOP - t;
+    const remaining = LONG_DUR_STREAM_PLAYTIME_PER_LOOP - t;
 
     if (Date.now() - startTime >= LONG_DUR_VIDEO_PLAYTIME_SEC * 1000) {
         runner.succeed();
@@ -772,7 +639,7 @@ var testLongDurationEncryptedVideoPlayRate = new TestTemplate("Long-Duration-Vid
     if (remaining < LOOP_THRESHOLD) {
       playbackStarted = false;
       runner.log("looping video");
-      video.currentTime = 0.01;                    // looping the 12 min encrypted video to play the test for 1.5 hrs
+      video.currentTime = 0.01;                    // looping the video to play the test for 1.5 hrs
     }
   }
 
