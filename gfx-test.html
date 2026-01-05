@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperlink Buttons</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Left align to page */
+            margin-left: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Vertical alignment */
+        }
+
+        .nav-button {
+            padding: 10px 15px;
+            font-size: 16px;
+	    font-weight: bold;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            cursor: pointer;
+            width: 200px; /* Fixed width for alignment */
+            text-align: left;
+            box-sizing: border-box;
+            display: block; /* Ensures the whole area is clickable */
+        }
+
+        .nav-button:focus, .nav-button:hover {
+            outline: 2px solid #ff5733;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            text-decoration: none;
+            color: #333;
+            cursor: pointer;
+            padding: 5px 0;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .back-link:focus, .back-link:hover {
+            color: #E74C3C;
+            text-decoration: underline;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Graphics tests</h1>
+    
+    <div class="container">
+        <!-- Button 1 -->
+        <a href="https://webglsamples.org/fishtank/fishtank.html" target="_blank" class="nav-button" id="button1" tabindex="0">
+            Test #1 - Fishtank
+        </a>
+
+        <!-- Button 2 -->
+        <a href="https://webglsamples.org/aquarium/aquarium.html" target="_blank" class="nav-button" id="button2" tabindex="0">
+            Test #2 - Aquarium
+        </a>
+    </div>
+
+    <!-- Go Back Link -->
+    <a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
+        ← Go Back to Previous Page
+    </a>
+
+    <script>
+        // Focus on the first button when the page loads
+        window.onload = function() {
+            document.getElementById('button1').focus();
+        };
+
+        document.body.style.backgroundColor = "#FFFFFF";
+        
+        // Keyboard navigation functionality
+        document.addEventListener('keydown', function(e) {
+            const focusedElement = document.activeElement;
+            let nextElement = null;
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault(); // Prevent scrolling the page
+            }
+
+            if (e.key === 'ArrowDown') {
+                if (focusedElement.id === 'button1') {
+                    nextElement = document.getElementById('button2');
+                } else if (focusedElement.id === 'button2') {
+                    nextElement = document.getElementById('backLink');
+                }
+            } else if (e.key === 'ArrowUp') {
+                if (focusedElement.id === 'button2') {
+                    nextElement = document.getElementById('button1');
+                } else if (focusedElement.id === 'backLink') {
+                    nextElement = document.getElementById('button2');
+                }
+            }
+
+            if (nextElement) {
+                nextElement.focus();
+            }
+            
+            if (e.key === 'Enter') {
+                if (focusedElement.id === 'button1') {
+                    window.location.href = 'https://webglsamples.org/fishtank/fishtank.html';
+                }
+                else if (focusedElement.id === 'button2') {
+                    window.location.href = 'https://webglsamples.org/aquarium/aquarium.html';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+

@@ -31,3 +31,4 @@ git apply ../patches/0007_js_mse_eme_mvt_Add_Browse_Media_Assets.patch
 git apply ../patches/0008_js_mse_eme_mvt_dynamic_loading_platform_tests.patch
 git apply ../patches/0009_js_mse_eme_mvt_Add_system_fonts_check.patch
 git apply ../patches/0010_js_mse_eme_mvt_Add_Mixed_Content.patch
+git apply ../patches/0011_js_mse_eme_mvt_Add_Graphics_Test.patch
