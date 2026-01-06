@@ -1,0 +1,24 @@
+From dae878afa5685f24f12b6a5c8bb3f5f7b0e3fa45 Mon Sep 17 00:00:00 2001
+From: pradeep-raveendranpillai-infosys <ppillai.ext@libertyglobal.com>
+Date: Mon, 5 Jan 2026 15:39:07 +0530
+Subject: Add graphics test
+
+---
+ harness/compactTestView.js | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index 1f2cfd8..604f4a9 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -59,6 +59,7 @@ var compactTestView = (function() {
+       this.addLink('Browse Media Assets', 'https://mvt.onemw.net/test-materials/');
+       this.addLink('System fonts', 'fonts.html');
+       this.addLink('Mixed Content', 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html');
++      this.addLink('GFX test', 'gfx-test.html');
+ 
+       var platCfg = new XMLHttpRequest();
+       platCfg.overrideMimeType("application/json");
+-- 
+2.34.1
+
