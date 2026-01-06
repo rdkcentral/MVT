@@ -18,4 +18,11 @@
 # limitations under the License.
 
 mkdir -p ${TEST_MATERIALS_SRC:-/data/test-materials}
-docker run -v ${TEST_MATERIALS_SRC:-/data/test-materials}:/home/MVT/test-materials --rm -d --name mvt-app -p ${PORT:-80}:80 mvt-app-img
+CONTAINER="$1"
+NETWORK="$2"
+
+if [ -n "$CONTAINER" ] && [ -n "$NETWORK" ]; then
+    docker run -v "${TEST_MATERIALS_SRC:-/data/test-materials}:/home/MVT/test-materials" $NETWORK --name "$CONTAINER" -d --restart unless-stopped "${CONTAINER}-img"
+else
+    docker run -v "${TEST_MATERIALS_SRC:-/data/test-materials}:/home/MVT/test-materials" --rm -d --name mvt-app -p "${PORT:-80}:80" mvt-app-img
+fi
