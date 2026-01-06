@@ -45,6 +45,19 @@ function filterSkipTests(skipTests, tests) {
 }
 
 (function () {
+  const testSuite = "System";
+
+  let tests = [];
+
+  tests.push(new MvtTest(
+          makeCheckResolutionTest(),
+          `Resolution`
+        )
+      );
+  registerTestSuite(testSuite, makeTests(tests));
+})();
+
+(function () {
   const testSuite = "Codec Support";
 
   let tests = [];
@@ -279,13 +292,9 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
   let skipTests = {};
 
   let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPlayback, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPause, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoSetPosition, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
   tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.DASH.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
-  tests.push(new MvtMediaTest(testLongDurationEncryptedVideoPlayRate, MS.DASH.PLAYREADY_4_0_CBCS, engine, null, LONG_DUR_VIDEO_TIMEOUT_MS));
 
   tests = filterUnsupportedOnProfile(SelectedProfile, tests);
   tests = filterSkipTests(skipTests, tests);
@@ -296,6 +305,22 @@ var LONG_DUR_VIDEO_TIMEOUT_MS = 2*60*60*1000;
 (function () {
   const testSuite = "Long Duration HLS shaka";
   let engine = new ShakaEngine();
+  let skipTests = {};
+
+  let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPause, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoSetPosition, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+  tests = tests.concat(makeMvtMediaTests(testLongDurationVideoPlayRate, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS));
+
+  tests = filterUnsupportedOnProfile(SelectedProfile, tests);
+  tests = filterSkipTests(skipTests, tests);
+
+  registerTestSuite(testSuite, makeTests(tests));
+})();
+
+(function () {
+  const testSuite = "Long Duration HLS hlsjs";
+  let engine = new HlsjsEngine();
   let skipTests = {};
 
   let tests = makeMvtMediaTests(testLongDurationVideoPlayback, engine, StreamSets.HLS.LongDuration, null, LONG_DUR_VIDEO_TIMEOUT_MS);
