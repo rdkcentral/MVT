@@ -21,6 +21,38 @@
 
 #
 
+# v2.23.0 (2025-01-07)
+
+### [ [04a1b19](https://github.com/rdkcentral/MVT/commit/04a1b19) ] Merge branch 'main' into akshay/ONEM-43392
+
+### [ [5cb1e99](https://github.com/rdkcentral/MVT/commit/5cb1e99) ] parameterized network and container
+
+### [ [1d8516b](https://github.com/rdkcentral/MVT/commit/1d8516b) ] ONEM-43613: Added graphics tests
+
+### [ [4bdd21f](https://github.com/rdkcentral/MVT/commit/4bdd21f) ] Changes background color to white
+
+### [ [83770dc](https://github.com/rdkcentral/MVT/commit/83770dc) ] ONEM-43613: Added graphics tests
+
+### [ [3c9956a](https://github.com/rdkcentral/MVT/commit/3c9956a) ] Merge branch 'main' into akshay/ONEM-43615
+
+### [ [c050b2b](https://github.com/rdkcentral/MVT/commit/c050b2b) ] make long dur clear content tests use same logic as long dur encrypted content
+
+### [ [3c5006f](https://github.com/rdkcentral/MVT/commit/3c5006f) ] add HLS hlsjs long dur tests
+
+### [ [cf9814b](https://github.com/rdkcentral/MVT/commit/cf9814b) ] Add Mixed content Test URL
+
+### [ [9ae38f6](https://github.com/rdkcentral/MVT/commit/9ae38f6) ] add hls shaka encrypted long dur tests
+
+### [ [c65bc2d](https://github.com/rdkcentral/MVT/commit/c65bc2d) ] modify docker_run.sh based on dev and prod branch
+
+### [ [1840f7b](https://github.com/rdkcentral/MVT/commit/1840f7b) ] Magic numbers for resolution comparison removed
+
+### [ [9338ea1](https://github.com/rdkcentral/MVT/commit/9338ea1) ] ONEM-43611: Validate screen resolution
+
+### [ [275606d](https://github.com/rdkcentral/MVT/commit/275606d) ] review comment fix
+
+### [ [b2ed632](https://github.com/rdkcentral/MVT/commit/b2ed632) ] add DASH dashjs encrypted long dur tests
+
 # v2.22.0 (2025-11-20)
 
 ### [ [8654c9d](https://github.com/rdkcentral/MVT/commit/8654c9d) ] review comment fix
