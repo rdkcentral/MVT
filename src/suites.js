@@ -54,6 +54,11 @@ function filterSkipTests(skipTests, tests) {
           `Resolution`
         )
       );
+  tests.push(new MvtTest(
+          makeCheckUserAgentTest(),
+          `User Agent`
+        )
+      );
   registerTestSuite(testSuite, makeTests(tests));
 })();
 

@@ -119,6 +119,31 @@ function makeCheckResolutionTest() {
   });
 }
 
+//Test for checking user agent, test will pass if the UA has required Names
+function makeCheckUserAgentTest() {
+  return new TestTemplate(`Check User Agent`, function (runner, video) {
+    const userAgent = navigator.userAgent;
+    runner.log("Executing CheckUserAgent Test");
+    runner.log(`UserAgent = ${userAgent}`);
+    runner.assert(userAgent, "navigator.userAgent is empty");
+    const requiredNames = [
+      "Mozilla",
+      "AppleWebKit",
+      "Version",
+      "Safari"
+    ];
+    const missingNames = requiredNames.filter(
+      token => !userAgent.includes(token)
+    );
+    runner.assert(
+      missingNames.length === 0,
+      `UserAgent missing required names: ${missingNames.join(", ")}`
+    );
+    runner.log("UserAgent contains all required names: Mozilla, AppleWebKit, Version, Safari");
+    runner.succeed();
+  });
+}
+
 var testPlayback = new TestTemplate("Playback", function (video, runner) {
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
