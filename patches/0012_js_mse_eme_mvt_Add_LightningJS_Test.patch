@@ -1,0 +1,24 @@
+From fb257793bafc7d2c5ed09680cbfae5a6592ee0a5 Mon Sep 17 00:00:00 2001
+From: Amol Virnodkar <avirnodkar.ext@libertyglobal.com>
+Date: Tue, 13 Jan 2026 18:27:54 +0530
+Subject: [PATCH] Added lightningjs tests
+
+---
+ harness/compactTestView.js | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index 604f4a9..4ff430b 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -60,6 +60,7 @@ var compactTestView = (function() {
+       this.addLink('System fonts', 'fonts.html');
+       this.addLink('Mixed Content', 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html');
+       this.addLink('GFX test', 'gfx-test.html');
++      this.addLink('Lightning Tests', 'lightningjs_test.html');
+ 
+       var platCfg = new XMLHttpRequest();
+       platCfg.overrideMimeType("application/json");
+-- 
+2.43.0
+
