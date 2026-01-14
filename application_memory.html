@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperlink Buttons</title>
+    <style>
+
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 20px;
+        }
+
+        .read-only-textarea {
+            position: absolute;
+            top: 300px;
+            left: 50px;
+            background-color: #cecbcb;
+            border: 1px solid #ccc;
+            padding: 5px;
+            width: 1150px;
+            height: 170px;
+            resize: none;
+        }
+
+        .positioned-textbox {
+            position: absolute;
+            top: 150px;
+            left: 50px;
+            width: 230px;
+            padding: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 200px;
+            left: 50px;
+            padding: 10px 15px;
+            font-size: 16px;
+	        font-weight: bold;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            cursor: pointer;
+            width: 230px;
+            text-align: left;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        .nav-button:focus, .nav-button:hover {
+            outline: 2px solid #ff5733;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 225px;
+            left: 40px;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #333;
+            cursor: pointer;
+            padding: 5px 0;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .back-link:focus, .back-link:hover {
+            color: #E74C3C;
+            text-decoration: underline;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Application memory test</h1>
+    
+    <button type="button" class="nav-button" id="button" onclick="tiggerfunction()">
+        Allocate Memory in MB
+    </button>
+
+    <div class="container">
+        <input type="text" class="positioned-textbox" value="0" id="textbox" readonly>
+    </div>
+
+    <!-- Go Back Link -->
+    <a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
+        ← Back to MVT Home
+    </a>
+
+    <textarea class="read-only-textarea" readonly>
+Points to note:
+
+* This page is for testing application memory threshold.
+* For each button press, 25 MB of memory is allocated in container.
+* Amount of total application memory allocated in the container can be checked by using following command in CPE SSH for each button press:
+    cat /sys/fs/cgroup/memory/lxc.slice/wpe-thunder@9.service/memory.max_usage_in_bytes
+* When memory allocation exceeds 575 MB threshold of container, application will crash, exits from MVT and CS2400 notification is displayed.
+* Please note that if navigated back to MVT page in between this test, ensure to exit from all Browser based apps and re-launch this test freshly.
+    </textarea>
+
+    <script>
+
+        window.onload = function() {
+            document.getElementById('button').focus();
+        };
+        document.body.style.backgroundColor = "#FFFFFF";
+
+        globalThis.permanentStorage = globalThis.permanentStorage || [];
+        var totalMem = 25;
+        var blockSize = 25;
+
+        function allocateMemory() {
+            const bytes = blockSize * 1024 * 1024;
+            const buffer = new Uint8Array(bytes);
+            buffer.fill(Math.random());
+            console.log("TotalMem allocated in MB : ", totalMem);
+            const inputElement = document.getElementById('textbox');
+            inputElement.value = totalMem;
+            totalMem = totalMem + blockSize;
+            return buffer;
+        }
+
+        function tiggerfunction() {
+            globalThis.permanentStorage.push(allocateMemory());
+        }
+
+       // Keyboard navigation functionalities
+        document.addEventListener('keydown', function(e) {
+            const focusedElement = document.activeElement;
+            let nextElement = null;
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+            }
+
+            if (e.key === 'ArrowDown') {
+                if (focusedElement.id === 'button') {
+                    nextElement = document.getElementById('backLink');
+                } else if (focusedElement.id === 'backLink') {
+                    nextElement = document.getElementById('button');
+                }
+            } else if (e.key === 'ArrowUp') {
+                if (focusedElement.id === 'button') {
+                    nextElement = document.getElementById('backLink');
+                } else if (focusedElement.id === 'backLink') {
+                    nextElement = document.getElementById('button');
+                }
+            }
+
+            if (nextElement) {
+                nextElement.focus();
+            }
+        });
+    </script>
+
+</body>
+</html>
+
