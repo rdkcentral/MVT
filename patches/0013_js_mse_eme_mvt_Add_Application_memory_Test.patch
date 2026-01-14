@@ -1,0 +1,24 @@
+From cda0e4d37d110ed2f93a2dc8f1f93051b182907c Mon Sep 17 00:00:00 2001
+From: Santhosh-Kumar-infosys <sakumar.ext@libertyglobal.com>
+Date: Wed, 14 Jan 2026 16:16:41 +0530
+Subject: [PATCH] Add Application memory test
+
+---
+ harness/compactTestView.js | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/harness/compactTestView.js b/harness/compactTestView.js
+index 4ff430b..6018e18 100644
+--- a/harness/compactTestView.js
++++ b/harness/compactTestView.js
+@@ -61,6 +61,7 @@ var compactTestView = (function() {
+       this.addLink('Mixed Content', 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html');
+       this.addLink('GFX test', 'gfx-test.html');
+       this.addLink('Lightning Tests', 'lightningjs_test.html');
++      this.addLink('Application memory test', 'application_memory.html');
+ 
+       var platCfg = new XMLHttpRequest();
+       platCfg.overrideMimeType("application/json");
+-- 
+2.43.0
+
