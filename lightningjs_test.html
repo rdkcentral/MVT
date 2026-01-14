@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="custompagestyle.css"  type="text/css"/>
 </head>
 <body>
-    <h1>Graphics tests</h1>
+    <h1>LightningJS Tests</h1>
     
     <div class="container">
         <!-- Button 1 -->
-        <a href="https://webglsamples.org/fishtank/fishtank.html" target="_blank" class="nav-button" id="button1" tabindex="0">
-            Test #1 - Fishtank
+        <a href="https://blits-demo.lightningjs.io" target="_blank" class="nav-button" id="button1" tabindex="0">
+            Blits Tests
         </a>
 
         <!-- Button 2 -->
-        <a href="https://webglsamples.org/aquarium/aquarium.html" target="_blank" class="nav-button" id="button2" tabindex="0">
-            Test #2 - Aquarium
+        <a href="https://lightning-tv.github.io/solid-demo-app" target="_blank" class="nav-button" id="button2" tabindex="0">
+            Solid Demo Application
         </a>
     </div>
 
@@ -32,7 +32,7 @@
             document.getElementById('button1').focus();
         };
 
-        const backgroundColor = "#FFFFFF"; //White background
+        const backgroundColor = "#FFFFFF"; // White background
 
         document.body.style.backgroundColor = backgroundColor;
         
@@ -65,10 +65,10 @@
             
             if (e.key === 'Enter') {
                 if (focusedElement.id === 'button1') {
-                    window.location.href = 'https://webglsamples.org/fishtank/fishtank.html';
+                    window.location.href = 'https://blits-demo.lightningjs.io';
                 }
                 else if (focusedElement.id === 'button2') {
-                    window.location.href = 'https://webglsamples.org/aquarium/aquarium.html';
+                    window.location.href = 'https://lightning-tv.github.io/solid-demo-app';
                 }
             }
         });
