@@ -33,3 +33,4 @@ git apply ../patches/0009_js_mse_eme_mvt_Add_system_fonts_check.patch
 git apply ../patches/0010_js_mse_eme_mvt_Add_Mixed_Content.patch
 git apply ../patches/0011_js_mse_eme_mvt_Add_Graphics_Test.patch
 git apply ../patches/0012_js_mse_eme_mvt_Add_LightningJS_Test.patch
+git apply ../patches/0013_js_mse_eme_mvt_Add_Application_memory_Test.patch
