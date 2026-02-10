@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperlink Buttons</title>
+    <link rel="stylesheet" href="custompagestyle.css"  type="text/css"/>
+</head>
+<body>
+    <h1>HTML Tests</h1>
+    
+    <div class="container">
+        <a href="https://html5test.com" class="nav-button" id="button1" tabindex="0">
+            HTML Test
+        </a>
+    </div>
+
+    <!-- Go Back Link -->
+    <a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
+        ← Go Back to Previous Page
+    </a>
+
+    <script>
+        // Focus on the first button when the page loads
+        window.onload = function() {
+            document.getElementById('button1').focus();
+        };
+
+        const backgroundColor = "#FFFFFF"; // White background
+        document.body.style.backgroundColor = backgroundColor;
+        
+        // Keyboard navigation functionality
+        document.addEventListener('keydown', function(e) {
+            const focusedElement = document.activeElement;
+            let nextElement = null;
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault(); // Prevent scrolling the page
+            }
+
+            if (e.key === 'ArrowDown') {
+                if (focusedElement.id === 'button1') {
+                    nextElement = document.getElementById('backLink');
+                }
+            } else if (e.key === 'ArrowUp') {
+                if (focusedElement.id === 'backLink') {
+                    nextElement = document.getElementById('button1');
+                }
+            }
+
+            if (nextElement) {
+                nextElement.focus();
+            }
+            
+            if (e.key === 'Enter') {
+                if (focusedElement.id === 'button1') {
+                    window.location.href = 'https://html5test.com';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+
