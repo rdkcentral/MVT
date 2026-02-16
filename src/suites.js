@@ -134,6 +134,7 @@ window.testSuiteVersions[testVersion]["config"]["defaultTestSuite"] = "codec-sup
   });
 
   let tests = makeMvtMediaTests(testPlayback, engine, StreamSets.DASH.CommonAndDRM);
+  tests.push(new MvtMediaTest(testPlayback, MS.DASH.PLAYREADY_KEY_ROTATION, engine, null, 40000));
   tests = tests.concat(makeMvtMediaTests(testPause, engine, StreamSets.DASH.CommonAndDRM));
   tests = tests.concat(makeMvtMediaTests(testSetPosition, engine, StreamSets.DASH.dashjs));
   tests.push(new MvtMediaTest(testSetPosition, MS.DASH.MULTIPERIOD, engine, new Unstable("ONEM-31620")));
