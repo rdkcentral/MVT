@@ -45,7 +45,7 @@ function create_url(open_url) {
       licenseHeader = "&drm_header=" + licenseHeader;
     }
   }
-  let url = `http://mvt.onemw.net/anyplayer/?autoplay=${autoplay}&player=${player}&url=${stream}${drm}${licenseUrl}${licenseHeader}`;
+  let url = `/anyplayer/?autoplay=${autoplay}&player=${player}&url=${stream}${drm}${licenseUrl}${licenseHeader}`;
   console.log(url);
 
   if (open_url == true) {

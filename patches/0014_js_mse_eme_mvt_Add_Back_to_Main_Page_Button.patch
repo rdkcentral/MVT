@@ -14,7 +14,7 @@ index 6018e18..86f876a 100644
 +      this.addLink('CSS Tests', 'css-tests.html');
 +      this.addLink('JS ECMAScript Tests','js-tests.html');
 +      this.addLink('WPT Tests', 'wpt-tests.html');
-       this.addLink('Browse Media Assets', 'https://mvt.onemw.net/test-materials/');
+       this.addLink('Browse Media Assets', '/test-materials/');
 -      this.addLink('System fonts', 'fonts.html');
 -      this.addLink('Mixed Content', 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html');
 +      this.addLink('System fonts', 'system-fonts.html');
