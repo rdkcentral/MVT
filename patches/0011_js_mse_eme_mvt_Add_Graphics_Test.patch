@@ -12,7 +12,7 @@ index 1f2cfd8..604f4a9 100644
 --- a/harness/compactTestView.js
 +++ b/harness/compactTestView.js
 @@ -59,6 +59,7 @@ var compactTestView = (function() {
-       this.addLink('Browse Media Assets', 'https://mvt.onemw.net/test-materials/');
+       this.addLink('Browse Media Assets', '/test-materials/');
        this.addLink('System fonts', 'fonts.html');
        this.addLink('Mixed Content', 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html');
 +      this.addLink('GFX test', 'gfx-test.html');
