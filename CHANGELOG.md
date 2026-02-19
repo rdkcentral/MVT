@@ -21,7 +21,25 @@
 
 #
 
-# v2.23.0 (2025-01-07)
+# v2.24.0 (2026-02-19)
+
+### [ [d464df6](https://github.com/rdkcentral/MVT/commit/d464df6) ] remove references of ONEMW url
+
+### [ [f040e92](https://github.com/rdkcentral/MVT/commit/f040e92) ] review comment fix
+
+### [ [e955cc2](https://github.com/rdkcentral/MVT/commit/e955cc2) ] add playready test which uses key rotation
+
+### [ [1b80006](https://github.com/rdkcentral/MVT/commit/1b80006) ] add patch apply
+
+### [ [ed38d8d](https://github.com/rdkcentral/MVT/commit/ed38d8d) ] add back to main page button
+
+### [ [29b005e](https://github.com/rdkcentral/MVT/commit/29b005e) ] ONEM-43612 : MVT Extensions - Application Memory
+
+### [ [2b21f10](https://github.com/rdkcentral/MVT/commit/2b21f10) ] ONEM-43616 :  Add lightningjs tests and implemented generic code in gfx-test.html
+
+### [ [4982692](https://github.com/rdkcentral/MVT/commit/4982692) ] ONEM-43614: Validate UserAgent
+
+# v2.23.0 (2026-01-07)
 
 ### [ [04a1b19](https://github.com/rdkcentral/MVT/commit/04a1b19) ] Merge branch 'main' into akshay/ONEM-43392
 
