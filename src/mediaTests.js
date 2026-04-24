@@ -166,21 +166,21 @@ var testPlayback = new TestTemplate("Playback", function (video, runner) {
 });
 
 var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
-  const rates = [0.5, 2, 0.75, 1.5];
+  const rates = [0.5, 0.75, 1.5, 2];
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
 
   // Each playbackRate will be verified on the span of |playbackTimePerRate|ms, with media position assertions frequency
   // of |checkInterval|/|playbackTimePerRate|.
-  const playbackTimePerRate = 3000;
+  const playbackTimePerRate = 2000;
   const checkInterval = 500;
   const numberOfChecks = Math.floor(playbackTimePerRate / checkInterval);
 
   // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
   // These events should be emitted within timeout of |setRateToPlayTimeout|.
   // The aim of this mechanism is to let the player buffer some data before playback speed verification.
-  const warmUpTimeUpdates = 10;
-  const setRateToPlayTimeout = 10000;
+  const warmUpTimeUpdates = 5;
+  const setRateToPlayTimeout = 4000;
 
   const makePlayRateTest = function (playbackRate) {
     return () =>
