@@ -172,8 +172,8 @@ var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
 
   // Each playbackRate will be verified on the span of |playbackTimePerRate|ms, with media position assertions frequency
   // of |checkInterval|/|playbackTimePerRate|.
-  const playbackTimePerRate = 2000;
-  const checkInterval = 500;
+  const playbackTimePerRate = 1500;
+  const checkInterval = 300;
   const numberOfChecks = Math.floor(playbackTimePerRate / checkInterval);
 
   // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
