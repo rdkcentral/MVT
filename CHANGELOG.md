@@ -21,6 +21,12 @@
 
 #
 
+# v2.25.0 (2026-05-14)
+
+### [ [52197c7](https://github.com/rdkcentral/MVT/commit/52197c7) ] HUMAXEOS-5156: HLS hlsjs PlayRate Tests Fails
+
+### [ [c7a9e20](https://github.com/rdkcentral/MVT/commit/c7a9e20) ] ARRISAPOL-3888 : Fix HLS hlsjs PlayRate Test failures
+
 # v2.24.0 (2026-02-19)
 
 ### [ [d464df6](https://github.com/rdkcentral/MVT/commit/d464df6) ] remove references of ONEMW url
