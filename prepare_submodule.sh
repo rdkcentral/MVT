@@ -35,3 +35,4 @@ git apply ../patches/0011_js_mse_eme_mvt_Add_Graphics_Test.patch
 git apply ../patches/0012_js_mse_eme_mvt_Add_LightningJS_Test.patch
 git apply ../patches/0013_js_mse_eme_mvt_Add_Application_memory_Test.patch
 git apply ../patches/0014_js_mse_eme_mvt_Add_Back_to_Main_Page_Button.patch
+git apply ../patches/0015_js_mse_eme_mvt_Enable_Scrolling_in_Log_Window.patch
