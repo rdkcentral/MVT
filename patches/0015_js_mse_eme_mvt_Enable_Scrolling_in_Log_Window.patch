@@ -1,0 +1,41 @@
+diff --git a/harness/testView.js b/harness/testView.js
+index ac093c0..0dc4f03 100644
+--- a/harness/testView.js
++++ b/harness/testView.js
+@@ -130,6 +130,22 @@ function TestView(testSuiteVer, testViewInfo) {
+ 
+     var outputArea = createElement('div', 'outputarea');
+     var textArea = createElement('div', 'output');
++    textArea.setAttribute('tabindex', '0');
++    textArea.classList.add('focusable');
++    textArea.addEventListener('keydown', function(e) {
++
++    if (e.key === 'ArrowDown') {
++        textArea.scrollTop += 30;
++    }
++
++    if (e.key === 'ArrowUp') {
++
++        if (textArea.scrollTop > 0) {
++            textArea.scrollTop -= 30;
++            e.stopImmediatePropagation();
++        }
++    }
++    });
+     var textAreaContainer = createElement('div', 'outputcontainer');
+     textAreaContainer.appendChild(textArea);
+     outputArea.appendChild(textAreaContainer);
+diff --git a/style.css b/style.css
+index 07163f7..83a1807 100644
+--- a/style.css
++++ b/style.css
+@@ -211,7 +211,8 @@ div.container_hidden {
+ #output {
+   height: 250px;
+   width: 600px;
+-  overflow: hidden;
++  overflow-y: auto;
++  overflow-x: auto;
+   color: #369;
+   border-width: 1px;
+   border-style: solid;
