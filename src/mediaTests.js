@@ -179,7 +179,9 @@ var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
   // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
   // These events should be emitted within timeout of |setRateToPlayTimeout|.
   // The aim of this mechanism is to let the player buffer some data before playback speed verification.
-  const warmUpTimeUpdates = 10;
+  // DASH multiperiod content may require additional stabilization time after
+  // playbackRate changes before playback progression can be reliably verified.
+  const warmUpTimeUpdates = this.content.name.includes("DASH_MULTIPERIOD") ? 12 : 5;
   const setRateToPlayTimeout = 10000;
 
   const makePlayRateTest = function (playbackRate) {
