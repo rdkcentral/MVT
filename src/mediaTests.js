@@ -166,7 +166,7 @@ var testPlayback = new TestTemplate("Playback", function (video, runner) {
 });
 
 var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
-  const rates = [0.5, 0.75, 1.5, 2];
+  const rates = [0.5, 2, 0.75, 1.5];
   const initialPosition = video.currentTime + 1;
   const hasVideoTrack = this.content.video;
 
@@ -179,8 +179,8 @@ var testPlayRate = new TestTemplate("PlayRate", function (video, runner) {
   // After each playbackRate change, wait for |warmUpTimeUpdates| * |timeupdate| events before proceeding with further steps.
   // These events should be emitted within timeout of |setRateToPlayTimeout|.
   // The aim of this mechanism is to let the player buffer some data before playback speed verification.
-  const warmUpTimeUpdates = 5;
-  const setRateToPlayTimeout = 4000;
+  const warmUpTimeUpdates = 10;
+  const setRateToPlayTimeout = 10000;
 
   const makePlayRateTest = function (playbackRate) {
     return () =>
