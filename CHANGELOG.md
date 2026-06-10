@@ -22,7 +22,7 @@
 #
 # v2.26.0 (2026-06-10)
 
-### [ [33b26f7](https://github.com/rdkcentral/MVT/commit/33b26f7m) ] ARRISAPOL-3925 : DASH_MULTIPERIOD__PlayRate test is failing
+### [ [33b26f7](https://github.com/rdkcentral/MVT/commit/33b26f7) ] ARRISAPOL-3925 : DASH_MULTIPERIOD__PlayRate test is failing
 
 ### [ [237cf5a](https://github.com/rdkcentral/MVT/commit/237cf5a) ] Revert "ARRISAPOL-3888 : Fix HLS hlsjs PlayRate Test failures"
 
