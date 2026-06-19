@@ -5,7 +5,7 @@ index 35c6b10..52013fb 100644
 @@ -53,6 +53,7 @@ var compactTestView = (function() {
        this.addLink('Media Coverage', 'coverage.html');
        this.addLink('Test Any Player', '/anyplayer');
-       this.addLink('HTML Tests', 'https://html5test.com');
+       this.addLink('HTML Tests', 'https://html5test.opensuse.org/');
 +      this.addLink('CSS Tests', 'https://css3test.com');
        this.addTestSuites(testSuiteVersions[this.testSuiteVer].testSuites);
  
