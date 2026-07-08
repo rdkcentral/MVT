@@ -505,7 +505,7 @@ var MS = {
       variant: "dash",
       container: "fmp4",
       note: "PlayReady 4.0 with key rotation",
-      src: "https://d24rwxnt7vw9qb.cloudfront.net/out/v1/d0409ade052145c5a639d8db3c5ce4b4/index.mpd",
+      src: "https://d24rwxnt7vw9qb.cloudfront.net/v1/dash/e6d234965645b411ad572802b6c9d5a10799c9c1/All_Reference_Streams/2fc23947945841b9b1be9768f9c13e75/index.mpd%22",
       video: {
         codec: "avc",
       },
@@ -514,6 +514,12 @@ var MS = {
       },
       drm: {
         servers: {
+          "com.widevine.alpha": {
+            serverURL: "https://lic.staging.drmtoday.com/license-proxy-widevine/cenc/?specConform=true",
+            httpRequestHeaders: {
+              "x-dt-custom-data":"ewogICAgInVzZXJJZCI6ICJhd3MtZWxlbWVudGFsOjpzcGVrZS10ZXN0aW5nIiwKICAgICJzZXNzaW9uSWQiOiAiZWxlbWVudGFsLXJlZnN0cmVhbSIsCiAgICAibWVyY2hhbnQiOiAiYXdzLWVsZW1lbnRhbCIKfQo=",
+            },
+          },
           "com.microsoft.playready": {
             serverURL: "https://lic.staging.drmtoday.com/license-proxy-headerauth/drmtoday/RightsManager.asmx",
             httpRequestHeaders: {
