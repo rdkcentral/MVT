@@ -514,6 +514,13 @@ var MS = {
       },
       drm: {
         servers: {
+          "com.widevine.alpha": {
+            serverURL: "https://lic.staging.drmtoday.com/license-proxy-widevine/cenc/?specConform=true",
+            httpRequestHeaders: {
+              "x-dt-custom-data":
+                "ewogICAgInVzZXJJZCI6ICJhd3MtZWxlbWVudGFsOjpzcGVrZS10ZXN0aW5nIiwKICAgICJzZXNzaW9uSWQiOiAiZWxlbWVudGFsLXJlZnN0cmVhbSIsCiAgICAibWVyY2hhbnQiOiAiYXdzLWVsZW1lbnRhbCIKfQo=",
+            },
+          },
           "com.microsoft.playready": {
             serverURL: "https://lic.staging.drmtoday.com/license-proxy-headerauth/drmtoday/RightsManager.asmx",
             httpRequestHeaders: {
