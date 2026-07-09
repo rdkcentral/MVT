@@ -11,12 +11,12 @@
     
     <div class="container">
         <!-- Button 1 -->
-        <a href="#" target="_blank" class="nav-button" id="button1" tabindex="0">
+        <a href="#" class="nav-button" id="button1" tabindex="0">
             Blits Tests
         </a>
 
         <!-- Button 2 -->
-        <a href="#" target="_blank" class="nav-button" id="button2" tabindex="0">
+        <a href="#" class="nav-button" id="button2" tabindex="0">
             Solid Demo Application
         </a>
         <!-- Go Back Link -->
@@ -44,17 +44,7 @@
         const backgroundColor = "#FFFFFF"; // White background
 
         document.body.style.backgroundColor = backgroundColor;
-
         const iframe = document.getElementById('lightningjsTestFrame');
-
-        iframe.onload = function() {
-            try {
-                iframe.focus();
-                iframe.contentWindow.focus();
-            } catch (e) {
-                iframe.focus();
-            }
-        };
         
         // Keyboard navigation functionality
         document.addEventListener('keydown', function(e) {
@@ -85,8 +75,17 @@
             
             if (e.key === 'Enter') {
                 if (focusedElement.id === 'button1') {
-                    document.getElementById('lightningjsTestFrame').src = 'https://blits-demo.lightningjs.io';
+                    iframe.src = 'https://blits-demo.lightningjs.io';
                     document.getElementById('lightningjsTestContainer').style.display = 'block';
+
+                    iframe.onload = function() {
+                        try {
+                            iframe.focus();
+                            iframe.contentWindow.focus();
+                        } catch (e) {
+                            iframe.focus();
+                        }
+                    };
                 }
                 else if (focusedElement.id === 'button2') {
                     document.getElementById('lightningjsTestFrame').src = 'https://lightning-tv.github.io/solid-demo-app';
@@ -96,8 +95,17 @@
         });
         document.getElementById('button1').addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('lightningjsTestFrame').src = 'https://blits-demo.lightningjs.io';
+            iframe.src = 'https://blits-demo.lightningjs.io';
             document.getElementById('lightningjsTestContainer').style.display = 'block';
+
+            iframe.onload = function() {
+                try {
+                    iframe.focus();
+                    iframe.contentWindow.focus();
+                } catch (e) {
+                    iframe.focus();
+                }
+            };
         });
 
         document.getElementById('button2').addEventListener('click', function(e) {

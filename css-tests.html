@@ -23,7 +23,6 @@
     <div id="cssTestContainer" style="display:none; margin-top:20px;">
         <iframe
             id="cssTestFrame"
-            src="https://css3test.com"
             width="500%" height="850" style="border:none;">
         </iframe>
     </div>
@@ -62,12 +61,14 @@
             
             if (e.key === 'Enter') {
                 if (focusedElement.id === 'button1') {
+                    document.getElementById('cssTestFrame').src = 'https://css3test.com';
                     document.getElementById('cssTestContainer').style.display = 'block';
                 }
             }
         });
         document.getElementById('button1').addEventListener('click', function(e) {
             e.preventDefault();
+            document.getElementById('cssTestFrame').src = 'https://css3test.com';
             document.getElementById('cssTestContainer').style.display = 'block';
         });
     </script>

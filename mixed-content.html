@@ -22,7 +22,6 @@
     <div id="mixedTestContainer" style="display:none; margin-top:20px;">
         <iframe
             id="mixedTestFrame"
-            src="https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html"
             width="500%" height="850" style="border:none;">
         </iframe>
     </div>
@@ -61,12 +60,14 @@
             
             if (e.key === 'Enter') {
                 if (focusedElement.id === 'button1') {
+                    document.getElementById('mixedTestFrame').src = 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html';
                     document.getElementById('mixedTestContainer').style.display = 'block';
                 }
             }
         });
         document.getElementById('button1').addEventListener('click', function(e) {
             e.preventDefault();
+            document.getElementById('mixedTestFrame').src = 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html';
             document.getElementById('mixedTestContainer').style.display = 'block';
         });
     </script>
