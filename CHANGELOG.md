@@ -20,6 +20,21 @@
 # CHANGELOG
 
 #
+
+# v2.27.0 (2026-07-10)
+
+### [ [a031974](https://github.com/rdkcentral/MVT/commit/a031974) ] Fix iframe security issues
+
+### [ [ce6bb80](https://github.com/rdkcentral/MVT/commit/ce6bb80) ] Add external test suites inside iframe
+
+### [ [854cfc8](https://github.com/rdkcentral/MVT/commit/854cfc8) ] Fixed the key rotation error
+
+### [ [ed1f0ac](https://github.com/rdkcentral/MVT/commit/ed1f0ac) ] Fixed Playready Key Rotation
+
+### [ [5bb539f](https://github.com/rdkcentral/MVT/commit/5bb539f) ] Changed the src of Play ready key rotation
+
+### [ [92ebae1](https://github.com/rdkcentral/MVT/commit/92ebae1) ] ARRISEOS-49928: Update Html5 test url
+
 # v2.26.0 (2026-06-10)
 
 ### [ [33b26f7](https://github.com/rdkcentral/MVT/commit/33b26f7) ] ARRISAPOL-3925 : DASH_MULTIPERIOD__PlayRate test is failing
