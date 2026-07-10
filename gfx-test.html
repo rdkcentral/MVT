@@ -11,20 +11,29 @@
     
     <div class="container">
         <!-- Button 1 -->
-        <a href="https://webglsamples.org/fishtank/fishtank.html" target="_blank" class="nav-button" id="button1" tabindex="0">
+        <a href="#" class="nav-button" id="button1" tabindex="0">
             Test #1 - Fishtank
         </a>
 
         <!-- Button 2 -->
-        <a href="https://webglsamples.org/aquarium/aquarium.html" target="_blank" class="nav-button" id="button2" tabindex="0">
+        <a href="#" class="nav-button" id="button2" tabindex="0">
             Test #2 - Aquarium
+        </a>
+
+        <!-- Go Back Link -->
+        <a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
+            ← Go Back to Previous Page
         </a>
     </div>
 
-    <!-- Go Back Link -->
-    <a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
-        ← Go Back to Previous Page
-    </a>
+    <div id="gfxTestContainer" style="display:none; margin-top:20px;">
+        <iframe
+            id="gfxTestFrame"
+            width="500%"
+            height="800"
+            style="border:none;">
+        </iframe>
+    </div>
 
     <script>
         // Focus on the first button when the page loads
@@ -65,12 +74,25 @@
             
             if (e.key === 'Enter') {
                 if (focusedElement.id === 'button1') {
-                    window.location.href = 'https://webglsamples.org/fishtank/fishtank.html';
+                    document.getElementById('gfxTestFrame').src = 'https://webglsamples.org/fishtank/fishtank.html';
+                    document.getElementById('gfxTestContainer').style.display = 'block';
                 }
                 else if (focusedElement.id === 'button2') {
-                    window.location.href = 'https://webglsamples.org/aquarium/aquarium.html';
+                    document.getElementById('gfxTestFrame').src = 'https://webglsamples.org/aquarium/aquarium.html';
+                    document.getElementById('gfxTestContainer').style.display = 'block';
                 }
             }
+        });
+        document.getElementById('button1').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('gfxTestFrame').src = 'https://webglsamples.org/fishtank/fishtank.html';
+            document.getElementById('gfxTestContainer').style.display = 'block';
+        });
+
+        document.getElementById('button2').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('gfxTestFrame').src = 'https://webglsamples.org/aquarium/aquarium.html';
+            document.getElementById('gfxTestContainer').style.display = 'block';
         });
     </script>
 

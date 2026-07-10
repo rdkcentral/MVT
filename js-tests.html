@@ -10,15 +10,21 @@
     <h1>JS Tests</h1>
     
     <div class="container">
-        <a href="https://compat-table.github.io/compat-table/es2016plus/" class="nav-button" id="button1" tabindex="0">
+        <a href="#" class="nav-button" id="button1" tabindex="0">
             JS Test
+        </a>
+        <!-- Go Back Link -->
+        <a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
+            ← Go Back to Previous Page
         </a>
     </div>
 
-    <!-- Go Back Link -->
-    <a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
-        ← Go Back to Previous Page
-    </a>
+    <div id="jsTestContainer" style="display:none; margin-top:20px;">
+        <iframe
+            id="jsTestFrame"
+            width="500%" height="850" style="border:none;">
+        </iframe>
+    </div>
 
     <script>
         // Focus on the first button when the page loads
@@ -54,9 +60,15 @@
             
             if (e.key === 'Enter') {
                 if (focusedElement.id === 'button1') {
-                    window.location.href = 'https://compat-table.github.io/compat-table/es2016plus/';
+                    document.getElementById('jsTestFrame').src = 'https://compat-table.github.io/compat-table/es2016plus/';
+                    document.getElementById('jsTestContainer').style.display = 'block';
                 }
             }
+        });
+        document.getElementById('button1').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('jsTestFrame').src = 'https://compat-table.github.io/compat-table/es2016plus/';
+            document.getElementById('jsTestContainer').style.display = 'block';
         });
     </script>
 
