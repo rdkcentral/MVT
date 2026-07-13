@@ -123,11 +123,17 @@
 			}
 
 			// Automatically call checkFonts when the page loads
-			window.onload = checkFonts;
+			window.onload = function() {
+				checkFonts();
+				document.getElementById('backLink').focus();
+			};
 		</script>
 	</head>
 	<body>
 		<h1>Supported System Fonts</h1>
+		<a href="#" onclick="history.back(); return false;" class="back-link" tabindex="0" id="backLink">
+			← Go Back to Previous Page
+		</a>
 
 		<table>
 			<thead>
