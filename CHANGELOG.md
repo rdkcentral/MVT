@@ -21,6 +21,10 @@
 
 #
 
+# v2.28.0 (2026-07-14)
+
+### [ [1c652ed](https://github.com/rdkcentral/MVT/commit/1c652ed) ] Add back button to system fonts test
+
 # v2.27.0 (2026-07-10)
 
 ### [ [a031974](https://github.com/rdkcentral/MVT/commit/a031974) ] Fix iframe security issues
