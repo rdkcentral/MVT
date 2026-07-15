@@ -1,8 +1,8 @@
-diff --git a/harness/testView.js b/harness/testView.js
-index ac093c0..0dc4f03 100644
---- a/js_mse_eme/harness/testView.js
-+++ b/js_mse_eme/harness/testView.js
-@@ -130,6 +130,22 @@ function TestView(testSuiteVer, testViewInfo) {
+Index: MVT/js_mse_eme/harness/testView.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/testView.js
++++ MVT/js_mse_eme/harness/testView.js
+@@ -130,6 +130,22 @@ function TestView(testSuiteVer, testView
  
      var outputArea = createElement('div', 'outputarea');
      var textArea = createElement('div', 'output');
@@ -25,11 +25,11 @@ index ac093c0..0dc4f03 100644
      var textAreaContainer = createElement('div', 'outputcontainer');
      textAreaContainer.appendChild(textArea);
      outputArea.appendChild(textAreaContainer);
-diff --git a/style.css b/style.css
-index 07163f7..83a1807 100644
---- a/js_mse_eme/style.css
-+++ b/js_mse_eme/style.css
-@@ -211,7 +211,8 @@ div.container_hidden {
+Index: MVT/js_mse_eme/style.css
+===================================================================
+--- MVT.orig/js_mse_eme/style.css
++++ MVT/js_mse_eme/style.css
+@@ -213,7 +213,8 @@ div.container_hidden {
  #output {
    height: 250px;
    width: 600px;
