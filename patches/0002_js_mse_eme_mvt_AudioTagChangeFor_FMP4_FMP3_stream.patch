@@ -10,8 +10,8 @@ Subject: [PATCH] Akshay P
 
 diff --git a/harness/main.js b/harness/main.js
 index c722460..78413cd 100644
---- a/harness/main.js
-+++ b/harness/main.js
+--- a/js_mse_eme/harness/main.js
++++ b/js_mse_eme/harness/main.js
 @@ -156,14 +156,14 @@ var createRunner = function(testSuite, testSuiteVer, testsMask) {
    window.globalRunner = runner;
  
@@ -31,8 +31,8 @@ index c722460..78413cd 100644
        if (harnessConfig.fullscreen) {
 diff --git a/harness/test.js b/harness/test.js
 index b781e31..ea28f7e 100644
---- a/harness/test.js
-+++ b/harness/test.js
+--- a/js_mse_eme/harness/test.js
++++ b/js_mse_eme/harness/test.js
 @@ -256,7 +256,7 @@ TestExecutor.prototype.getControlContainer = function() {
    return document.createElement('div');
  };

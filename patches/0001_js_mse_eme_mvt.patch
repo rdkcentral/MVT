@@ -16,8 +16,8 @@ Subject: [PATCH] MVT Patch
 
 diff --git a/harness/compactTestList.js b/harness/compactTestList.js
 index 84a50d8..d0906da 100644
---- a/harness/compactTestList.js
-+++ b/harness/compactTestList.js
+--- a/js_mse_eme/harness/compactTestList.js
++++ b/js_mse_eme/harness/compactTestList.js
 @@ -167,7 +167,7 @@ function TestList(style) {
        currentColumn.appendChild(tr);
  
@@ -29,8 +29,8 @@ index 84a50d8..d0906da 100644
        tr.appendChild(elems[0]);
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 23771ce..4dc6fb0 100644
---- a/harness/compactTestView.js
-+++ b/harness/compactTestView.js
+--- a/js_mse_eme/harness/compactTestView.js
++++ b/js_mse_eme/harness/compactTestView.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -78,8 +78,8 @@ index 23771ce..4dc6fb0 100644
      this.addTest = function(desc) {
 diff --git a/harness/constants.js b/harness/constants.js
 index e0e08bf..aa140a8 100644
---- a/harness/constants.js
-+++ b/harness/constants.js
+--- a/js_mse_eme/harness/constants.js
++++ b/js_mse_eme/harness/constants.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -96,8 +96,8 @@ index e0e08bf..aa140a8 100644
 +window.testVersion = 'MVT';
 diff --git a/harness/main.js b/harness/main.js
 index b0918ca..3e7973e 100644
---- a/harness/main.js
-+++ b/harness/main.js
+--- a/js_mse_eme/harness/main.js
++++ b/js_mse_eme/harness/main.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -222,8 +222,8 @@ index b0918ca..3e7973e 100644
      alert('Cannot find test type ' + harnessConfig.testType);
 diff --git a/harness/test.js b/harness/test.js
 index 1719490..a22ea0d 100644
---- a/harness/test.js
-+++ b/harness/test.js
+--- a/js_mse_eme/harness/test.js
++++ b/js_mse_eme/harness/test.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -341,8 +341,8 @@ index 1719490..a22ea0d 100644
    this.timeouts.clearAll();
 diff --git a/harness/testView.js b/harness/testView.js
 index 0c0e8df..ac093c0 100644
---- a/harness/testView.js
-+++ b/harness/testView.js
+--- a/js_mse_eme/harness/testView.js
++++ b/js_mse_eme/harness/testView.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -456,8 +456,8 @@ index 0c0e8df..ac093c0 100644
      switchDiv.appendChild(
 diff --git a/harness/timeout.js b/harness/timeout.js
 index 7c373c1..1628040 100644
---- a/harness/timeout.js
-+++ b/harness/timeout.js
+--- a/js_mse_eme/harness/timeout.js
++++ b/js_mse_eme/harness/timeout.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -485,8 +485,8 @@ index 7c373c1..1628040 100644
      interval.func = func;
 diff --git a/style.css b/style.css
 index 79f5cb1..07163f7 100644
---- a/style.css
-+++ b/style.css
+--- a/js_mse_eme/style.css
++++ b/js_mse_eme/style.css
 @@ -17,12 +17,13 @@
  
  body {

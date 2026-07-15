@@ -1,7 +1,7 @@
 diff --git a/harness/testView.js b/harness/testView.js
 index ac093c0..0dc4f03 100644
---- a/harness/testView.js
-+++ b/harness/testView.js
+--- a/js_mse_eme/harness/testView.js
++++ b/js_mse_eme/harness/testView.js
 @@ -130,6 +130,22 @@ function TestView(testSuiteVer, testViewInfo) {
  
      var outputArea = createElement('div', 'outputarea');
@@ -27,8 +27,8 @@ index ac093c0..0dc4f03 100644
      outputArea.appendChild(textAreaContainer);
 diff --git a/style.css b/style.css
 index 07163f7..83a1807 100644
---- a/style.css
-+++ b/style.css
+--- a/js_mse_eme/style.css
++++ b/js_mse_eme/style.css
 @@ -211,7 +211,8 @@ div.container_hidden {
  #output {
    height: 250px;
