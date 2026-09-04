@@ -20,19 +20,4 @@
 set -e
 
 git submodule update --init --remote
-cd js_mse_eme
-git apply ../patches/0001_js_mse_eme_mvt.patch
-git apply ../patches/0002_js_mse_eme_mvt_AudioTagChangeFor_FMP4_FMP3_stream.patch
-git apply ../patches/0003_js_mse_eme_mvt_Add_HtmlTests.patch
-git apply ../patches/0004_js_mse_eme_mvt_Add_CSSTests.patch
-git apply ../patches/0005_js_mse_eme_mvt_Add_JSTests.patch
-git apply ../patches/0006_js_mse_eme_mvt_Add_WPTTests.patch
-git apply ../patches/0007_js_mse_eme_mvt_Add_Browse_Media_Assets.patch
-git apply ../patches/0008_js_mse_eme_mvt_dynamic_loading_platform_tests.patch
-git apply ../patches/0009_js_mse_eme_mvt_Add_system_fonts_check.patch
-git apply ../patches/0010_js_mse_eme_mvt_Add_Mixed_Content.patch
-git apply ../patches/0011_js_mse_eme_mvt_Add_Graphics_Test.patch
-git apply ../patches/0012_js_mse_eme_mvt_Add_LightningJS_Test.patch
-git apply ../patches/0013_js_mse_eme_mvt_Add_Application_memory_Test.patch
-git apply ../patches/0014_js_mse_eme_mvt_Add_Back_to_Main_Page_Button.patch
-git apply ../patches/0015_js_mse_eme_mvt_Enable_Scrolling_in_Log_Window.patch
+quilt push -a

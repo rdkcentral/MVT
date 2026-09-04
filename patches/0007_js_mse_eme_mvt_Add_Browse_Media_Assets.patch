@@ -1,7 +1,7 @@
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index ddf3c9e..0175e6a 100644
---- a/harness/compactTestView.js
-+++ b/harness/compactTestView.js
+--- a/js_mse_eme/harness/compactTestView.js
++++ b/js_mse_eme/harness/compactTestView.js
 @@ -56,6 +56,7 @@ var compactTestView = (function() {
        this.addLink('CSS Tests', 'https://css3test.com');
        this.addLink('JS ECMAScript Tests','https://compat-table.github.io/compat-table/es2016plus/');

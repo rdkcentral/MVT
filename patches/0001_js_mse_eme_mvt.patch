@@ -14,10 +14,10 @@ Subject: [PATCH] MVT Patch
  style.css                  | 127 +++++++++++++++++++++++++------------
  8 files changed, 217 insertions(+), 103 deletions(-)
 
-diff --git a/harness/compactTestList.js b/harness/compactTestList.js
-index 84a50d8..d0906da 100644
---- a/harness/compactTestList.js
-+++ b/harness/compactTestList.js
+Index: MVT/js_mse_eme/harness/compactTestList.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/compactTestList.js
++++ MVT/js_mse_eme/harness/compactTestList.js
 @@ -167,7 +167,7 @@ function TestList(style) {
        currentColumn.appendChild(tr);
  
@@ -27,10 +27,10 @@ index 84a50d8..d0906da 100644
          createElement('div', null, 'cell-name', '&nbsp;')
        ];
        tr.appendChild(elems[0]);
-diff --git a/harness/compactTestView.js b/harness/compactTestView.js
-index 23771ce..4dc6fb0 100644
---- a/harness/compactTestView.js
-+++ b/harness/compactTestView.js
+Index: MVT/js_mse_eme/harness/compactTestView.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/compactTestView.js
++++ MVT/js_mse_eme/harness/compactTestView.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -76,10 +76,10 @@ index 23771ce..4dc6fb0 100644
      };
  
      this.addTest = function(desc) {
-diff --git a/harness/constants.js b/harness/constants.js
-index e0e08bf..aa140a8 100644
---- a/harness/constants.js
-+++ b/harness/constants.js
+Index: MVT/js_mse_eme/harness/constants.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/constants.js
++++ MVT/js_mse_eme/harness/constants.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -94,10 +94,10 @@ index e0e08bf..aa140a8 100644
  
 -window.testVersion = '2021';
 +window.testVersion = 'MVT';
-diff --git a/harness/main.js b/harness/main.js
-index b0918ca..3e7973e 100644
---- a/harness/main.js
-+++ b/harness/main.js
+Index: MVT/js_mse_eme/harness/main.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/main.js
++++ MVT/js_mse_eme/harness/main.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -117,7 +117,7 @@ index b0918ca..3e7973e 100644
      testName = util.MakeCapitalName(testName) + 'Test';
      return window[testName]();
    }
-@@ -42,6 +47,8 @@ var parseParam = function(param, defaultValue) {
+@@ -42,6 +47,8 @@ var parseParam = function(param, default
  var parseParams = function(testSuiteConfig) {
    var config = {};
    config.testType = parseParam('test_type', testSuiteConfig.defaultTestSuite);
@@ -126,7 +126,7 @@ index b0918ca..3e7973e 100644
    config.command = parseParam('command', '');
    config.timeout = Number(parseParam('timeout', TestBase.timeout));
    config.logging = !util.stringToBoolean(parseParam('disable_log', false));
-@@ -51,9 +58,10 @@ var parseParams = function(testSuiteConfig) {
+@@ -51,9 +58,10 @@ var parseParams = function(testSuiteConf
        parseParam('stoponfailure', false));
    config.enablewebm = util.stringToBoolean(
        parseParam('enablewebm', testSuiteConfig.enablewebm));
@@ -138,7 +138,7 @@ index b0918ca..3e7973e 100644
    config.exclude = parseParam('exclude');
    config.testsMask = parseParam('tests_mask', '');
    config.testid = parseParam('testid', '');
-@@ -85,7 +93,9 @@ var configureHarness = function(testSuiteConfig) {
+@@ -85,7 +93,9 @@ var configureHarness = function(testSuit
  
    if (harnessConfig.testsMask) {
      harnessConfig.testsMask += '0';
@@ -211,7 +211,7 @@ index b0918ca..3e7973e 100644
  };
  
  
-@@ -208,7 +248,7 @@ window.startMseTest = function(testSuiteVer) {
+@@ -208,7 +248,7 @@ window.startMseTest = function(testSuite
    window.harnessConfig = parseParams(testSuiteVersion.config);
    window.harnessConfig.testSuite = testSuiteVer;
  
@@ -220,10 +220,10 @@ index b0918ca..3e7973e 100644
  
    if (!testSuiteVersion.testSuites.indexOf(harnessConfig.testType) === -1) {
      alert('Cannot find test type ' + harnessConfig.testType);
-diff --git a/harness/test.js b/harness/test.js
-index 1719490..a22ea0d 100644
---- a/harness/test.js
-+++ b/harness/test.js
+Index: MVT/js_mse_eme/harness/test.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/test.js
++++ MVT/js_mse_eme/harness/test.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -232,7 +232,7 @@ index 1719490..a22ea0d 100644
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
-@@ -110,12 +111,15 @@ window.createTest = function (name, category = '', mandatory = true, id = '',
+@@ -110,12 +111,15 @@ window.createTest = function (name, cate
    var t = function() {};
    t.prototype = Object.create(TestBase);
    t.prototype.name = name;
@@ -262,7 +262,7 @@ index 1719490..a22ea0d 100644
  };
  
  TestExecutor.prototype.assert = function(cond, msg) {
-@@ -304,12 +311,9 @@ TestExecutor.prototype.initialize = function() {
+@@ -304,12 +311,9 @@ TestExecutor.prototype.initialize = func
  
    this.testView.generate(this.testSuiteVer);
  
@@ -275,7 +275,7 @@ index 1719490..a22ea0d 100644
  };
  
  TestExecutor.prototype.reinitializeWithTestCaseIdAllowList = function(
-@@ -354,11 +358,6 @@ TestExecutor.prototype.reinitializeWithTestCaseIdAllowList = function(
+@@ -354,11 +358,6 @@ TestExecutor.prototype.reinitializeWithT
  };
  
  TestExecutor.prototype.onfinished = function() {
@@ -287,7 +287,7 @@ index 1719490..a22ea0d 100644
    var keepRunning = (!harnessConfig.stoponfailure ||
        this.lastResult === 'pass') && harnessConfig.loop &&
        (this.testView.anySelected() || this.numOfTestToRun === 1);
-@@ -380,14 +379,6 @@ TestExecutor.prototype.onfinished = function() {
+@@ -380,14 +379,6 @@ TestExecutor.prototype.onfinished = func
        }
      }
    }
@@ -302,7 +302,7 @@ index 1719490..a22ea0d 100644
  };
  
  TestExecutor.prototype.sendTestReport = function(results) {
-@@ -430,13 +421,13 @@ TestExecutor.prototype.startNextTest = function() {
+@@ -430,13 +421,13 @@ TestExecutor.prototype.startNextTest = f
    this.currentTest = new this.testList[this.currentTestIdx];
    this.blockTestResults = false;
  
@@ -318,7 +318,7 @@ index 1719490..a22ea0d 100644
    this.updateStatus();
  
    this.startTime = Date.now();
-@@ -583,18 +574,10 @@ TestExecutor.prototype.timeout = function() {
+@@ -583,18 +574,10 @@ TestExecutor.prototype.timeout = functio
  };
  
  TestExecutor.prototype.teardownCurrentTest = function(isTimeout, errorMsg) {
@@ -339,10 +339,10 @@ index 1719490..a22ea0d 100644
    this.updateStatus();
  
    this.timeouts.clearAll();
-diff --git a/harness/testView.js b/harness/testView.js
-index 0c0e8df..ac093c0 100644
---- a/harness/testView.js
-+++ b/harness/testView.js
+Index: MVT/js_mse_eme/harness/testView.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/testView.js
++++ MVT/js_mse_eme/harness/testView.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -351,7 +351,7 @@ index 0c0e8df..ac093c0 100644
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
-@@ -45,18 +46,14 @@ function TestView(testSuiteVer, testViewInfo) {
+@@ -45,18 +46,14 @@ function TestView(testSuiteVer, testView
    var testSuites = [];
    var links = [];
  
@@ -373,7 +373,7 @@ index 0c0e8df..ac093c0 100644
      })
    };
  
-@@ -110,15 +107,15 @@ function TestView(testSuiteVer, testViewInfo) {
+@@ -110,15 +107,15 @@ function TestView(testSuiteVer, testView
      if (this.testViewInfo) {
        heading += this.testViewInfo;
      }
@@ -391,7 +391,7 @@ index 0c0e8df..ac093c0 100644
      document.body.appendChild(createElement('div', 'testview'));
  
      var div = document.getElementById(this.divId);
-@@ -151,19 +148,55 @@ function TestView(testSuiteVer, testViewInfo) {
+@@ -151,19 +148,55 @@ function TestView(testSuiteVer, testView
            var wasOff = !util.stringToBoolean(e.target.innerHTML);
            e.target.innerHTML = wasOff ? 'on' : 'off';
            harnessConfig[id] = wasOff;
@@ -454,10 +454,10 @@ index 0c0e8df..ac093c0 100644
      }
  
      switchDiv.appendChild(
-diff --git a/harness/timeout.js b/harness/timeout.js
-index 7c373c1..1628040 100644
---- a/harness/timeout.js
-+++ b/harness/timeout.js
+Index: MVT/js_mse_eme/harness/timeout.js
+===================================================================
+--- MVT.orig/js_mse_eme/harness/timeout.js
++++ MVT/js_mse_eme/harness/timeout.js
 @@ -1,6 +1,7 @@
  /**
   * @license
@@ -483,12 +483,16 @@ index 7c373c1..1628040 100644
    this.setInterval = function(func, timeout) {
      var interval = getUniqueItem(intervals);
      interval.func = func;
-diff --git a/style.css b/style.css
-index 79f5cb1..07163f7 100644
---- a/style.css
-+++ b/style.css
-@@ -17,12 +17,13 @@
+Index: MVT/js_mse_eme/style.css
+===================================================================
+--- MVT.orig/js_mse_eme/style.css
++++ MVT/js_mse_eme/style.css
+@@ -15,14 +15,17 @@
+  * limitations under the License.
+  */
  
++@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
++
  body {
    background: #fff;
 -  font: normal 0.64em 'Roboto',Sans-Serif;
@@ -504,7 +508,7 @@ index 79f5cb1..07163f7 100644
  
  .default-list .cell-category {
    display: inline-block;
-@@ -87,45 +88,70 @@ body {
+@@ -87,45 +90,70 @@ body {
    min-width: 56px;
    border-style: solid;
    border-color: #800;
@@ -591,7 +595,7 @@ index 79f5cb1..07163f7 100644
  }
  
  .cell-column {
-@@ -167,7 +193,6 @@ div.container_hidden {
+@@ -167,7 +195,6 @@ div.container_hidden {
  
  .box-right {
    width: 420px;
@@ -599,7 +603,7 @@ index 79f5cb1..07163f7 100644
  }
  
  #testarea {
-@@ -184,15 +209,15 @@ div.container_hidden {
+@@ -184,15 +211,15 @@ div.container_hidden {
  }
  
  #output {
@@ -618,7 +622,7 @@ index 79f5cb1..07163f7 100644
    letter-spacing: 0.2px;
    padding: 2px;
  }
-@@ -202,7 +227,8 @@ div.container_hidden {
+@@ -202,7 +229,8 @@ div.container_hidden {
  }
  
  #controls {
@@ -628,7 +632,7 @@ index 79f5cb1..07163f7 100644
  }
  
  #login-pop-up {
-@@ -224,7 +250,7 @@ div.container_hidden {
+@@ -224,7 +252,7 @@ div.container_hidden {
  .step {
    padding-bottom: 2rem;
    font-size: 200%;
@@ -637,7 +641,7 @@ index 79f5cb1..07163f7 100644
    white-space: pre-wrap;
    color: white
  }
-@@ -265,7 +291,7 @@ span:focus {
+@@ -265,7 +293,7 @@ span:focus {
  .focusable {
    color: #0000EE;
    cursor: pointer;
@@ -646,7 +650,7 @@ index 79f5cb1..07163f7 100644
  }
  
  #title {
-@@ -282,8 +308,13 @@ span:focus {
+@@ -282,8 +310,13 @@ span:focus {
  }
  
  @keyframes blink {
@@ -662,7 +666,7 @@ index 79f5cb1..07163f7 100644
  }
  
  /* Use to activate CSS animation */
-@@ -294,33 +325,45 @@ span:focus {
+@@ -294,33 +327,45 @@ span:focus {
  }
  
  
@@ -722,6 +726,3 @@ index 79f5cb1..07163f7 100644
 +    width: 600px;
 +   }
  }
--- 
-2.34.1
-

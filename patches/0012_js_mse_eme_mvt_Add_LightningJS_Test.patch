@@ -9,8 +9,8 @@ Subject: [PATCH] Added lightningjs tests
 
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 604f4a9..4ff430b 100644
---- a/harness/compactTestView.js
-+++ b/harness/compactTestView.js
+--- a/js_mse_eme/harness/compactTestView.js
++++ b/js_mse_eme/harness/compactTestView.js
 @@ -60,6 +60,7 @@ var compactTestView = (function() {
        this.addLink('System fonts', 'fonts.html');
        this.addLink('Mixed Content', 'https://googlesamples.github.io/web-fundamentals/fundamentals/security/prevent-mixed-content/active-mixed-content.html');

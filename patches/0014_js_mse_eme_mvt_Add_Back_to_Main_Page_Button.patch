@@ -1,7 +1,7 @@
 diff --git a/harness/compactTestView.js b/harness/compactTestView.js
 index 6018e18..86f876a 100644
---- a/harness/compactTestView.js
-+++ b/harness/compactTestView.js
+--- a/js_mse_eme/harness/compactTestView.js
++++ b/js_mse_eme/harness/compactTestView.js
 @@ -52,13 +52,13 @@ var compactTestView = (function() {
        this.addLink('Content Licenses', 'licenses.html');
        this.addLink('Media Coverage', 'coverage.html');
